@@ -3,6 +3,7 @@ package com.besysoft.ejercitacion.dominio;
 import java.util.ArrayList;
 
 public class Personaje {
+    private int id;
     private String nombre;
     private int edad;
     private double peso;
@@ -12,13 +13,23 @@ public class Personaje {
     public Personaje() {
     }
 
-    public Personaje(String nombre, int edad, double peso, String historia) {
+
+    public Personaje(int id, String nombre, int edad, double peso, String historia, Pelicula pelicula) {
+        this.id = id;
         this.nombre = nombre;
         this.edad = edad;
         this.peso = peso;
         this.historia = historia;
+        this.pelicula = pelicula;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
     public String getNombre() {
         return nombre;
     }
