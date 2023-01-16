@@ -7,7 +7,7 @@ public class Personaje {
     private int edad;
     private double peso;
     private String historia;
-    private ArrayList <Pelicula> listaPelis;
+    private Pelicula pelicula;
 
     public Personaje() {
     }
@@ -51,12 +51,12 @@ public class Personaje {
         this.historia = historia;
     }
 
-    public ArrayList<Pelicula> getListaPelis() {
-        return listaPelis;
+    public Pelicula getPelicula() {
+        return pelicula;
     }
 
-    public void setListaPelis(ArrayList<Pelicula> listaPelis) {
-        this.listaPelis = listaPelis;
+    public void setPelicula(Pelicula pelicula) {
+        this.pelicula = pelicula;
     }
 
     @Override
@@ -66,7 +66,7 @@ public class Personaje {
                 ", edad=" + edad +
                 ", peso=" + peso +
                 ", historia='" + historia + '\'' +
-                ", listaPelis=" + listaPelis +
+                ", pelicula=" + pelicula +
                 '}';
     }
 }
