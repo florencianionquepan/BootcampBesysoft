@@ -31,4 +31,15 @@ public class ControladoraPersonaje {
         return listaNueva;
     }
 
+    @GetMapping("/personajes/edad/{edad}")
+    public ArrayList<Personaje> buscarPersonajesByEdad(@PathVariable int edad){
+        Test miTest=new Test();
+        miTest.generarDatos();
+        List<Personaje> listaPerso=miTest.getListaPerso().stream()
+                .filter(personaje -> personaje.getEdad()==edad)
+                .collect(Collectors.toList());
+        ArrayList<Personaje> listaNueva=new ArrayList<Personaje>(listaPerso);
+        return listaNueva;
+    }
+
 }
