@@ -14,14 +14,14 @@ import java.util.stream.Collectors;
 public class ControladoraPersonaje {
 
     @GetMapping("/personajes")
-    public ArrayList<Personaje> verPersonajes(){
+    public ArrayList<Personaje> verPerso(){
         Test miTest=new Test();
         miTest.generarDatos();
         return miTest.getListaPerso();
     }
 
     @GetMapping("/personajes/nombre/{nombre}")
-    public ArrayList<Personaje> buscarPersonajesByNombre(@PathVariable String nombre){
+    public ArrayList<Personaje> buscarPersoByNombre(@PathVariable String nombre){
         Test miTest=new Test();
         miTest.generarDatos();
         List<Personaje> listaPerso=miTest.getListaPerso().stream()
@@ -32,7 +32,7 @@ public class ControladoraPersonaje {
     }
 
     @GetMapping("/personajes/edad/{edad}")
-    public ArrayList<Personaje> buscarPersonajesByEdad(@PathVariable int edad){
+    public ArrayList<Personaje> buscarPersoByEdad(@PathVariable int edad){
         Test miTest=new Test();
         miTest.generarDatos();
         List<Personaje> listaPerso=miTest.getListaPerso().stream()
