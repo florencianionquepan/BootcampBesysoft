@@ -20,7 +20,7 @@ public class ControladoraPersonaje {
         return miTest.getListaPerso();
     }
 
-    @GetMapping("/personajes/nombre/{nombre}")
+    @GetMapping("/personajes/{nombre}")
     public ArrayList<Personaje> buscarPersoByNombre(@PathVariable String nombre){
         Test miTest=new Test();
         miTest.generarDatos();
@@ -31,7 +31,7 @@ public class ControladoraPersonaje {
         return listaNueva;
     }
 
-    @GetMapping("/personajes/edad/{edad}")
+    @GetMapping("/personajes/edad?={edad}")
     public ArrayList<Personaje> buscarPersoByEdad(@PathVariable int edad){
         Test miTest=new Test();
         miTest.generarDatos();
