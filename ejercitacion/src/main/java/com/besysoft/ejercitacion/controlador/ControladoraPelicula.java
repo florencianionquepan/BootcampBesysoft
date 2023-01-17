@@ -22,4 +22,16 @@ public class ControladoraPelicula {
         miTest.generarDatos();
         return miTest.getListaPelis();
     }
+
+    @GetMapping("/peliculas/{titulo}")
+    public ArrayList<Pelicula> buscarPeliByTitulo(@PathVariable String titulo){
+        Test miTest=new Test();
+        miTest.generarDatos();
+        List<Pelicula> listaPelis=miTest.getListaPelis().stream()
+                .filter(pelicula -> pelicula.getTitulo().equals(titulo))
+                .collect(Collectors.toList());
+        ArrayList<Pelicula> listaNueva=new ArrayList<Pelicula>(listaPelis);
+        return listaNueva;
+    }
+
 }
