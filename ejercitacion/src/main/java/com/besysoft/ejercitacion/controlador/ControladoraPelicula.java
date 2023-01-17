@@ -34,4 +34,15 @@ public class ControladoraPelicula {
         return listaNueva;
     }
 
+    @GetMapping("/peliculas/genero/{genero}")
+    public ArrayList<Pelicula> buscarPeliByGenero(@PathVariable String genero){
+        Test miTest=new Test();
+        miTest.generarDatos();
+        ArrayList<Genero> listaGeneros=miTest.getListaGeneros();
+        ArrayList<Pelicula> listaPelis= listaGeneros.stream()
+                .filter(gen->gen.getNombre().equals(genero))
+                .map(Genero::getListaPelis)
+                .collect(Collectors.toList()).get(0);
+        return listaPelis;
+    }
 }
