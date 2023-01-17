@@ -39,10 +39,13 @@ public class ControladoraPelicula {
         Test miTest=new Test();
         miTest.generarDatos();
         ArrayList<Genero> listaGeneros=miTest.getListaGeneros();
-        ArrayList<Pelicula> listaPelis= listaGeneros.stream()
+        List<ArrayList<Pelicula>> listaPelis= listaGeneros.stream()
                 .filter(gen->gen.getNombre().equals(genero))
                 .map(Genero::getListaPelis)
-                .collect(Collectors.toList()).get(0);
-        return listaPelis;
+                .collect(Collectors.toList());
+        ArrayList<Pelicula> listaPel=new ArrayList<Pelicula>();
+        if(listaPelis.size()>0)
+            listaPel=listaPelis.get(0);
+        return listaPel;
     }
 }
