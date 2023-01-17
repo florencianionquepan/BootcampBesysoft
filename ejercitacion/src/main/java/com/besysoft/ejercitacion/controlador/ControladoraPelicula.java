@@ -43,9 +43,7 @@ public class ControladoraPelicula {
                 .filter(gen->gen.getNombre().equals(genero))
                 .map(Genero::getListaPelis)
                 .collect(Collectors.toList());
-        ArrayList<Pelicula> listaPel=new ArrayList<Pelicula>();
-        if(listaPelis.size()>0)
-            listaPel=listaPelis.get(0);
+        ArrayList<Pelicula> listaPel=(listaPelis.size()>0)?listaPelis.get(0):new ArrayList<Pelicula>();
         return listaPel;
     }
 }
