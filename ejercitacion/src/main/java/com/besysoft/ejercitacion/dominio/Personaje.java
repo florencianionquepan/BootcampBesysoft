@@ -1,5 +1,5 @@
 package com.besysoft.ejercitacion.dominio;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.ArrayList;
 
 public class Personaje {
@@ -8,6 +8,7 @@ public class Personaje {
     private int edad;
     private double peso;
     private String historia;
+    @JsonIgnoreProperties(value="listaPersonajes")
     private Pelicula pelicula;
 
     public Personaje() {

@@ -1,5 +1,7 @@
 package com.besysoft.ejercitacion.dominio;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -8,6 +10,7 @@ public class Pelicula {
     private String titulo;
     private LocalDate fechaCreacion;
     private int calificacion;
+    @JsonIgnoreProperties(value="pelicula")
     private ArrayList<Personaje> listaPersonajes;
 
     public Pelicula() {
