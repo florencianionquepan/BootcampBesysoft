@@ -80,7 +80,7 @@ public class Test {
         listaPersPrimer.add(persoPrimer1);
         listaPersPrimer.add(persoPrimer2);
 
-        //Seteo las listas a cada objeto:
+        //Seteo las listas a cada objeto pelicula
         peliCoco.setListaPersonajes(listaPersCoco);
         peliUp.setListaPersonajes(listaPersUp);
         peliPrimer.setListaPersonajes(listaPersPrimer);
