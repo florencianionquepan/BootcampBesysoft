@@ -4,7 +4,12 @@ package com.besysoft.bootcampspringboot.Controller;
 import dominio.Persona;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @RestController
 public class HolaMundoController {
@@ -39,11 +44,23 @@ public class HolaMundoController {
         }
         return response;
     }
-    
+    /*
     @GetMapping("/saludar/persona/{nombre}/{apellido}")
     public Persona armarPersona(@PathVariable String nombre, @PathVariable String apellido){
         Persona persona=new Persona(nombre,apellido);
         return persona;
     }
-    
+
+    @GetMapping("/ver/persona")
+    public Persona verPersona(@RequestParam String nombre,
+                              @RequestParam(name="apellidos",required = false) String apellido){
+        if(apellido==null){
+            throw new RuntimeException("Debe ingresar el apellido");
+        }
+        Persona persona=new Persona(nombre,apellido);
+        return persona;
+    }
+     */
+
+
 }
