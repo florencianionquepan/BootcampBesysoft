@@ -14,32 +14,30 @@ import java.util.stream.Collectors;
 public class ControladoraPersonaje {
 
     @GetMapping("/personajes")
-    public ArrayList<Personaje> verPerso(){
+    public List<Personaje> verPerso(){
         Test miTest=new Test();
         miTest.generarDatos();
         return miTest.getListaPerso();
     }
 
     @GetMapping("/personajes/{nombre}")
-    public ArrayList<Personaje> buscarPersoByNombre(@PathVariable String nombre){
+    public List<Personaje> buscarPersoByNombre(@PathVariable String nombre){
         Test miTest=new Test();
         miTest.generarDatos();
         List<Personaje> listaPerso=miTest.getListaPerso().stream()
                                         .filter(personaje -> personaje.getNombre().equals(nombre))
                                         .collect(Collectors.toList());
-        ArrayList<Personaje> listaNueva=new ArrayList<Personaje>(listaPerso);
-        return listaNueva;
+        return listaPerso;
     }
 
     @GetMapping("/personajes/edad/{edad}")
-    public ArrayList<Personaje> buscarPersoByEdad(@PathVariable int edad){
+    public List<Personaje> buscarPersoByEdad(@PathVariable int edad){
         Test miTest=new Test();
         miTest.generarDatos();
         List<Personaje> listaPerso=miTest.getListaPerso().stream()
                 .filter(personaje -> personaje.getEdad()==edad)
                 .collect(Collectors.toList());
-        ArrayList<Personaje> listaNueva=new ArrayList<Personaje>(listaPerso);
-        return listaNueva;
+        return listaPerso;
     }
 
 }

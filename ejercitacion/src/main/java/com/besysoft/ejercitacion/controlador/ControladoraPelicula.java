@@ -15,28 +15,27 @@ import java.util.stream.Collectors;
 public class ControladoraPelicula {
 
     @GetMapping("/peliculas")
-    public ArrayList<Pelicula> verPelis(){
+    public List<Pelicula> verPelis(){
         Test miTest=new Test();
         miTest.generarDatos();
         return miTest.getListaPelis();
     }
 
     @GetMapping("/peliculas/{titulo}")
-    public ArrayList<Pelicula> buscarPeliByTitulo(@PathVariable String titulo){
+    public List<Pelicula> buscarPeliByTitulo(@PathVariable String titulo){
         Test miTest=new Test();
         miTest.generarDatos();
         List<Pelicula> listaPelis=miTest.getListaPelis().stream()
                 .filter(pelicula -> pelicula.getTitulo().equals(titulo))
                 .collect(Collectors.toList());
-        ArrayList<Pelicula> listaNueva=new ArrayList<Pelicula>(listaPelis);
-        return listaNueva;
+        return listaPelis;
     }
 
     @GetMapping("/peliculas/genero/{genero}")
-    public ArrayList<Pelicula> buscarPeliByGenero(@PathVariable String genero){
+    public List<Pelicula> buscarPeliByGenero(@PathVariable String genero){
         Test miTest=new Test();
         miTest.generarDatos();
-        ArrayList<Genero> listaGeneros=miTest.getListaGeneros();
+        List<Genero> listaGeneros=miTest.getListaGeneros();
         List<ArrayList<Pelicula>> listaPelis= listaGeneros.stream()
                 .filter(gen->gen.getNombre().equals(genero))
                 .map(Genero::getListaPelis)
