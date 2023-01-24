@@ -17,6 +17,24 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/peliculas")
 public class ControladoraPelicula {
+    public List<Pelicula> listaPelis=Test.getListaPelis();
+    public List<Genero> listaGeneros=Test.getListaGeneros();
+    public List<Pelicula> getListaPelis() {
+        return listaPelis;
+    }
+
+    public void setListaPelis(List<Pelicula> listaPelis) {
+        this.listaPelis = listaPelis;
+    }
+
+    public List<Genero> getListaGeneros() {
+        return listaGeneros;
+    }
+
+    public void setListaGeneros(List<Genero> listaGeneros) {
+        this.listaGeneros = listaGeneros;
+    }
+
     public Map<String,Object> mensajeBody= new HashMap<>();
 
     private ResponseEntity<?> successResponse(List<?> lista){
@@ -26,16 +44,13 @@ public class ControladoraPelicula {
     }
     @GetMapping
     public ResponseEntity<?> verPelis(){
-        Test miTest=new Test();
-        miTest.generarDatos();
-        return this.successResponse(miTest.getListaPelis());
+        return this.successResponse(this.listaPelis);
     }
 
     @GetMapping("/{titulo}")
     public ResponseEntity<?> buscarPeliByTitulo(@PathVariable String titulo){
-        Test miTest=new Test();
-        miTest.generarDatos();
-        List<Pelicula> listaPelis=miTest.getListaPelis().stream()
+
+        List<Pelicula> listaPelis=this.listaPelis.stream()
                 .filter(pelicula -> pelicula.getTitulo().equals(titulo))
                 .collect(Collectors.toList());
         return this.successResponse(listaPelis);
@@ -43,9 +58,7 @@ public class ControladoraPelicula {
 
     @GetMapping("/genero/{genero}")
     public ResponseEntity<?> buscarPeliByGenero(@PathVariable String genero){
-        Test miTest=new Test();
-        miTest.generarDatos();
-        List<Genero> listaGeneros=miTest.getListaGeneros();
+        List<Genero> listaGeneros=this.listaGeneros;
         List<ArrayList<Pelicula>> listaPelis= listaGeneros.stream()
                 .filter(gen->gen.getNombre().equals(genero))
                 .map(Genero::getListaPelis)
@@ -64,9 +77,7 @@ public class ControladoraPelicula {
                     .badRequest()
                     .body(mensajeBody);
         }else {
-            Test miTest=new Test();
-            miTest.generarDatos();
-            List<Pelicula> listaPelis = miTest.getListaPelis().stream()
+            List<Pelicula> listaPelis = this.listaPelis.stream()
                     .filter(pelicula -> pelicula.getFechaCreacion().isAfter(desde)
                             && pelicula.getFechaCreacion().isBefore(hasta))
                     .collect(Collectors.toList());
@@ -84,9 +95,7 @@ public class ControladoraPelicula {
                     .badRequest()
                     .body(mensajeBody);
         }
-        Test miTest=new Test();
-        miTest.generarDatos();
-        List<Pelicula> listaPelis=miTest.getListaPelis().stream()
+        List<Pelicula> listaPelis=this.listaPelis.stream()
                 .filter(pelicula -> pelicula.getCalificacion()<hasta
                         && pelicula.getCalificacion()>desde)
                 .collect(Collectors.toList());
