@@ -4,36 +4,45 @@ import com.besysoft.ejercitacion.Test;
 import com.besysoft.ejercitacion.dominio.Genero;
 import com.besysoft.ejercitacion.dominio.Pelicula;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/peliculas")
 public class ControladoraPelicula {
+    public Map<String,Object> mensajeBody= new HashMap<>();
 
+    private ResponseEntity<?> successResponse(List<?> lista){
+        mensajeBody.put("Success",Boolean.TRUE);
+        mensajeBody.put("data",lista);
+        return ResponseEntity.ok(mensajeBody);
+    }
     @GetMapping
-    public List<Pelicula> verPelis(){
+    public ResponseEntity<?> verPelis(){
         Test miTest=new Test();
         miTest.generarDatos();
-        return miTest.getListaPelis();
+        return this.successResponse(miTest.getListaPelis());
     }
 
     @GetMapping("/{titulo}")
-    public List<Pelicula> buscarPeliByTitulo(@PathVariable String titulo){
+    public ResponseEntity<?> buscarPeliByTitulo(@PathVariable String titulo){
         Test miTest=new Test();
         miTest.generarDatos();
         List<Pelicula> listaPelis=miTest.getListaPelis().stream()
                 .filter(pelicula -> pelicula.getTitulo().equals(titulo))
                 .collect(Collectors.toList());
-        return listaPelis;
+        return this.successResponse(listaPelis);
     }
 
     @GetMapping("/genero/{genero}")
-    public List<Pelicula> buscarPeliByGenero(@PathVariable String genero){
+    public ResponseEntity<?> buscarPeliByGenero(@PathVariable String genero){
         Test miTest=new Test();
         miTest.generarDatos();
         List<Genero> listaGeneros=miTest.getListaGeneros();
@@ -42,30 +51,45 @@ public class ControladoraPelicula {
                 .map(Genero::getListaPelis)
                 .collect(Collectors.toList());
         ArrayList<Pelicula> listaPel=(listaPelis.size()>0)?listaPelis.get(0):new ArrayList<Pelicula>();
-        return listaPel;
+        return this.successResponse(listaPel);
     }
 
     @GetMapping("/fechas")
-    public List<Pelicula> buscarPeliFechas(@RequestParam @DateTimeFormat(pattern = "ddMMyyyy") LocalDate desde ,
+    public ResponseEntity<?> buscarPeliFechas(@RequestParam @DateTimeFormat(pattern = "ddMMyyyy") LocalDate desde ,
                                             @RequestParam @DateTimeFormat(pattern = "ddMMyyyy") LocalDate hasta){
-        Test miTest=new Test();
-        miTest.generarDatos();
-        List<Pelicula> listaPelis=miTest.getListaPelis().stream()
-                .filter(pelicula -> pelicula.getFechaCreacion().isAfter(desde)
-                        && pelicula.getFechaCreacion().isBefore(hasta))
-                .collect(Collectors.toList());
-        return listaPelis;
+        if(desde.isAfter(hasta) || hasta.isBefore(desde)){
+            mensajeBody.put("Success",Boolean.FALSE);
+            mensajeBody.put("data",String.format("Las fechas desde %tF hasta %tF no conforman un rango válido",desde,hasta));
+            return ResponseEntity
+                    .badRequest()
+                    .body(mensajeBody);
+        }else {
+            Test miTest=new Test();
+            miTest.generarDatos();
+            List<Pelicula> listaPelis = miTest.getListaPelis().stream()
+                    .filter(pelicula -> pelicula.getFechaCreacion().isAfter(desde)
+                            && pelicula.getFechaCreacion().isBefore(hasta))
+                    .collect(Collectors.toList());
+            return this.successResponse(listaPelis);
+        }
     }
 
     @GetMapping("/calificacion")
-    public List<Pelicula> buscarPeliCalificacion(@RequestParam int desde,
+    public ResponseEntity<?> buscarPeliCalificacion(@RequestParam int desde,
                                            @RequestParam int hasta){
+        if(desde>hasta || hasta<desde || desde<1 || hasta>5){
+            mensajeBody.put("Success",Boolean.FALSE);
+            mensajeBody.put("data","Rango no válido");
+            return ResponseEntity
+                    .badRequest()
+                    .body(mensajeBody);
+        }
         Test miTest=new Test();
         miTest.generarDatos();
         List<Pelicula> listaPelis=miTest.getListaPelis().stream()
                 .filter(pelicula -> pelicula.getCalificacion()<hasta
                         && pelicula.getCalificacion()>desde)
                 .collect(Collectors.toList());
-        return listaPelis;
+        return this.successResponse(listaPelis);
     }
 }
