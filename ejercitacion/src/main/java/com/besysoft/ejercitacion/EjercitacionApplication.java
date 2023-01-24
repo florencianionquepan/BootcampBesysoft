@@ -14,6 +14,8 @@ public class EjercitacionApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(EjercitacionApplication.class, args);
+		Test miTest=new Test();
+		miTest.generarDatos();
         }
 
 }
