@@ -6,45 +6,46 @@ import com.besysoft.ejercitacion.dominio.Personaje;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class Test {
-    public ArrayList<Personaje> listaPerso=new ArrayList<Personaje>();
-    public ArrayList<Pelicula> listaPelis=new ArrayList<Pelicula>();
-    public ArrayList<Genero> listaGeneros=new ArrayList<Genero>();
+    public List<Personaje> listaPerso=new ArrayList<Personaje>();
+    public List<Pelicula> listaPelis=new ArrayList<Pelicula>();
+    public List<Genero> listaGeneros=new ArrayList<Genero>();
 
     public Test() {
     }
 
-    public ArrayList<Personaje> getListaPerso() {
+    public List<Personaje> getListaPerso() {
         return listaPerso;
     }
 
-    public void setListaPerso(ArrayList<Personaje> listaPerso) {
+    public void setListaPerso(List<Personaje> listaPerso) {
         this.listaPerso = listaPerso;
     }
 
-    public ArrayList<Pelicula> getListaPelis() {
+    public List<Pelicula> getListaPelis() {
         return listaPelis;
     }
 
-    public void setListaPelis(ArrayList<Pelicula> listaPelis) {
+    public void setListaPelis(List<Pelicula> listaPelis) {
         this.listaPelis = listaPelis;
     }
 
-    public ArrayList<Genero> getListaGeneros() {
+    public List<Genero> getListaGeneros() {
         return listaGeneros;
     }
 
-    public void setListaGeneros(ArrayList<Genero> listaGeneros) {
+    public void setListaGeneros(List<Genero> listaGeneros) {
         this.listaGeneros = listaGeneros;
     }
 
     public void generarDatos(){
 
         //--------Creo listas de personajes vacias--------
-        ArrayList<Personaje> listaPersCoco=new ArrayList<>();
-        ArrayList<Personaje> listaPersUp=new ArrayList<>();
-        ArrayList<Personaje> listaPersPrimer=new ArrayList<>();
+        List<Personaje> listaPersCoco=new ArrayList<>();
+        List<Personaje> listaPersUp=new ArrayList<>();
+        List<Personaje> listaPersPrimer=new ArrayList<>();
 
 
         //------Creo peliculas--------
