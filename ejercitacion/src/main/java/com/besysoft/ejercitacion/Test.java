@@ -49,8 +49,8 @@ public class Test {
 
 
         //------Creo peliculas--------
-        Pelicula peliCoco=new Pelicula(1,"Coco", LocalDate.of(2017,12,1),5,listaPersCoco);
-        Pelicula peliUp=new Pelicula(2,"Up",LocalDate.of(2009,10,15),5,listaPersUp);
+        Pelicula peliCoco=new Pelicula(1,"Coco", LocalDate.of(2017,12,1),4,listaPersCoco);
+        Pelicula peliUp=new Pelicula(2,"Up",LocalDate.of(2009,10,15),3,listaPersUp);
         Pelicula peliPrimer=new Pelicula(3,"Primer",LocalDate.of(2004,02,22),5,listaPersPrimer);
 
 
