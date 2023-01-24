@@ -1,6 +1,7 @@
 package com.besysoft.ejercitacion.controlador;
 
 import com.besysoft.ejercitacion.Test;
+import com.besysoft.ejercitacion.dominio.Pelicula;
 import com.besysoft.ejercitacion.dominio.Personaje;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,5 +39,18 @@ public class ControladoraPersonaje {
                 .collect(Collectors.toList());
         return listaPerso;
     }
+
+    @GetMapping("/edad")
+    public List<Personaje> buscarPersoRangoEdad(@RequestParam int desde,
+                                                 @RequestParam int hasta){
+        Test miTest=new Test();
+        miTest.generarDatos();
+        List<Personaje> listaPerso=miTest.getListaPerso().stream()
+                .filter(per -> per.getEdad()<hasta && per.getEdad()>desde)
+                .collect(Collectors.toList());
+        return listaPerso;
+    }
+
+
 
 }
