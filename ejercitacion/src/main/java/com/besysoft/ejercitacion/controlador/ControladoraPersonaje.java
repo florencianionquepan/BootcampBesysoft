@@ -15,6 +15,13 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/personajes")
 public class ControladoraPersonaje {
+    public List<Personaje> listaPerso=Test.getListaPerso();
+    public List<Personaje> getListaPerso() {
+        return listaPerso;
+    }
+    public void setListaPerso(List<Personaje> listaPerso) {
+        this.listaPerso = listaPerso;
+    }
     public Map<String,Object> mensajeBody= new HashMap<>();
 
     private ResponseEntity<?> successResponse(List<?> lista){
@@ -24,16 +31,12 @@ public class ControladoraPersonaje {
     }
     @GetMapping
     public ResponseEntity<?> verPerso(){
-        Test miTest=new Test();
-        miTest.generarDatos();
-        return this.successResponse(miTest.getListaPerso());
+        return this.successResponse(this.listaPerso);
     }
 
     @GetMapping("/{nombre}")
     public ResponseEntity<?> buscarPersoByNombre(@PathVariable String nombre){
-        Test miTest=new Test();
-        miTest.generarDatos();
-        List<Personaje> listaPerso=miTest.getListaPerso().stream()
+        List<Personaje> listaPerso=this.listaPerso.stream()
                                         .filter(personaje -> personaje.getNombre().equals(nombre))
                                         .collect(Collectors.toList());
         return this.successResponse(listaPerso);
@@ -41,9 +44,7 @@ public class ControladoraPersonaje {
 
     @GetMapping("/edad/{edad}")
     public ResponseEntity<?> buscarPersoByEdad(@PathVariable int edad){
-        Test miTest=new Test();
-        miTest.generarDatos();
-        List<Personaje> listaPerso=miTest.getListaPerso().stream()
+        List<Personaje> listaPerso=this.listaPerso.stream()
                 .filter(personaje -> personaje.getEdad()==edad)
                 .collect(Collectors.toList());
         return this.successResponse(listaPerso);
@@ -59,9 +60,7 @@ public class ControladoraPersonaje {
                     .badRequest()
                     .body(mensajeBody);
         }
-        Test miTest=new Test();
-        miTest.generarDatos();
-        List<Personaje> listaPerso=miTest.getListaPerso().stream()
+        List<Personaje> listaPerso=this.listaPerso.stream()
                 .filter(per -> per.getEdad()<hasta && per.getEdad()>desde)
                 .collect(Collectors.toList());
         return this.successResponse(listaPerso);
