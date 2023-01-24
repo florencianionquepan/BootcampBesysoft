@@ -4,6 +4,7 @@ import com.besysoft.ejercitacion.Test;
 import com.besysoft.ejercitacion.dominio.Genero;
 import com.besysoft.ejercitacion.dominio.Pelicula;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -100,5 +101,12 @@ public class ControladoraPelicula {
                         && pelicula.getCalificacion()>desde)
                 .collect(Collectors.toList());
         return this.successResponse(listaPelis);
+    }
+    @PostMapping
+    public ResponseEntity<?> altaPelicula(@RequestBody Pelicula peli){
+        peli.setId(this.listaPelis.size()+1);
+        this.listaPelis.add(peli);
+        this.setListaPelis(this.listaPelis);
+        return ResponseEntity.status(HttpStatus.CREATED).body(peli);
     }
 }
