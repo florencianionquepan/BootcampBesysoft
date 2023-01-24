@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Pelicula {
     private int id;
@@ -11,12 +12,12 @@ public class Pelicula {
     private LocalDate fechaCreacion;
     private int calificacion;
     @JsonIgnoreProperties(value="pelicula")
-    private ArrayList<Personaje> listaPersonajes;
+    private List<Personaje> listaPersonajes;
 
     public Pelicula() {
     }
 
-    public Pelicula(int id, String titulo, LocalDate fechaCreacion, int calificacion, ArrayList<Personaje> listaPersonajes) {
+    public Pelicula(int id, String titulo, LocalDate fechaCreacion, int calificacion, List<Personaje> listaPersonajes) {
         this.id = id;
         this.titulo = titulo;
         this.fechaCreacion = fechaCreacion;
@@ -56,11 +57,11 @@ public class Pelicula {
         this.calificacion = calificacion;
     }
 
-    public ArrayList<Personaje> getListaPersonajes() {
+    public List<Personaje> getListaPersonajes() {
         return listaPersonajes;
     }
 
-    public void setListaPersonajes(ArrayList<Personaje> listaPersonajes) {
+    public void setListaPersonajes(List<Personaje> listaPersonajes) {
         this.listaPersonajes = listaPersonajes;
     }
 
