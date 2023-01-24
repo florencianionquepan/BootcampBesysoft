@@ -9,14 +9,14 @@ import java.util.Collections;
 import java.util.List;
 
 public class Test {
-    public List<Personaje> listaPerso=new ArrayList<Personaje>();
-    public List<Pelicula> listaPelis=new ArrayList<Pelicula>();
-    public List<Genero> listaGeneros=new ArrayList<Genero>();
+    public static List<Personaje> listaPerso=new ArrayList<Personaje>();
+    public static List<Pelicula> listaPelis=new ArrayList<Pelicula>();
+    public static List<Genero> listaGeneros=new ArrayList<Genero>();
 
     public Test() {
     }
 
-    public List<Personaje> getListaPerso() {
+    public static List<Personaje> getListaPerso() {
         return listaPerso;
     }
 
@@ -24,7 +24,7 @@ public class Test {
         this.listaPerso = listaPerso;
     }
 
-    public List<Pelicula> getListaPelis() {
+    public static List<Pelicula> getListaPelis() {
         return listaPelis;
     }
 
@@ -32,7 +32,7 @@ public class Test {
         this.listaPelis = listaPelis;
     }
 
-    public List<Genero> getListaGeneros() {
+    public static List<Genero> getListaGeneros() {
         return listaGeneros;
     }
 
