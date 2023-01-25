@@ -1,16 +1,17 @@
 package com.besysoft.ejercitacion.dominio;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Genero {
     private int id;
     private String nombre;
-    private ArrayList <Pelicula> listaPelis;
+    private List <Pelicula> listaPelis;
 
     public Genero() {
     }
 
-    public Genero(int id, String nombre, ArrayList<Pelicula> listaPelis) {
+    public Genero(int id, String nombre, List<Pelicula> listaPelis) {
         this.id = id;
         this.nombre = nombre;
         this.listaPelis = listaPelis;
@@ -32,11 +33,11 @@ public class Genero {
         this.nombre = nombre;
     }
 
-    public ArrayList<Pelicula> getListaPelis() {
+    public List<Pelicula> getListaPelis() {
         return listaPelis;
     }
 
-    public void setListaPelis(ArrayList<Pelicula> listaPelis) {
+    public void setListaPelis(List<Pelicula> listaPelis) {
         this.listaPelis = listaPelis;
     }
 

@@ -60,11 +60,11 @@ public class ControladoraPelicula {
     @GetMapping("/genero/{genero}")
     public ResponseEntity<?> buscarPeliByGenero(@PathVariable String genero){
         List<Genero> listaGeneros=this.listaGeneros;
-        List<ArrayList<Pelicula>> listaPelis= listaGeneros.stream()
+        List<List<Pelicula>> listaPelis= listaGeneros.stream()
                 .filter(gen->gen.getNombre().equals(genero))
                 .map(Genero::getListaPelis)
                 .collect(Collectors.toList());
-        ArrayList<Pelicula> listaPel=(listaPelis.size()>0)?listaPelis.get(0):new ArrayList<Pelicula>();
+        List<Pelicula> listaPel=(listaPelis.size()>0)?listaPelis.get(0):new ArrayList<Pelicula>();
         return this.successResponse(listaPel);
     }
 
