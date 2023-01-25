@@ -82,7 +82,7 @@ public class ControladoraGenero {
     //Chequea si existe peli si es que se envia alguna en la lista del genero
     //Si la lista esta vacia lo toma como que existe
     private boolean existePeli(Genero genero){
-        Boolean existe=genero.getListaPelis().size()==0?true:false;
+        boolean existe=genero.getListaPelis().size()==0;
         List<Pelicula> listaPelis=ControladoraPelicula.getListaPelis();
         for (Pelicula peli : genero.getListaPelis()){
         Optional<Pelicula> oPeliAs = listaPelis.stream()
