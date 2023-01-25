@@ -13,8 +13,8 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/personajes")
 public class ControladoraPersonaje {
-    public List<Personaje> listaPerso=Test.getListaPerso();
-    public List<Personaje> getListaPerso() {
+    public static List<Personaje> listaPerso=Test.getListaPerso();
+    public static List<Personaje> getListaPerso() {
         return listaPerso;
     }
     public void setListaPerso(List<Personaje> listaPerso) {
