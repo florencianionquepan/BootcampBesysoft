@@ -74,17 +74,22 @@ public class ControladoraPersonaje {
 
     @PostMapping
     public ResponseEntity<?> altaPersonaje(@RequestBody Personaje perso){
+        //Primero chequeo que la pelicula asociada al personaje exista:
+        Optional <Pelicula> oPeliAsociada=ControladoraPelicula.getListaPelis().
+                stream().filter(peli->peli.getId()==perso.getPelicula().getId()).findAny();
+        if(!oPeliAsociada.isPresent()){
+            mensajeBody.put("Success",Boolean.FALSE);
+            mensajeBody.put("data","La pelicula asociada no existe");
+            return ResponseEntity
+                    .badRequest()
+                    .body(mensajeBody);
+        }
         perso.setId(this.listaPerso.size()+1);
-
         this.listaPerso.add(perso);
         this.setListaPerso(this.listaPerso);
-        //asociar este personaje a la peliculA. La pelicula no se entero de este personaje todavia:
-        //Aca primero dejar el optional por si el personaje se crea con una pelicula cuyo id no existe!!
-        //y enviar un error de bad request. Luego si existe ahi si hacer el get y setearle la nueva lista de personajes.Esto
-        //hacerlo primero entonces!!
-        Pelicula peliAsociada=ControladoraPelicula.getListaPelis().
-                stream().filter(peli->peli.getId()==perso.getPelicula().getId()).findAny().get();
-        //Asociarle los personajes de la pelicula nada massss
+        //asociar este personaje a la pelicula. La pelicula no se entero de este personaje todavia:
+        //Setearle a la pelicula su lista de personajes con el nuevo personaje
+        Pelicula peliAsociada=oPeliAsociada.get();
         List<Personaje> listaPer=this.buscarPersoByPeli(peliAsociada);
         peliAsociada.setListaPersonajes(listaPer);
         return ResponseEntity.status(HttpStatus.CREATED).body(perso);
