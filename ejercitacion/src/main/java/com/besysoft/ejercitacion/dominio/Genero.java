@@ -1,6 +1,5 @@
 package com.besysoft.ejercitacion.dominio;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Genero {
