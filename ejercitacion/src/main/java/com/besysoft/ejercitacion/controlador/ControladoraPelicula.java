@@ -3,16 +3,14 @@ package com.besysoft.ejercitacion.controlador;
 import com.besysoft.ejercitacion.Test;
 import com.besysoft.ejercitacion.dominio.Genero;
 import com.besysoft.ejercitacion.dominio.Pelicula;
+import com.besysoft.ejercitacion.dominio.Personaje;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -108,5 +106,53 @@ public class ControladoraPelicula {
         this.listaPelis.add(peli);
         this.setListaPelis(this.listaPelis);
         return ResponseEntity.status(HttpStatus.CREATED).body(peli);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> modiPelicula(@RequestBody Pelicula peli,
+                                            @PathVariable int id){
+        Optional<Pelicula> oPeli=this.getListaPelis()
+                                .stream()
+                                .filter(pel->pel.getId()==id)
+                                .findAny();
+        if(!oPeli.isPresent()) {
+            mensajeBody.put("Success", Boolean.FALSE);
+            mensajeBody.put("data", String.format("La pelicula con id %d ingresado no existe", id));
+            return ResponseEntity
+                    .badRequest()
+                    .body(mensajeBody);
+        }
+        if(!this.existePersonaje(peli)){
+            mensajeBody.put("Success", Boolean.FALSE);
+            mensajeBody.put("data", "Algun personaje ingresado no existe");
+            return ResponseEntity
+                    .badRequest()
+                    .body(mensajeBody);
+        }
+        this.getListaPelis().forEach(pel->{
+            if(pel.getId()==id) {
+                pel.setTitulo(peli.getTitulo());
+                pel.setFechaCreacion(peli.getFechaCreacion());
+                pel.setCalificacion(peli.getCalificacion());
+                pel.setListaPersonajes(peli.getListaPersonajes());
+            }
+        });
+        mensajeBody.put("Success",Boolean.TRUE);
+        mensajeBody.put("data",this.getListaPelis().get(id-1));
+        return ResponseEntity.ok(mensajeBody);
+    }
+    private boolean existePersonaje(Pelicula peli){
+        //Si no envie ninguno en la peli, esto dara true
+        boolean existe=peli.getListaPersonajes().size()==0;
+        List<Personaje> listaPerso=ControladoraPersonaje.getListaPerso();
+        for (Personaje per: peli.getListaPersonajes()){
+            Optional<Personaje> oPerso = listaPerso.stream()
+                    .filter(perso -> perso.getId() == per.getId())
+                    .findAny();
+            if(oPerso.isPresent()){
+                existe=true;
+            }
+        }
+        return existe;
     }
 }
