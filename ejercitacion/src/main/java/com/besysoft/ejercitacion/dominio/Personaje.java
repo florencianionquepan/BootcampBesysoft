@@ -75,10 +75,6 @@ public class Personaje {
     public String toString() {
         return "Personaje{" +
                 "nombre='" + nombre + '\'' +
-                ", edad=" + edad +
-                ", peso=" + peso +
-                ", historia='" + historia + '\'' +
-                ", pelicula=" + pelicula +
                 '}';
     }
 }
