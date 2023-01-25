@@ -18,9 +18,9 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/peliculas")
 public class ControladoraPelicula {
-    public List<Pelicula> listaPelis=Test.getListaPelis();
-    public List<Genero> listaGeneros=Test.getListaGeneros();
-    public List<Pelicula> getListaPelis() {
+    public static List<Pelicula> listaPelis=Test.getListaPelis();
+    public static List<Genero> listaGeneros=Test.getListaGeneros();
+    public static List<Pelicula> getListaPelis() {
         return listaPelis;
     }
 
