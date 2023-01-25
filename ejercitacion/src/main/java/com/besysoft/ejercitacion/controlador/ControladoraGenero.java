@@ -35,14 +35,6 @@ public class ControladoraGenero {
                     .badRequest()
                     .body(mensajeBody);
         }
-        List<Pelicula> listaPelis=ControladoraPelicula.getListaPelis();
-        //Se que existe, la que sea necesito sus personajes y setearselos a la peli del genero nuevo
-        for (Pelicula peli : genero.getListaPelis()) {
-            Pelicula oPeliAsociada = listaPelis.stream()
-                                                .filter(p -> p.getId() == peli.getId())
-                                                .findAny().get();
-            peli.setListaPersonajes(oPeliAsociada.getListaPersonajes());
-        }
         genero.setId(this.listaGeneros.size()+1);
         this.getListaGeneros().add(genero);
         this.setListaGeneros(listaGeneros);
@@ -58,8 +50,10 @@ public class ControladoraGenero {
     @PutMapping("/{id}")
     public ResponseEntity<?> modiGenero(@RequestBody Genero genero,
                                          @PathVariable int id){
-        Optional<Genero> oGenero=this.getListaGeneros().stream()
-                                .filter(gen->gen.getId()==id).findAny();
+        Optional<Genero> oGenero=this.getListaGeneros()
+                                .stream()
+                                .filter(gen->gen.getId()==id)
+                                .findAny();
         if(!oGenero.isPresent()) {
             mensajeBody.put("Success", Boolean.FALSE);
             mensajeBody.put("data", String.format("El genero con id %d ingresado no existe", id));
@@ -74,7 +68,6 @@ public class ControladoraGenero {
                     .badRequest()
                     .body(mensajeBody);
         }
-
         this.getListaGeneros().forEach(gen->{
             if(gen.getId()==id) {
                 gen.setNombre(genero.getNombre());
@@ -95,8 +88,8 @@ public class ControladoraGenero {
         Optional<Pelicula> oPeliAs = listaPelis.stream()
                                             .filter(p -> p.getId() == peli.getId())
                                             .findAny();
-            //Aca deberia chequear que el objeto sea el mismo no solo el titulo (y su id) pero con el equals da falso
-            if(oPeliAs.isPresent() && oPeliAs.get().getTitulo().equals(peli.getTitulo())){
+            //System.out.println(oPeliAs.get().equals(peli)); Esto me da falso
+            if(oPeliAs.isPresent()){
                 existe=true;
             }
         }
