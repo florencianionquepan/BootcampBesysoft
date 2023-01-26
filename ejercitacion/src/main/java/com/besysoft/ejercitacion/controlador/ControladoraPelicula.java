@@ -103,6 +103,7 @@ public class ControladoraPelicula {
     @PostMapping
     public ResponseEntity<?> altaPelicula(@RequestBody Pelicula peli){
         peli.setId(this.listaPelis.size()+1);
+        removerPersoDeOtraPeli(peli);
         this.listaPelis.add(peli);
         this.setListaPelis(this.listaPelis);
         return ResponseEntity.status(HttpStatus.CREATED).body(peli);
@@ -129,6 +130,8 @@ public class ControladoraPelicula {
                     .badRequest()
                     .body(mensajeBody);
         }
+        peli.setId(id);
+        removerPersoDeOtraPeli(peli);
         this.getListaPelis().forEach(pel->{
             if(pel.getId()==id) {
                 pel.setTitulo(peli.getTitulo());
@@ -166,4 +169,39 @@ public class ControladoraPelicula {
         return removido && agregado;
     }
 
+    private void removerPersoDeOtraPeli(Pelicula peliMod){
+        List <Personaje> listaPersoTrae=peliMod.getListaPersonajes();
+        for(Personaje per:listaPersoTrae){
+            setearPelicula(per);
+        }
+        List <Personaje> listaPersoOtraPeli=listaPersoTrae.stream()
+                                        .filter(perso->perso.getPelicula().getId()!=peliMod.getId())
+                                        .collect(Collectors.toList());
+        for(Personaje per:listaPersoOtraPeli){
+            Pelicula peliAnterior=per.getPelicula();
+            //hecho=peliAnterior.getListaPersonajes().remove(per);
+            //actualizo lista de pelis
+            peliAnterior.setListaPersonajes(peliAnterior.getListaPersonajes()
+                                            .stream().filter(perso->perso.getId()!=per.getId())
+                                            .collect(Collectors.toList()));
+            //System.out.println(peliAnterior);
+            ControladoraPersonaje controlPerso=new ControladoraPersonaje();
+            controlPerso.actualizarPerso(per,peliMod);
+        }
+    }
+
+    private static void setearPersonajes(Pelicula peli){
+        Optional <List<Personaje>> oLista=listaPelis.stream().filter(pel->pel.getId()==peli.getId())
+                .map(Pelicula::getListaPersonajes).findAny();
+        if(oLista.isPresent()){
+            peli.setListaPersonajes(oLista.get());
+        }
+    }
+
+    private void setearPelicula(Personaje per){
+        Optional <Pelicula> oPeliAsociada=ControladoraPersonaje.getListaPerso().stream()
+                .filter(perso->perso.getId()==per.getId())
+                .map(Personaje::getPelicula).findAny();
+        oPeliAsociada.ifPresent(per::setPelicula);
+    }
 }
