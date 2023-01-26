@@ -155,4 +155,15 @@ public class ControladoraPelicula {
         }
         return existe;
     }
+
+    public static boolean modificarPersonaje(Pelicula peliAnt,Pelicula peliActual,
+                                             Personaje perAnt, Personaje perNuevo){
+        setearPersonajes(peliAnt);
+        setearPersonajes(peliActual);
+        boolean removido=peliAnt.getListaPersonajes().remove(perAnt);
+        perNuevo.setId(perAnt.getId());
+        boolean agregado=peliActual.getListaPersonajes().add(perNuevo);
+        return removido && agregado;
+    }
+
 }

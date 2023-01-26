@@ -123,7 +123,11 @@ public class ControladoraPersonaje {
                 per.setEdad(perso.getEdad());
                 per.setHistoria(perso.getHistoria());
                 per.setPeso(perso.getPeso());
-                per.setPelicula(perso.getPelicula());
+                Pelicula peliAnterior=per.getPelicula();
+                Pelicula peliActual=perso.getPelicula();
+                per.setPelicula(peliActual);
+                //y a la pelicula le modifico el personaje
+                ControladoraPelicula.modificarPersonaje(peliAnterior,peliActual,per,perso);
             }
         });
         mensajeBody.put("Success",Boolean.TRUE);
@@ -142,10 +146,6 @@ public class ControladoraPersonaje {
             }
         return existe;
     }
-
-    //Si al crear un persnoaje me equivoque y le puse otra pelicula
-    //Tengp que modificar el personaje o modificar la pelicula??
-    //Voy a modificar el personaje-
 
 
 }
