@@ -1,6 +1,7 @@
 package com.besysoft.ejercitacion.controlador;
 
 import com.besysoft.ejercitacion.Test;
+import com.besysoft.ejercitacion.dominio.Genero;
 import com.besysoft.ejercitacion.dominio.Pelicula;
 import com.besysoft.ejercitacion.dominio.Personaje;
 import org.springframework.http.HttpStatus;
@@ -95,6 +96,56 @@ public class ControladoraPersonaje {
         return ResponseEntity.status(HttpStatus.CREATED).body(perso);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> modiPerso(@RequestBody Personaje perso,
+                                       @PathVariable int id){
+        Optional<Personaje> oPerso=this.getListaPerso()
+                                    .stream()
+                                    .filter(pel->pel.getId()==id)
+                                    .findAny();
+        if(oPerso.isEmpty()) {
+            mensajeBody.put("Success", Boolean.FALSE);
+            mensajeBody.put("data", String.format("El personaje con id %d ingresado no existe", id));
+            return ResponseEntity
+                    .badRequest()
+                    .body(mensajeBody);
+        }
+        if(!existePeli(perso)) {
+            mensajeBody.put("Success", Boolean.FALSE);
+            mensajeBody.put("data", String.format("La pelicula con id %d no existe", perso.getPelicula().getId()));
+            return ResponseEntity
+                    .badRequest()
+                    .body(mensajeBody);
+        }
+        this.getListaPerso().forEach(per->{
+            if(per.getId()==id) {
+                per.setNombre(perso.getNombre());
+                per.setEdad(perso.getEdad());
+                per.setHistoria(perso.getHistoria());
+                per.setPeso(perso.getPeso());
+                per.setPelicula(perso.getPelicula());
+            }
+        });
+        mensajeBody.put("Success",Boolean.TRUE);
+        mensajeBody.put("data",this.getListaPerso().get(id-1));
+        return ResponseEntity.ok(mensajeBody);
+    }
+
+    private boolean existePeli(Personaje perso){
+        boolean existe=false;
+        List<Pelicula> listaPelis=ControladoraPelicula.getListaPelis();
+        Optional<Pelicula> oPeliAs = listaPelis.stream()
+                                        .filter(p -> p.getId() == perso.getPelicula().getId())
+                                        .findAny();
+            if(oPeliAs.isPresent()){
+                existe=true;
+            }
+        return existe;
+    }
+
+    //Si al crear un persnoaje me equivoque y le puse otra pelicula
+    //Tengp que modificar el personaje o modificar la pelicula??
+    //Voy a modificar el personaje-
 
 
 }
