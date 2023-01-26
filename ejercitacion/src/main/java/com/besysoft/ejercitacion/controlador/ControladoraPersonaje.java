@@ -147,5 +147,13 @@ public class ControladoraPersonaje {
         return existe;
     }
 
+    public void actualizarPerso(Personaje per,Pelicula peliNueva){
+        List <Personaje> persoOtros=getListaPerso().stream().filter(perso->perso.getId()!=per.getId())
+                                    .collect(Collectors.toList());
+        per.setPelicula(peliNueva);
+        persoOtros.add(per);
+        this.setListaPerso(persoOtros);
+    }
+
 
 }
