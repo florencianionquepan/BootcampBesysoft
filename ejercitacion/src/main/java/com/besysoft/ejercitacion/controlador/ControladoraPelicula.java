@@ -108,6 +108,8 @@ public class ControladoraPelicula {
     @PostMapping
     public ResponseEntity<?> altaPelicula(@RequestBody Pelicula peli){
         peli.setId(getListaPelis().size()+1);
+        if(!ControladoraPersonaje.sonPersoCorrectos(peli.getListaPersonajes())){
+            return this.notSuccessResponse("Algun personaje ingresado no existe",0);
         }
         listaPelis.add(peli);
         //setListaPelis(listaPelis);
@@ -122,13 +124,9 @@ public class ControladoraPelicula {
                                 .filter(pel->pel.getId()==id)
                                 .findAny();
         if(oPeli.isEmpty()) {
-            mensajeBody.put("Success", Boolean.FALSE);
-            mensajeBody.put("data", String.format("La pelicula con id %d ingresado no existe", id));
-            return ResponseEntity
-                    .badRequest()
-                    .body(mensajeBody);
+            this.notSuccessResponse("La pelicula con id %d ingresado no existe", id);
         }
-        if(!this.existePersonaje(peli)){
+        if(!ControladoraPersonaje.sonPersoCorrectos(peli.getListaPersonajes())){
             return this.notSuccessResponse("Algun personaje ingresado no existe",0);
         }
         getListaPelis().forEach(pel->{
@@ -198,7 +196,7 @@ public class ControladoraPelicula {
     }
 
     public static boolean sonPelisCorrectas(List<Pelicula> pelisIn){
-        boolean sonCorrectas=pelisIn.size()==0;
+        boolean sonCorrectas;
         int contadorCorrectas=0;
         for(Pelicula peliIn:pelisIn){
             Optional <Pelicula> oPeliAsociada=getListaPelis().stream()
@@ -210,6 +208,7 @@ public class ControladoraPelicula {
             aux.setListaPersonajes(null);
             contadorCorrectas=aux.equals(peliIn)?contadorCorrectas+1:contadorCorrectas;
         }
+        sonCorrectas=contadorCorrectas==pelisIn.size();
         return sonCorrectas;
     }
 }
