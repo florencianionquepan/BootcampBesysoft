@@ -1,6 +1,6 @@
 package com.besysoft.ejercitacion.controlador;
 
-import com.besysoft.ejercitacion.Test;
+import com.besysoft.ejercitacion.utilidades.Test;
 import com.besysoft.ejercitacion.dominio.Genero;
 import com.besysoft.ejercitacion.dominio.Pelicula;
 import org.springframework.http.HttpStatus;
@@ -21,20 +21,20 @@ public class ControladoraGenero {
         return listaGeneros;
     }
     public void setListaGeneros(List<Genero> listaGeneros) {
-        this.listaGeneros = listaGeneros;
+        ControladoraGenero.listaGeneros = listaGeneros;
     }
 
     @PostMapping
     public ResponseEntity<?> altaGenero(@RequestBody Genero genero){
         //chequear PRIMERO que las peliculas asociadas existan
-        if(!existePeli(genero)){
+        if(!ControladoraPelicula.sonPelisCorrectas(genero.getListaPelis())){
             mensajeBody.put("Success", Boolean.FALSE);
-            mensajeBody.put("data", "Alguna pelicula ingresada no existe");
+            mensajeBody.put("data", "Alguna pelicula ingresada no existe o no es correcta");
             return ResponseEntity
                     .badRequest()
                     .body(mensajeBody);
         }
-        genero.setId(this.listaGeneros.size()+1);
+        genero.setId(getListaGeneros().size()+1);
         this.getListaGeneros().add(genero);
         this.setListaGeneros(listaGeneros);
         return ResponseEntity.status(HttpStatus.CREATED).body(genero);
@@ -53,14 +53,14 @@ public class ControladoraGenero {
                                 .stream()
                                 .filter(gen->gen.getId()==id)
                                 .findAny();
-        if(!oGenero.isPresent()) {
+        if(oGenero.isEmpty()) {
             mensajeBody.put("Success", Boolean.FALSE);
             mensajeBody.put("data", String.format("El genero con id %d ingresado no existe", id));
             return ResponseEntity
                     .badRequest()
                     .body(mensajeBody);
         }
-        if(!this.existePeli(genero)){
+        if(!ControladoraPelicula.sonPelisCorrectas(genero.getListaPelis())){
             mensajeBody.put("Success", Boolean.FALSE);
             mensajeBody.put("data", "Alguna pelicula ingresada no existe");
             return ResponseEntity
