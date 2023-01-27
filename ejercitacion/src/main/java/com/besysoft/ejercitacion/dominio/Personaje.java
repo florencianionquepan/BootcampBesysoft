@@ -1,6 +1,8 @@
 package com.besysoft.ejercitacion.dominio;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import java.util.ArrayList;
+
+import java.util.List;
+import java.util.Objects;
 
 public class Personaje {
     private int id;
@@ -9,19 +11,18 @@ public class Personaje {
     private double peso;
     private String historia;
     @JsonIgnoreProperties(value="listaPersonajes")
-    private Pelicula pelicula;
+    private List<Pelicula> listaPeliculas;
 
     public Personaje() {
     }
 
-
-    public Personaje(int id, String nombre, int edad, double peso, String historia, Pelicula pelicula) {
+    public Personaje(int id, String nombre, int edad, double peso, String historia, List<Pelicula> listaPeliculas) {
         this.id = id;
         this.nombre = nombre;
         this.edad = edad;
         this.peso = peso;
         this.historia = historia;
-        this.pelicula = pelicula;
+        this.listaPeliculas = listaPeliculas;
     }
 
     public int getId() {
@@ -63,12 +64,12 @@ public class Personaje {
         this.historia = historia;
     }
 
-    public Pelicula getPelicula() {
-        return pelicula;
+    public List<Pelicula> getListaPeliculas() {
+        return listaPeliculas;
     }
 
-    public void setPelicula(Pelicula pelicula) {
-        this.pelicula = pelicula;
+    public void setListaPeliculas(List<Pelicula> listaPeliculas) {
+        this.listaPeliculas = listaPeliculas;
     }
 
     @Override
@@ -76,5 +77,18 @@ public class Personaje {
         return "Personaje{" +
                 "nombre='" + nombre + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Personaje)) return false;
+        Personaje personaje = (Personaje) o;
+        return getId() == personaje.getId() && getEdad() == personaje.getEdad() && Double.compare(personaje.getPeso(), getPeso()) == 0 && Objects.equals(getNombre(), personaje.getNombre()) && Objects.equals(getHistoria(), personaje.getHistoria()) && Objects.equals(getListaPeliculas(), personaje.getListaPeliculas());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getNombre(), getEdad(), getPeso(), getHistoria(), getListaPeliculas());
     }
 }
