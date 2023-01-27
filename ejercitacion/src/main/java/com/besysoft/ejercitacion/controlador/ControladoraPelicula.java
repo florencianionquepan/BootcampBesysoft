@@ -100,8 +100,8 @@ public class ControladoraPelicula {
             return this.notSuccessResponse("Rango no válido",0);
         }
         List<Pelicula> listaPelis=this.listaPelis.stream()
-                .filter(pelicula -> pelicula.getCalificacion()<hasta
-                        && pelicula.getCalificacion()>desde)
+                .filter(pelicula -> pelicula.getCalificacion()<=hasta
+                        && pelicula.getCalificacion()>=desde)
                 .collect(Collectors.toList());
         return this.successResponse(listaPelis);
     }
