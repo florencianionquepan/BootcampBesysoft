@@ -1,10 +1,13 @@
 package com.besysoft.ejercitacion.dominio;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.List;
 
 public class Genero {
     private int id;
     private String nombre;
+    @JsonIgnoreProperties(value="listaPersonajes")
     private List <Pelicula> listaPelis;
 
     public Genero() {
