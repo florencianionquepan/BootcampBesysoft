@@ -19,7 +19,7 @@ public class ControladoraPersonaje {
         return listaPerso;
     }
     public void setListaPerso(List<Personaje> listaPerso) {
-        this.listaPerso = listaPerso;
+        ControladoraPersonaje.listaPerso = listaPerso;
     }
     public Map<String,Object> mensajeBody= new HashMap<>();
 
@@ -30,19 +30,19 @@ public class ControladoraPersonaje {
     }
 
     private List<Personaje> buscarPersoByPeli(Pelicula peli){
-        List <Personaje> listaPerso=this.listaPerso.stream()
+        List <Personaje> listaPerson=getListaPerso().stream()
                         .filter(perso->perso.getPelicula().getId()==peli.getId())
                         .collect(Collectors.toList());
-        return listaPerso;
+        return listaPerson;
     }
     @GetMapping
     public ResponseEntity<?> verPerso(){
-        return this.successResponse(this.listaPerso);
+        return this.successResponse(getListaPerso());
     }
 
     @GetMapping("/{nombre}")
     public ResponseEntity<?> buscarPersoByNombre(@PathVariable String nombre){
-        List<Personaje> listaPerso=this.listaPerso.stream()
+        List<Personaje> listaPerso=getListaPerso().stream()
                                         .filter(personaje -> personaje.getNombre().equals(nombre))
                                         .collect(Collectors.toList());
         return this.successResponse(listaPerso);
@@ -50,7 +50,7 @@ public class ControladoraPersonaje {
 
     @GetMapping("/edad/{edad}")
     public ResponseEntity<?> buscarPersoByEdad(@PathVariable int edad){
-        List<Personaje> listaPerso=this.listaPerso.stream()
+        List<Personaje> listaPerso=getListaPerso().stream()
                 .filter(personaje -> personaje.getEdad()==edad)
                 .collect(Collectors.toList());
         return this.successResponse(listaPerso);
@@ -59,14 +59,14 @@ public class ControladoraPersonaje {
     @GetMapping("/edad")
     public ResponseEntity<?> buscarPersoRangoEdad(@RequestParam int desde,
                                                  @RequestParam int hasta){
-        if(desde>hasta || hasta<desde){
+        if(desde>hasta){
             mensajeBody.put("Success",Boolean.FALSE);
             mensajeBody.put("data","Rango de edad no válido");
             return ResponseEntity
                     .badRequest()
                     .body(mensajeBody);
         }
-        List<Personaje> listaPerso=this.listaPerso.stream()
+        List<Personaje> listaPerso=getListaPerso().stream()
                 .filter(per -> per.getEdad()<hasta && per.getEdad()>desde)
                 .collect(Collectors.toList());
         return this.successResponse(listaPerso);
@@ -78,16 +78,16 @@ public class ControladoraPersonaje {
         //Primero chequeo que la pelicula asociada al personaje exista:
         Optional <Pelicula> oPeliAsociada=ControladoraPelicula.getListaPelis().
                 stream().filter(peli->peli.getId()==perso.getPelicula().getId()).findAny();
-        if(!oPeliAsociada.isPresent()){
+        if(oPeliAsociada.isEmpty()){
             mensajeBody.put("Success",Boolean.FALSE);
             mensajeBody.put("data","La pelicula asociada no existe");
             return ResponseEntity
                     .badRequest()
                     .body(mensajeBody);
         }
-        perso.setId(this.listaPerso.size()+1);
-        this.listaPerso.add(perso);
-        this.setListaPerso(this.listaPerso);
+        perso.setId(getListaPerso().size()+1);
+        getListaPerso().add(perso);
+        this.setListaPerso(getListaPerso());
         //asociar este personaje a la pelicula. La pelicula no se entero de este personaje todavia:
         //Setearle a la pelicula su lista de personajes con el nuevo personaje
         Pelicula peliAsociada=oPeliAsociada.get();
@@ -99,7 +99,7 @@ public class ControladoraPersonaje {
     @PutMapping("/{id}")
     public ResponseEntity<?> modiPerso(@RequestBody Personaje perso,
                                        @PathVariable int id){
-        Optional<Personaje> oPerso=this.getListaPerso()
+        Optional<Personaje> oPerso=getListaPerso()
                                     .stream()
                                     .filter(pel->pel.getId()==id)
                                     .findAny();
@@ -117,7 +117,7 @@ public class ControladoraPersonaje {
                     .badRequest()
                     .body(mensajeBody);
         }
-        this.getListaPerso().forEach(per->{
+        getListaPerso().forEach(per->{
             if(per.getId()==id) {
                 per.setNombre(perso.getNombre());
                 per.setEdad(perso.getEdad());
@@ -131,7 +131,7 @@ public class ControladoraPersonaje {
             }
         });
         mensajeBody.put("Success",Boolean.TRUE);
-        mensajeBody.put("data",this.getListaPerso().get(id-1));
+        mensajeBody.put("data",getListaPerso().get(id-1));
         return ResponseEntity.ok(mensajeBody);
     }
 
