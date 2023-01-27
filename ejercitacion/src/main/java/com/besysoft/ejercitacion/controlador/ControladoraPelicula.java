@@ -41,6 +41,15 @@ public class ControladoraPelicula {
         mensajeBody.put("data",lista);
         return ResponseEntity.ok(mensajeBody);
     }
+
+    private ResponseEntity<?> notSuccessResponse(String mensaje,int id){
+        mensajeBody.put("Success",Boolean.FALSE);
+        mensajeBody.put("data", String.format(mensaje,id));
+        return ResponseEntity
+                .badRequest()
+                .body(mensajeBody);
+    }
+
     @GetMapping
     public ResponseEntity<?> verPelis(){
         return this.successResponse(this.listaPelis);
@@ -87,12 +96,8 @@ public class ControladoraPelicula {
     @GetMapping("/calificacion")
     public ResponseEntity<?> buscarPeliCalificacion(@RequestParam int desde,
                                            @RequestParam int hasta){
-        if(desde>hasta || hasta<desde || desde<1 || hasta>5){
-            mensajeBody.put("Success",Boolean.FALSE);
-            mensajeBody.put("data","Rango no válido");
-            return ResponseEntity
-                    .badRequest()
-                    .body(mensajeBody);
+        if(desde>hasta || desde<1 || hasta>5){
+            return this.notSuccessResponse("Rango no válido",0);
         }
         List<Pelicula> listaPelis=this.listaPelis.stream()
                 .filter(pelicula -> pelicula.getCalificacion()<hasta
@@ -124,11 +129,8 @@ public class ControladoraPelicula {
                     .body(mensajeBody);
         }
         if(!this.existePersonaje(peli)){
-            mensajeBody.put("Success", Boolean.FALSE);
-            mensajeBody.put("data", "Algun personaje ingresado no existe");
-            return ResponseEntity
-                    .badRequest()
-                    .body(mensajeBody);
+            return this.notSuccessResponse("Algun personaje ingresado no existe",0);
+        }
         }
         peli.setId(id);
         removerPersoDeOtraPeli(peli);
