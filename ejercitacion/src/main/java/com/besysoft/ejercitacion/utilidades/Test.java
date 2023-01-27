@@ -1,4 +1,4 @@
-package com.besysoft.ejercitacion;
+package com.besysoft.ejercitacion.utilidades;
 import com.besysoft.ejercitacion.dominio.Genero;
 import com.besysoft.ejercitacion.dominio.Pelicula;
 import com.besysoft.ejercitacion.dominio.Personaje;
@@ -73,7 +73,7 @@ public class Test {
         Collections.addAll(listaPerso,persoCoco1,persoCoco2,persoUp1,persoUp2,persoPrimer1,persoPrimer2);
         this.setListaPerso(listaPerso);
 
-        //Asocio los personajes a cada lista:
+        //Asocio los personajes a cada lista: Aca editaria la pelicula
         listaPersCoco.add(persoCoco1);
         listaPersCoco.add(persoCoco2);
         listaPersUp.add(persoUp1);

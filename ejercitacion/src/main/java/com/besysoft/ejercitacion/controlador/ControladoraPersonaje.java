@@ -1,7 +1,6 @@
 package com.besysoft.ejercitacion.controlador;
 
-import com.besysoft.ejercitacion.Test;
-import com.besysoft.ejercitacion.dominio.Genero;
+import com.besysoft.ejercitacion.utilidades.Test;
 import com.besysoft.ejercitacion.dominio.Pelicula;
 import com.besysoft.ejercitacion.dominio.Personaje;
 import org.springframework.http.HttpStatus;

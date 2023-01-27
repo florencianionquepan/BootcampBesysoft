@@ -1,6 +1,6 @@
 package com.besysoft.ejercitacion.controlador;
 
-import com.besysoft.ejercitacion.Test;
+import com.besysoft.ejercitacion.utilidades.Test;
 import com.besysoft.ejercitacion.dominio.Genero;
 import com.besysoft.ejercitacion.dominio.Pelicula;
 import com.besysoft.ejercitacion.dominio.Personaje;
@@ -168,6 +168,7 @@ public class ControladoraPelicula {
         setearPersonajes(peliAnt);
         setearPersonajes(peliActual);
         boolean removido=peliAnt.getListaPersonajes().remove(perAnt);
+        System.out.println(peliAnt.getListaPersonajes());
         perNuevo.setId(perAnt.getId());
         boolean agregado=peliActual.getListaPersonajes().add(perNuevo);
         return removido && agregado;
