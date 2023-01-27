@@ -57,7 +57,6 @@ public class ControladoraPelicula {
 
     @GetMapping("/{titulo}")
     public ResponseEntity<?> buscarPeliByTitulo(@PathVariable String titulo){
-
         List<Pelicula> listaPelis=this.listaPelis.stream()
                 .filter(pelicula -> pelicula.getTitulo().equals(titulo))
                 .collect(Collectors.toList());
@@ -80,7 +79,8 @@ public class ControladoraPelicula {
                                             @RequestParam @DateTimeFormat(pattern = "ddMMyyyy") LocalDate hasta){
         if(desde.isAfter(hasta) || hasta.isBefore(desde)){
             mensajeBody.put("Success",Boolean.FALSE);
-            mensajeBody.put("data",String.format("Las fechas desde %tF hasta %tF no conforman un rango válido",desde,hasta));
+            mensajeBody.put("data", String.format("Las fechas desde %tF " +
+                            "hasta %tF no conforman un rango válido",desde,hasta));
             return ResponseEntity
                     .badRequest()
                     .body(mensajeBody);
