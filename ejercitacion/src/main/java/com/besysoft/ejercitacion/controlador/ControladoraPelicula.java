@@ -201,4 +201,20 @@ public class ControladoraPelicula {
                 .map(Personaje::getPelicula).findAny();
         oPeliAsociada.ifPresent(per::setPelicula);
     }
+
+    public static boolean sonPelisCorrectas(List<Pelicula> pelisIn){
+        boolean sonCorrectas=pelisIn.size()==0;
+        int contadorCorrectas=0;
+        for(Pelicula peliIn:pelisIn){
+            Optional <Pelicula> oPeliAsociada=getListaPelis().stream()
+                                        .filter(peli->peli.getId()==peliIn.getId()).findAny();
+            if(oPeliAsociada.isEmpty()){
+                return false;
+            }
+            Pelicula aux = oPeliAsociada.get();
+            aux.setListaPersonajes(null);
+            contadorCorrectas=aux.equals(peliIn)?contadorCorrectas+1:contadorCorrectas;
+        }
+        return sonCorrectas;
+    }
 }
