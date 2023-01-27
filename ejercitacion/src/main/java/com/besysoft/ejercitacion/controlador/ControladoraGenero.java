@@ -78,22 +78,5 @@ public class ControladoraGenero {
             return ResponseEntity.ok(mensajeBody);
     }
 
-    //Chequea si existe peli si es que se envia alguna en la lista del genero
-    //Si la lista esta vacia lo toma como que existe
-    private boolean existePeli(Genero genero){
-        boolean existe=genero.getListaPelis().size()==0;
-        List<Pelicula> listaPelis=ControladoraPelicula.getListaPelis();
-        for (Pelicula peli : genero.getListaPelis()){
-        Optional<Pelicula> oPeliAs = listaPelis.stream()
-                                            .filter(p -> p.getId() == peli.getId())
-                                            .findAny();
-            //System.out.println(oPeliAs.get().equals(peli)); Esto me da falso
-            if(oPeliAs.isPresent()){
-                existe=true;
-            }
-        }
-        return existe;
-    }
-
 
 }
