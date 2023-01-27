@@ -22,8 +22,8 @@ public class ControladoraPelicula {
         return listaPelis;
     }
 
-    public void setListaPelis(List<Pelicula> listaPelis) {
-        this.listaPelis = listaPelis;
+    public static void setListaPelis(List<Pelicula> listaPelis) {
+        ControladoraPelicula.listaPelis = listaPelis;
     }
 
     public List<Genero> getListaGeneros() {
@@ -31,7 +31,7 @@ public class ControladoraPelicula {
     }
 
     public void setListaGeneros(List<Genero> listaGeneros) {
-        this.listaGeneros = listaGeneros;
+        ControladoraPelicula.listaGeneros = listaGeneros;
     }
 
     public Map<String,Object> mensajeBody= new HashMap<>();
@@ -52,12 +52,12 @@ public class ControladoraPelicula {
 
     @GetMapping
     public ResponseEntity<?> verPelis(){
-        return this.successResponse(this.listaPelis);
+        return this.successResponse(getListaPelis());
     }
 
     @GetMapping("/{titulo}")
     public ResponseEntity<?> buscarPeliByTitulo(@PathVariable String titulo){
-        List<Pelicula> listaPelis=this.listaPelis.stream()
+        List<Pelicula> listaPelis=getListaPelis().stream()
                 .filter(pelicula -> pelicula.getTitulo().equals(titulo))
                 .collect(Collectors.toList());
         return this.successResponse(listaPelis);
@@ -65,7 +65,7 @@ public class ControladoraPelicula {
 
     @GetMapping("/genero/{genero}")
     public ResponseEntity<?> buscarPeliByGenero(@PathVariable String genero){
-        List<Genero> listaGeneros=this.listaGeneros;
+        List<Genero> listaGeneros=getListaGeneros();
         List<List<Pelicula>> listaPelis= listaGeneros.stream()
                 .filter(gen->gen.getNombre().equals(genero))
                 .map(Genero::getListaPelis)
@@ -85,7 +85,7 @@ public class ControladoraPelicula {
                     .badRequest()
                     .body(mensajeBody);
         }else {
-            List<Pelicula> listaPelis = this.listaPelis.stream()
+            List<Pelicula> listaPelis = getListaPelis().stream()
                     .filter(pelicula -> pelicula.getFechaCreacion().isAfter(desde)
                             && pelicula.getFechaCreacion().isBefore(hasta))
                     .collect(Collectors.toList());
@@ -99,7 +99,7 @@ public class ControladoraPelicula {
         if(desde>hasta || desde<1 || hasta>5){
             return this.notSuccessResponse("Rango no válido",0);
         }
-        List<Pelicula> listaPelis=this.listaPelis.stream()
+        List<Pelicula> listaPelis=getListaPelis().stream()
                 .filter(pelicula -> pelicula.getCalificacion()<=hasta
                         && pelicula.getCalificacion()>=desde)
                 .collect(Collectors.toList());
@@ -107,23 +107,23 @@ public class ControladoraPelicula {
     }
     @PostMapping
     public ResponseEntity<?> altaPelicula(@RequestBody Pelicula peli){
-        peli.setId(this.listaPelis.size()+1);
+        peli.setId(getListaPelis().size()+1);
         if(this.tienePersoOtraPeli(peli)){
             return this.notSuccessResponse("Algun personaje ingresado ya pertenece a otra pelicula",0);
         }
-        this.listaPelis.add(peli);
-        this.setListaPelis(this.listaPelis);
+        listaPelis.add(peli);
+        //setListaPelis(listaPelis);
         return ResponseEntity.status(HttpStatus.CREATED).body(peli);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> modiPelicula(@RequestBody Pelicula peli,
                                             @PathVariable int id){
-        Optional<Pelicula> oPeli=this.getListaPelis()
+        Optional<Pelicula> oPeli=getListaPelis()
                                 .stream()
                                 .filter(pel->pel.getId()==id)
                                 .findAny();
-        if(!oPeli.isPresent()) {
+        if(oPeli.isEmpty()) {
             mensajeBody.put("Success", Boolean.FALSE);
             mensajeBody.put("data", String.format("La pelicula con id %d ingresado no existe", id));
             return ResponseEntity
@@ -136,7 +136,7 @@ public class ControladoraPelicula {
         if(this.tienePersoOtraPeli(peli)){
             return this.notSuccessResponse("Algun personaje ingresado ya pertenece a otra pelicula",0);
         }
-        this.getListaPelis().forEach(pel->{
+        getListaPelis().forEach(pel->{
             if(pel.getId()==id) {
                 pel.setTitulo(peli.getTitulo());
                 pel.setFechaCreacion(peli.getFechaCreacion());
@@ -145,7 +145,7 @@ public class ControladoraPelicula {
             }
         });
         mensajeBody.put("Success",Boolean.TRUE);
-        mensajeBody.put("data",this.getListaPelis().get(id-1));
+        mensajeBody.put("data",getListaPelis().get(id-1));
         return ResponseEntity.ok(mensajeBody);
     }
     private boolean existePersonaje(Pelicula peli){
