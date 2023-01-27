@@ -108,8 +108,6 @@ public class ControladoraPelicula {
     @PostMapping
     public ResponseEntity<?> altaPelicula(@RequestBody Pelicula peli){
         peli.setId(getListaPelis().size()+1);
-        if(this.tienePersoOtraPeli(peli)){
-            return this.notSuccessResponse("Algun personaje ingresado ya pertenece a otra pelicula",0);
         }
         listaPelis.add(peli);
         //setListaPelis(listaPelis);
@@ -132,9 +130,6 @@ public class ControladoraPelicula {
         }
         if(!this.existePersonaje(peli)){
             return this.notSuccessResponse("Algun personaje ingresado no existe",0);
-        }
-        if(this.tienePersoOtraPeli(peli)){
-            return this.notSuccessResponse("Algun personaje ingresado ya pertenece a otra pelicula",0);
         }
         getListaPelis().forEach(pel->{
             if(pel.getId()==id) {
