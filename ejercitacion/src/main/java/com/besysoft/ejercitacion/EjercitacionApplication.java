@@ -1,13 +1,8 @@
 package com.besysoft.ejercitacion;
 
-import com.besysoft.ejercitacion.dominio.Genero;
-import com.besysoft.ejercitacion.dominio.Pelicula;
-import com.besysoft.ejercitacion.dominio.Personaje;
-import java.time.LocalDate;
+import com.besysoft.ejercitacion.utilidades.Test;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.util.ArrayList;
 
 @SpringBootApplication
 public class EjercitacionApplication {
