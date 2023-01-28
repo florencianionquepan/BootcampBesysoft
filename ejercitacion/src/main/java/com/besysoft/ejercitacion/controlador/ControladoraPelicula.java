@@ -108,25 +108,22 @@ public class ControladoraPelicula {
     @PostMapping
     public ResponseEntity<?> altaPelicula(@RequestBody Pelicula peli){
         peli.setId(getListaPelis().size()+1);
-        if(!ControladoraPersonaje.sonPersoCorrectos(peli.getListaPersonajes())){
+        ControladoraPersonaje conPer=new ControladoraPersonaje();
+        if(!conPer.sonPersoCorrectos(peli.getListaPersonajes())){
             return this.notSuccessResponse("Algun personaje ingresado no existe",0);
         }
         listaPelis.add(peli);
-        //setListaPelis(listaPelis);
         return ResponseEntity.status(HttpStatus.CREATED).body(peli);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> modiPelicula(@RequestBody Pelicula peli,
                                             @PathVariable int id){
-        Optional<Pelicula> oPeli=getListaPelis()
-                                .stream()
-                                .filter(pel->pel.getId()==id)
-                                .findAny();
-        if(oPeli.isEmpty()) {
+        if(!this.existePeli(id)) {
             this.notSuccessResponse("La pelicula con id %d ingresado no existe", id);
         }
-        if(!ControladoraPersonaje.sonPersoCorrectos(peli.getListaPersonajes())){
+        ControladoraPersonaje conPer=new ControladoraPersonaje();
+        if(!conPer.sonPersoCorrectos(peli.getListaPersonajes())){
             return this.notSuccessResponse("Algun personaje ingresado no existe",0);
         }
         getListaPelis().forEach(pel->{
@@ -137,24 +134,12 @@ public class ControladoraPelicula {
                 pel.setListaPersonajes(peli.getListaPersonajes());
             }
         });
+        //Ahora al personaje nuevo o que se borro hay que avisarle que modifique sus peliculas
         mensajeBody.put("Success",Boolean.TRUE);
         mensajeBody.put("data",getListaPelis().get(id-1));
         return ResponseEntity.ok(mensajeBody);
     }
-    private boolean existePersonaje(Pelicula peli){
-        //Si no envie ninguno en la peli, esto dara true
-        boolean existe=peli.getListaPersonajes().size()==0;
-        List<Personaje> listaPerso=ControladoraPersonaje.getListaPerso();
-        for (Personaje per: peli.getListaPersonajes()){
-            Optional<Personaje> oPerso = listaPerso.stream()
-                    .filter(perso -> perso.getId() == per.getId())
-                    .findAny();
-            if(oPerso.isPresent()){
-                existe=true;
-            }
-        }
-        return existe;
-    }
+
 
     public static boolean modificarPersonaje(Pelicula peliAnt,Pelicula peliActual,
                                              Personaje perAnt, Personaje perNuevo){
@@ -165,19 +150,6 @@ public class ControladoraPelicula {
         perNuevo.setId(perAnt.getId());
         boolean agregado=peliActual.getListaPersonajes().add(perNuevo);
         return removido && agregado;
-    }
-
-    private boolean tienePersoOtraPeli(Pelicula peliMod){
-        boolean traePersoOtraPeli=true;
-        List <Personaje> listaPersoTrae=peliMod.getListaPersonajes();
-        for(Personaje per:listaPersoTrae){
-            setearPelicula(per);
-        }
-        List <Personaje> listaPersoOtraPeli=listaPersoTrae.stream()
-                .filter(perso->perso.getPelicula().getId()!=peliMod.getId())
-                .collect(Collectors.toList());
-        traePersoOtraPeli=listaPersoOtraPeli.size()>0;
-        return traePersoOtraPeli;
     }
 
     private static void setearPersonajes(Pelicula peli){
@@ -210,5 +182,15 @@ public class ControladoraPelicula {
         }
         sonCorrectas=contadorCorrectas==pelisIn.size();
         return sonCorrectas;
+    }
+
+    public boolean existePeli(int id){
+        boolean existe;
+        Optional<Pelicula> oPeli=getListaPelis()
+                                    .stream()
+                                    .filter(pel->pel.getId()==id)
+                                    .findAny();
+        existe=oPeli.isPresent();
+        return existe;
     }
 }
