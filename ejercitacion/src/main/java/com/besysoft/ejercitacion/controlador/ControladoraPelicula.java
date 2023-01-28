@@ -160,12 +160,14 @@ public class ControladoraPelicula {
         }
     }
 
+    /*
     private void setearPelicula(Personaje per){
         Optional <Pelicula> oPeliAsociada=ControladoraPersonaje.getListaPerso().stream()
                 .filter(perso->perso.getId()==per.getId())
                 .map(Personaje::getPelicula).findAny();
         oPeliAsociada.ifPresent(per::setPelicula);
     }
+     */
 
     public static boolean sonPelisCorrectas(List<Pelicula> pelisIn){
         boolean sonCorrectas;
@@ -193,4 +195,32 @@ public class ControladoraPelicula {
         existe=oPeli.isPresent();
         return existe;
     }
+
+    public static void addPersoPeliculas(Personaje perso) {
+        for(Pelicula peli: perso.getListaPeliculas()){
+            List<Personaje> listaPerso=getListaPelis().stream()
+                    .filter(pel->pel.getId()==peli.getId())
+                    .map(Pelicula::getListaPersonajes).findAny().get();
+            listaPerso.add(perso);
+            peli.setListaPersonajes(listaPerso);
+        }
+    }
+
+    public static void removePersoPeliculas(Personaje perAnterior){
+        for(Pelicula peli: perAnterior.getListaPeliculas()){
+            List<Personaje> listaPerso=getListaPelis().stream()
+                    .filter(pel->pel.getId()==peli.getId())
+                    .map(Pelicula::getListaPersonajes).findAny().get();
+            listaPerso.remove(perAnterior);
+            peli.setListaPersonajes(listaPerso);
+        }
+    }
+
+/*    public static void notificarPeliculas(Personaje perso){
+        List<Pelicula> pelis=perso.getListaPeliculas();
+        for(Pelicula peli:pelis){
+
+        }
+    }*/
+
 }
