@@ -1,7 +1,6 @@
 package com.besysoft.ejercitacion.controlador;
 
 import com.besysoft.ejercitacion.utilidades.Test;
-import com.besysoft.ejercitacion.dominio.Pelicula;
 import com.besysoft.ejercitacion.dominio.Personaje;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,12 +27,14 @@ public class ControladoraPersonaje {
         return ResponseEntity.ok(mensajeBody);
     }
 
-    private List<Personaje> buscarPersoByPeli(Pelicula peli){
-        List <Personaje> listaPerson=getListaPerso().stream()
-                        .filter(perso->perso.getPelicula().getId()==peli.getId())
-                        .collect(Collectors.toList());
-        return listaPerson;
+    private ResponseEntity<?> notSuccessResponse(String mensaje, int id){
+        mensajeBody.put("Success",Boolean.FALSE);
+        mensajeBody.put("data",String.format(mensaje,id));
+        return ResponseEntity
+                .badRequest()
+                .body(mensajeBody);
     }
+
     @GetMapping
     public ResponseEntity<?> verPerso(){
         return this.successResponse(getListaPerso());
@@ -59,11 +60,7 @@ public class ControladoraPersonaje {
     public ResponseEntity<?> buscarPersoRangoEdad(@RequestParam int desde,
                                                  @RequestParam int hasta){
         if(desde>hasta){
-            mensajeBody.put("Success",Boolean.FALSE);
-            mensajeBody.put("data","Rango de edad no válido");
-            return ResponseEntity
-                    .badRequest()
-                    .body(mensajeBody);
+            this.notSuccessResponse("Rango de edad no válido",0);
         }
         List<Personaje> listaPerso=getListaPerso().stream()
                 .filter(per -> per.getEdad()<hasta && per.getEdad()>desde)
@@ -74,24 +71,16 @@ public class ControladoraPersonaje {
 
     @PostMapping
     public ResponseEntity<?> altaPersonaje(@RequestBody Personaje perso){
-        //Primero chequeo que la pelicula asociada al personaje exista:
-        Optional <Pelicula> oPeliAsociada=ControladoraPelicula.getListaPelis().
-                stream().filter(peli->peli.getId()==perso.getPelicula().getId()).findAny();
-        if(oPeliAsociada.isEmpty()){
-            mensajeBody.put("Success",Boolean.FALSE);
-            mensajeBody.put("data","La pelicula asociada no existe");
-            return ResponseEntity
-                    .badRequest()
-                    .body(mensajeBody);
+        if(!ControladoraPelicula.sonPelisCorrectas(perso.getListaPeliculas())){
+            this.notSuccessResponse("ALguna pelicula asociada no existe",0);
         }
         perso.setId(getListaPerso().size()+1);
         getListaPerso().add(perso);
-        this.setListaPerso(getListaPerso());
-        //asociar este personaje a la pelicula. La pelicula no se entero de este personaje todavia:
+        setListaPerso(getListaPerso());
+        //asociar este personaje a cada pelicula que trae en la lista.
+        // LaS peliculaS no se enterARON de este personaje todavia:
         //Setearle a la pelicula su lista de personajes con el nuevo personaje
-        Pelicula peliAsociada=oPeliAsociada.get();
-        List<Personaje> listaPer=this.buscarPersoByPeli(peliAsociada);
-        peliAsociada.setListaPersonajes(listaPer);
+        ControladoraPelicula.addPersoPeliculas(perso);
         return ResponseEntity.status(HttpStatus.CREATED).body(perso);
     }
 
@@ -103,18 +92,10 @@ public class ControladoraPersonaje {
                                     .filter(pel->pel.getId()==id)
                                     .findAny();
         if(oPerso.isEmpty()) {
-            mensajeBody.put("Success", Boolean.FALSE);
-            mensajeBody.put("data", String.format("El personaje con id %d ingresado no existe", id));
-            return ResponseEntity
-                    .badRequest()
-                    .body(mensajeBody);
+            return this.notSuccessResponse("El personaje con id %d ingresado no existe", id);
         }
-        if(!existePeli(perso)) {
-            mensajeBody.put("Success", Boolean.FALSE);
-            mensajeBody.put("data", String.format("La pelicula con id %d no existe", perso.getPelicula().getId()));
-            return ResponseEntity
-                    .badRequest()
-                    .body(mensajeBody);
+        if(!ControladoraPelicula.sonPelisCorrectas(perso.getListaPeliculas())) {
+            this.notSuccessResponse("Alguna pelicula asociada no existe",0);
         }
         getListaPerso().forEach(per->{
             if(per.getId()==id) {
@@ -122,11 +103,13 @@ public class ControladoraPersonaje {
                 per.setEdad(perso.getEdad());
                 per.setHistoria(perso.getHistoria());
                 per.setPeso(perso.getPeso());
-                Pelicula peliAnterior=per.getPelicula();
-                Pelicula peliActual=perso.getPelicula();
-                per.setPelicula(peliActual);
-                //y a la pelicula le modifico el personaje
-                ControladoraPelicula.modificarPersonaje(peliAnterior,peliActual,per,perso);
+                //Primero del lado de las peliculas remuevo el personaje anterior
+                //y agrego el personaje actual en las que trae. Para eso debo setearle el id.
+                //O si cargo per directamente? Habr{a algun problema que todavia tenga la lista de pelis viejas?
+                perso.setId(id);
+                ControladoraPelicula.removePersoPeliculas(per);
+                ControladoraPelicula.addPersoPeliculas(perso);
+                per.setListaPeliculas(perso.getListaPeliculas());
             }
         });
         mensajeBody.put("Success",Boolean.TRUE);
@@ -134,24 +117,32 @@ public class ControladoraPersonaje {
         return ResponseEntity.ok(mensajeBody);
     }
 
-    private boolean existePeli(Personaje perso){
-        boolean existe=false;
-        List<Pelicula> listaPelis=ControladoraPelicula.getListaPelis();
-        Optional<Pelicula> oPeliAs = listaPelis.stream()
-                                        .filter(p -> p.getId() == perso.getPelicula().getId())
-                                        .findAny();
-            if(oPeliAs.isPresent()){
-                existe=true;
-            }
-        return existe;
-    }
-
+/*  ESTE LO USABA EN PELICULA
     public void actualizarPerso(Personaje per,Pelicula peliNueva){
         List <Personaje> persoOtros=getListaPerso().stream().filter(perso->perso.getId()!=per.getId())
                                     .collect(Collectors.toList());
         per.setPelicula(peliNueva);
         persoOtros.add(per);
         this.setListaPerso(persoOtros);
+    }*/
+
+    public boolean sonPersoCorrectos(List<Personaje> persosIn){
+        //Si no envie ninguno en la peli, esto dara true
+        boolean sonCorrectos;
+        int contadorCorrectos=0;
+        for (Personaje per: persosIn){
+            Optional<Personaje> oPerso = listaPerso.stream()
+                                    .filter(perso -> perso.getId() == per.getId())
+                                    .findAny();
+            if(oPerso.isEmpty()){
+                return false;
+            }
+            Personaje aux=oPerso.get();
+            aux.setListaPeliculas(null);
+            contadorCorrectos=aux.equals(per)?contadorCorrectos+1:contadorCorrectos;
+        }
+        sonCorrectos=contadorCorrectos==persosIn.size();
+        return sonCorrectos;
     }
 
 
