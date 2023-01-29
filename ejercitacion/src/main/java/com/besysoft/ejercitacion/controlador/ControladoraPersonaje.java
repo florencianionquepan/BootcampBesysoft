@@ -72,6 +72,7 @@ public class ControladoraPersonaje {
 
     @PostMapping
     public ResponseEntity<?> altaPersonaje(@RequestBody Personaje perso){
+        this.porSiListaPelisNull(perso);
         if(!ControladoraPelicula.sonPelisCorrectas(perso.getListaPeliculas())){
             return this.notSuccessResponse("ALguna pelicula asociada no existe",0);
         }
@@ -88,6 +89,7 @@ public class ControladoraPersonaje {
     @PutMapping("/{id}")
     public ResponseEntity<?> modiPerso(@RequestBody Personaje perso,
                                        @PathVariable int id){
+        this.porSiListaPelisNull(perso);
         Optional<Personaje> oPerso=getListaPerso()
                                     .stream()
                                     .filter(pel->pel.getId()==id)
@@ -117,15 +119,6 @@ public class ControladoraPersonaje {
         mensajeBody.put("data",getListaPerso().get(id-1));
         return ResponseEntity.ok(mensajeBody);
     }
-
-/*  ESTE LO USABA EN PELICULA
-    public void actualizarPerso(Personaje per,Pelicula peliNueva){
-        List <Personaje> persoOtros=getListaPerso().stream().filter(perso->perso.getId()!=per.getId())
-                                    .collect(Collectors.toList());
-        per.setPelicula(peliNueva);
-        persoOtros.add(per);
-        this.setListaPerso(persoOtros);
-    }*/
 
     public boolean sonPersoCorrectos(List<Personaje> persosIn){
         //Si no envie ninguno en la peli, esto dara true
@@ -165,6 +158,14 @@ public class ControladoraPersonaje {
                     .map(Personaje::getListaPeliculas).findAny().get();
             listaPel.remove(peliAnterior);
             person.setListaPeliculas(listaPel);
+        }
+    }
+
+    //Esto se agrega por si no tiene el key listaPeliculas, ya que sino da error en el servidor
+    private void porSiListaPelisNull(Personaje perso){
+        if(perso.getListaPeliculas()==null){
+            List<Pelicula> listaPelis=new ArrayList<>();
+            perso.setListaPeliculas(listaPelis);
         }
     }
 
