@@ -12,7 +12,7 @@ public class Pelicula {
     private String titulo;
     private LocalDate fechaCreacion;
     private int calificacion;
-    @JsonIgnoreProperties(value="pelicula")
+    @JsonIgnoreProperties(value="listaPeliculas")
     private List<Personaje> listaPersonajes;
 
     public Pelicula() {
