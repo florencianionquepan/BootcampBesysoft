@@ -91,14 +91,9 @@ public class Test {
         this.setListaPerso(listaPerso);
 
         //Asocio los personajes a cada lista:
-        listaPersoCoco1.add(persoCoco1);
-        listaPersoCoco1.add(persoCoco2);
-        listaPersoCoco1.add(persoCoco3);
-        listaPersoCoco1.add(persoCoco4);
-        listaPersoCoco2.add(persoCoco1);
-        listaPersoCoco2.add(persoCoco2);
-        listaPersoPrimer.add(persoPrimer1);
-        listaPersoPrimer.add(persoPrimer2);
+        Collections.addAll(listaPersoCoco1,persoCoco1,persoCoco2,persoCoco3,persoCoco4);
+        Collections.addAll(listaPersoCoco2,persoCoco1,persoCoco2);
+        Collections.addAll(listaPersoPrimer,persoPrimer1,persoPrimer2);
 
         //Seteo las listas a cada objeto pelicula
         peliCoco.setListaPersonajes(listaPersoCoco1);
