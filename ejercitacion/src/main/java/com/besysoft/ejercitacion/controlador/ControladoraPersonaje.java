@@ -108,7 +108,6 @@ public class ControladoraPersonaje {
                 per.setPeso(perso.getPeso());
                 //Primero del lado de las peliculas remuevo el personaje anterior
                 //y agrego el personaje actual en las que trae. Para eso debo setearle el id.
-                //O si cargo per directamente? Habr{a algun problema que todavia tenga la lista de pelis viejas?
                 perso.setId(id);
                 ControladoraPelicula.removePersoPeliculas(per);
                 ControladoraPelicula.addPersoPeliculas(perso);
@@ -120,7 +119,7 @@ public class ControladoraPersonaje {
         return ResponseEntity.ok(mensajeBody);
     }
 
-    public boolean sonPersoCorrectos(List<Personaje> persosIn){
+    public static boolean sonPersoCorrectos(List<Personaje> persosIn){
         //Si no envie ninguno en la peli, esto dara true
         boolean sonCorrectos;
         int contadorCorrectos=0;

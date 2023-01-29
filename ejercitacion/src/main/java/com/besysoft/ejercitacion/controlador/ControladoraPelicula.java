@@ -108,8 +108,7 @@ public class ControladoraPelicula {
     @PostMapping
     public ResponseEntity<?> altaPelicula(@RequestBody Pelicula peli){
         this.porSilistaPersoNull(peli);
-        ControladoraPersonaje conPer=new ControladoraPersonaje();
-        if(!conPer.sonPersoCorrectos(peli.getListaPersonajes())){
+        if(!ControladoraPersonaje.sonPersoCorrectos(peli.getListaPersonajes())){
             return this.notSuccessResponse("Algun personaje ingresado no existe",0);
         }
         peli.setId(getListaPelis().size()+1);
@@ -128,8 +127,7 @@ public class ControladoraPelicula {
         if(!this.existePeli(id)) {
             return this.notSuccessResponse("La pelicula con id %d ingresado no existe", id);
         }
-        ControladoraPersonaje conPer=new ControladoraPersonaje();
-        if(!conPer.sonPersoCorrectos(peli.getListaPersonajes())){
+        if(!ControladoraPersonaje.sonPersoCorrectos(peli.getListaPersonajes())){
             return this.notSuccessResponse("Algun personaje ingresado no existe",0);
         }
         getListaPelis().forEach(pel->{
