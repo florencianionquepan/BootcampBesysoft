@@ -1,5 +1,6 @@
 package com.besysoft.ejercitacion.controlador;
 
+import com.besysoft.ejercitacion.dominio.Personaje;
 import com.besysoft.ejercitacion.utilidades.Test;
 import com.besysoft.ejercitacion.dominio.Genero;
 import com.besysoft.ejercitacion.dominio.Pelicula;
@@ -7,10 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/generos")
@@ -26,7 +24,7 @@ public class ControladoraGenero {
 
     @PostMapping
     public ResponseEntity<?> altaGenero(@RequestBody Genero genero){
-        //chequear PRIMERO que las peliculas asociadas existan
+        this.porSiListaPelisNull(genero);
         if(!ControladoraPelicula.sonPelisCorrectas(genero.getListaPelis())){
             mensajeBody.put("Success", Boolean.FALSE);
             mensajeBody.put("data", "Alguna pelicula ingresada no existe o no es correcta");
@@ -49,6 +47,7 @@ public class ControladoraGenero {
     @PutMapping("/{id}")
     public ResponseEntity<?> modiGenero(@RequestBody Genero genero,
                                          @PathVariable int id){
+        this.porSiListaPelisNull(genero);
         Optional<Genero> oGenero=this.getListaGeneros()
                                 .stream()
                                 .filter(gen->gen.getId()==id)
@@ -76,6 +75,13 @@ public class ControladoraGenero {
             mensajeBody.put("Success",Boolean.TRUE);
             mensajeBody.put("data",this.getListaGeneros().get(id-1));
             return ResponseEntity.ok(mensajeBody);
+    }
+
+    private void porSiListaPelisNull(Genero genero){
+        if(genero.getListaPelis()==null){
+            List<Pelicula> listaPelis=new ArrayList<>();
+            genero.setListaPelis(listaPelis);
+        }
     }
 
 
