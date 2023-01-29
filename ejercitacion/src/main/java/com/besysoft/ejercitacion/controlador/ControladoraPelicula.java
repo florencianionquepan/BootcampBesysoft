@@ -107,12 +107,16 @@ public class ControladoraPelicula {
     }
     @PostMapping
     public ResponseEntity<?> altaPelicula(@RequestBody Pelicula peli){
-        peli.setId(getListaPelis().size()+1);
         ControladoraPersonaje conPer=new ControladoraPersonaje();
         if(!conPer.sonPersoCorrectos(peli.getListaPersonajes())){
             return this.notSuccessResponse("Algun personaje ingresado no existe",0);
         }
-        listaPelis.add(peli);
+        peli.setId(getListaPelis().size()+1);
+        getListaPelis().add(peli);
+        setListaPelis(getListaPelis());
+        //asociar esta pelicula a cada personaje que trae en su lista
+        //Los personajes no se enteraron aun de la nueva peli
+        ControladoraPersonaje.addPeliPerso(peli);
         return ResponseEntity.status(HttpStatus.CREATED).body(peli);
     }
 
@@ -131,43 +135,19 @@ public class ControladoraPelicula {
                 pel.setTitulo(peli.getTitulo());
                 pel.setFechaCreacion(peli.getFechaCreacion());
                 pel.setCalificacion(peli.getCalificacion());
+                //Primero del lado de los personajes remuevo la peli vieja pel
+                //y agrego la pelicula actualizada a los personajes que trae
+                //O si cargo per directamente? Habr{a algun problema que todavia tenga la lista de pelis viejas?
+                peli.setId(id);
+                ControladoraPersonaje.removePeliPerso(pel);
+                ControladoraPersonaje.addPeliPerso(peli);
                 pel.setListaPersonajes(peli.getListaPersonajes());
             }
         });
-        //Ahora al personaje nuevo o que se borro hay que avisarle que modifique sus peliculas
         mensajeBody.put("Success",Boolean.TRUE);
         mensajeBody.put("data",getListaPelis().get(id-1));
         return ResponseEntity.ok(mensajeBody);
     }
-
-
-    public static boolean modificarPersonaje(Pelicula peliAnt,Pelicula peliActual,
-                                             Personaje perAnt, Personaje perNuevo){
-        setearPersonajes(peliAnt);
-        setearPersonajes(peliActual);
-        boolean removido=peliAnt.getListaPersonajes().remove(perAnt);
-        System.out.println(peliAnt.getListaPersonajes());
-        perNuevo.setId(perAnt.getId());
-        boolean agregado=peliActual.getListaPersonajes().add(perNuevo);
-        return removido && agregado;
-    }
-
-    private static void setearPersonajes(Pelicula peli){
-        Optional <List<Personaje>> oLista=listaPelis.stream().filter(pel->pel.getId()==peli.getId())
-                .map(Pelicula::getListaPersonajes).findAny();
-        if(oLista.isPresent()){
-            peli.setListaPersonajes(oLista.get());
-        }
-    }
-
-    /*
-    private void setearPelicula(Personaje per){
-        Optional <Pelicula> oPeliAsociada=ControladoraPersonaje.getListaPerso().stream()
-                .filter(perso->perso.getId()==per.getId())
-                .map(Personaje::getPelicula).findAny();
-        oPeliAsociada.ifPresent(per::setPelicula);
-    }
-     */
 
     public static boolean sonPelisCorrectas(List<Pelicula> pelisIn){
         boolean sonCorrectas;
@@ -215,12 +195,5 @@ public class ControladoraPelicula {
             peli.setListaPersonajes(listaPerso);
         }
     }
-
-/*    public static void notificarPeliculas(Personaje perso){
-        List<Pelicula> pelis=perso.getListaPeliculas();
-        for(Pelicula peli:pelis){
-
-        }
-    }*/
 
 }
