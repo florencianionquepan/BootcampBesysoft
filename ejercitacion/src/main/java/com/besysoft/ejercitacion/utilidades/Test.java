@@ -52,31 +52,40 @@ public class Test {
         Pelicula peliCoco=new Pelicula(1,"Coco", LocalDate.of(2017,12,1),4,listaPersoCoco1);
         Pelicula peliCoco2=new Pelicula(2,"Coco2",LocalDate.of(2009,10,15),3,listaPersoCoco2);
         Pelicula peliPrimer=new Pelicula(3,"Primer",LocalDate.of(2004,02,22),5,listaPersoPrimer);
-        List<Pelicula> pelisCocoTodas=new ArrayList<Pelicula>(
+        List<Pelicula> pelisCocoMiguel=new ArrayList<Pelicula>(
                 Arrays.asList(peliCoco,peliCoco2)
         );
-        List<Pelicula> pelisCoco1=new ArrayList<Pelicula>(
+        List<Pelicula> pelisCocoCoco=new ArrayList<Pelicula>(
+                Arrays.asList(peliCoco,peliCoco2)
+        );
+        List<Pelicula> pelisCocoCarl=new ArrayList<Pelicula>(
                 Arrays.asList(peliCoco)
         );
-        List<Pelicula> pelisPrimer=new ArrayList<Pelicula>(
+        List<Pelicula> pelisCocoRu=new ArrayList<Pelicula>(
+                Arrays.asList(peliCoco)
+        );
+        List<Pelicula> pelisPrimerAaron=new ArrayList<Pelicula>(
+                Arrays.asList(peliPrimer)
+        );
+        List<Pelicula> pelisPrimerAbe=new ArrayList<Pelicula>(
                 Arrays.asList(peliPrimer)
         );
 
         //-----Creo Personajes de peliculas------
         Personaje persoCoco1=new Personaje(1,"Miguel",11,30,
                 "Sueña con convertirse en un cantante famoso como su ídolo Ernesto de la Cruz, " +
-                        "quien alcanzó la fama gracias a su tema 'Recuérdame'", pelisCocoTodas);
+                        "quien alcanzó la fama gracias a su tema 'Recuérdame'", pelisCocoMiguel);
         Personaje persoCoco2=new Personaje(2,"Coco",80,75,
-                " Es una cálida, apacible y tierna mujer que es la bisabuela de Miguel. ",pelisCocoTodas);
+                " Es una cálida, apacible y tierna mujer que es la bisabuela de Miguel. ",pelisCocoCoco);
         Personaje persoCoco3=new Personaje(3,"Carl",80, 75.0,
-                "Desde que era niño sueña con ser como Charles Muntz, un gran explorador.", pelisCoco1);
+                "Desde que era niño sueña con ser como Charles Muntz, un gran explorador.", pelisCocoCarl);
         Personaje persoCoco4=new Personaje(4,"Russel",8,35,
                 "Es un niño explorador que quiere obtener la insignia " +
-                        "de ayudar a los mayores en su grupo de boyscouts.",pelisCoco1);
+                        "de ayudar a los mayores en su grupo de boyscouts.",pelisCocoRu);
         Personaje persoPrimer1=new Personaje(5,"Aaron",26,58,"Trabaja durante el dia en una empresa " +
-                "y por la noche realiza experimentos con sus amigos",pelisPrimer);
+                "y por la noche realiza experimentos con sus amigos",pelisPrimerAaron);
         Personaje persoPrimer2=new Personaje(6,"Abe",27,57,
-                "Es un ingeniero amigo de Aaron que descubre que crearon accidentalmente una maquina del tiempo",pelisPrimer);
+                "Es un ingeniero amigo de Aaron que descubre que crearon accidentalmente una maquina del tiempo",pelisPrimerAbe);
 
         Collections.addAll(listaPerso,persoCoco1,persoCoco2,persoCoco3,persoCoco4,persoPrimer1,persoPrimer2);
         this.setListaPerso(listaPerso);
