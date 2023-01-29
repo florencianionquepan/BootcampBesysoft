@@ -137,7 +137,6 @@ public class ControladoraPelicula {
                 pel.setCalificacion(peli.getCalificacion());
                 //Primero del lado de los personajes remuevo la peli vieja pel
                 //y agrego la pelicula actualizada a los personajes que trae
-                //O si cargo per directamente? Habr{a algun problema que todavia tenga la lista de pelis viejas?
                 peli.setId(id);
                 ControladoraPersonaje.removePeliPerso(pel);
                 ControladoraPersonaje.addPeliPerso(peli);
@@ -169,7 +168,7 @@ public class ControladoraPelicula {
         return sonCorrectas;
     }
 
-    public boolean existePeli(int id){
+    private boolean existePeli(int id){
         boolean existe;
         Optional<Pelicula> oPeli=getListaPelis()
                                     .stream()
