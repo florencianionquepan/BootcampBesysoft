@@ -107,6 +107,7 @@ public class ControladoraPelicula {
     }
     @PostMapping
     public ResponseEntity<?> altaPelicula(@RequestBody Pelicula peli){
+        this.porSilistaPersoNull(peli);
         ControladoraPersonaje conPer=new ControladoraPersonaje();
         if(!conPer.sonPersoCorrectos(peli.getListaPersonajes())){
             return this.notSuccessResponse("Algun personaje ingresado no existe",0);
@@ -123,8 +124,9 @@ public class ControladoraPelicula {
     @PutMapping("/{id}")
     public ResponseEntity<?> modiPelicula(@RequestBody Pelicula peli,
                                             @PathVariable int id){
+        this.porSilistaPersoNull(peli);
         if(!this.existePeli(id)) {
-            this.notSuccessResponse("La pelicula con id %d ingresado no existe", id);
+            return this.notSuccessResponse("La pelicula con id %d ingresado no existe", id);
         }
         ControladoraPersonaje conPer=new ControladoraPersonaje();
         if(!conPer.sonPersoCorrectos(peli.getListaPersonajes())){
@@ -181,11 +183,11 @@ public class ControladoraPelicula {
 
     public static void addPersoPeliculas(Personaje perso) {
         for(Pelicula peli: perso.getListaPeliculas()){
-            List<Personaje> listaPerso=getListaPelis().stream()
+            List<Personaje> listaPersoPeli=getListaPelis().stream()
                     .filter(pel->pel.getId()==peli.getId())
                     .map(Pelicula::getListaPersonajes).findAny().get();
-            listaPerso.add(perso);
-            peli.setListaPersonajes(listaPerso);
+            listaPersoPeli.add(perso);
+            peli.setListaPersonajes(listaPersoPeli);
         }
     }
 
@@ -196,6 +198,14 @@ public class ControladoraPelicula {
                     .map(Pelicula::getListaPersonajes).findAny().get();
             listaPerso.remove(perAnterior);
             peli.setListaPersonajes(listaPerso);
+        }
+    }
+
+    //Esto se agrega por si no tiene el key listaPersonajes, ya que sino da error en el servidor
+    private void porSilistaPersoNull(Pelicula peli){
+        if(peli.getListaPersonajes()==null){
+            List<Personaje> listaPerVacia=new ArrayList<>();
+            peli.setListaPersonajes(listaPerVacia);
         }
     }
 
