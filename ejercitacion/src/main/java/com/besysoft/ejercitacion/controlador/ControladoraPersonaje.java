@@ -138,9 +138,11 @@ public class ControladoraPersonaje {
             if(oPerso.isEmpty()){
                 return false;
             }
+            List<Pelicula> guardoLista=oPerso.get().getListaPeliculas();
             Personaje aux=oPerso.get();
             aux.setListaPeliculas(null);
             contadorCorrectos=aux.equals(per)?contadorCorrectos+1:contadorCorrectos;
+            aux.setListaPeliculas(guardoLista);
         }
         sonCorrectos=contadorCorrectos==persosIn.size();
         return sonCorrectos;

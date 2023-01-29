@@ -158,9 +158,12 @@ public class ControladoraPelicula {
             if(oPeliAsociada.isEmpty()){
                 return false;
             }
+            //Luego ver si al equals le puedo borrar la lista de personajes si no lo voy a necesitar en otro lado
+            List<Personaje> guardoPerso=oPeliAsociada.get().getListaPersonajes();
             Pelicula aux = oPeliAsociada.get();
             aux.setListaPersonajes(null);
             contadorCorrectas=aux.equals(peliIn)?contadorCorrectas+1:contadorCorrectas;
+            aux.setListaPersonajes(guardoPerso);
         }
         sonCorrectas=contadorCorrectas==pelisIn.size();
         return sonCorrectas;
