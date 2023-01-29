@@ -1,5 +1,6 @@
 package com.besysoft.ejercitacion.controlador;
 
+import com.besysoft.ejercitacion.dominio.Pelicula;
 import com.besysoft.ejercitacion.utilidades.Test;
 import com.besysoft.ejercitacion.dominio.Personaje;
 import org.springframework.http.HttpStatus;
@@ -79,7 +80,7 @@ public class ControladoraPersonaje {
         setListaPerso(getListaPerso());
         //asociar este personaje a cada pelicula que trae en la lista.
         // LaS peliculaS no se enterARON de este personaje todavia:
-        //Setearle a la pelicula su lista de personajes con el nuevo personaje
+        //Setearle a laS peliculaS su lista de personajes con el nuevo personaje
         ControladoraPelicula.addPersoPeliculas(perso);
         return ResponseEntity.status(HttpStatus.CREATED).body(perso);
     }
@@ -143,6 +144,26 @@ public class ControladoraPersonaje {
         }
         sonCorrectos=contadorCorrectos==persosIn.size();
         return sonCorrectos;
+    }
+
+    public static void addPeliPerso(Pelicula peli) {
+        for(Personaje person:peli.getListaPersonajes()){
+            List<Pelicula> listaPeliculas=getListaPerso().stream()
+                    .filter(per->per.getId()==person.getId())
+                    .map(Personaje::getListaPeliculas).findAny().get();
+            listaPeliculas.add(peli);
+            person.setListaPeliculas(listaPeliculas);
+        }
+    }
+
+    public static void removePeliPerso(Pelicula peliAnterior){
+        for(Personaje person:peliAnterior.getListaPersonajes()){
+            List<Pelicula> listaPel=getListaPerso().stream()
+                    .filter(per->per.getId()==person.getId())
+                    .map(Personaje::getListaPeliculas).findAny().get();
+            listaPel.remove(peliAnterior);
+            person.setListaPeliculas(listaPel);
+        }
     }
 
 
