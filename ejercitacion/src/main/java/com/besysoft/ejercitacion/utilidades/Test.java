@@ -44,15 +44,19 @@ public class Test {
     public void generarDatos(){
 
         //--------Creo listas de personajes vacias--------
-        List<Personaje> listaPersoCoco=new ArrayList<>();
-        List<Personaje> listaPersoPrimer=new ArrayList<>();
+        List<Personaje> listaPersoCoco1=new ArrayList<Personaje>();
+        List<Personaje> listaPersoCoco2=new ArrayList<Personaje>();
+        List<Personaje> listaPersoPrimer=new ArrayList<Personaje>();
 
         //------Creo Listas de Peliculas--------
-        Pelicula peliCoco=new Pelicula(1,"Coco", LocalDate.of(2017,12,1),4,listaPersoCoco);
-        Pelicula peliCoco2=new Pelicula(2,"Coco2",LocalDate.of(2009,10,15),3,listaPersoCoco);
+        Pelicula peliCoco=new Pelicula(1,"Coco", LocalDate.of(2017,12,1),4,listaPersoCoco1);
+        Pelicula peliCoco2=new Pelicula(2,"Coco2",LocalDate.of(2009,10,15),3,listaPersoCoco2);
         Pelicula peliPrimer=new Pelicula(3,"Primer",LocalDate.of(2004,02,22),5,listaPersoPrimer);
-        List<Pelicula> pelisCoco=new ArrayList<Pelicula>(
+        List<Pelicula> pelisCocoTodas=new ArrayList<Pelicula>(
                 Arrays.asList(peliCoco,peliCoco2)
+        );
+        List<Pelicula> pelisCoco1=new ArrayList<Pelicula>(
+                Arrays.asList(peliCoco)
         );
         List<Pelicula> pelisPrimer=new ArrayList<Pelicula>(
                 Arrays.asList(peliPrimer)
@@ -61,14 +65,14 @@ public class Test {
         //-----Creo Personajes de peliculas------
         Personaje persoCoco1=new Personaje(1,"Miguel",11,30,
                 "Sueña con convertirse en un cantante famoso como su ídolo Ernesto de la Cruz, " +
-                        "quien alcanzó la fama gracias a su tema 'Recuérdame'", pelisCoco);
+                        "quien alcanzó la fama gracias a su tema 'Recuérdame'", pelisCocoTodas);
         Personaje persoCoco2=new Personaje(2,"Coco",80,75,
-                " Es una cálida, apacible y tierna mujer que es la bisabuela de Miguel. ",pelisCoco);
-        Personaje persoCoco3=new Personaje(3,"Carl",80,75,
-                "Desde que era niño sueña con ser como Charles Muntz, un gran explorador.",pelisCoco);
+                " Es una cálida, apacible y tierna mujer que es la bisabuela de Miguel. ",pelisCocoTodas);
+        Personaje persoCoco3=new Personaje(3,"Carl",80, 75.0,
+                "Desde que era niño sueña con ser como Charles Muntz, un gran explorador.", pelisCoco1);
         Personaje persoCoco4=new Personaje(4,"Russel",8,35,
                 "Es un niño explorador que quiere obtener la insignia " +
-                        "de ayudar a los mayores en su grupo de boyscouts.",pelisCoco);
+                        "de ayudar a los mayores en su grupo de boyscouts.",pelisCoco1);
         Personaje persoPrimer1=new Personaje(5,"Aaron",26,58,"Trabaja durante el dia en una empresa " +
                 "y por la noche realiza experimentos con sus amigos",pelisPrimer);
         Personaje persoPrimer2=new Personaje(6,"Abe",27,57,
@@ -78,16 +82,18 @@ public class Test {
         this.setListaPerso(listaPerso);
 
         //Asocio los personajes a cada lista:
-        listaPersoCoco.add(persoCoco1);
-        listaPersoCoco.add(persoCoco2);
-        listaPersoCoco.add(persoCoco3);
-        listaPersoCoco.add(persoCoco4);
+        listaPersoCoco1.add(persoCoco1);
+        listaPersoCoco1.add(persoCoco2);
+        listaPersoCoco1.add(persoCoco3);
+        listaPersoCoco1.add(persoCoco4);
+        listaPersoCoco2.add(persoCoco1);
+        listaPersoCoco2.add(persoCoco2);
         listaPersoPrimer.add(persoPrimer1);
         listaPersoPrimer.add(persoPrimer2);
 
         //Seteo las listas a cada objeto pelicula
-        peliCoco.setListaPersonajes(listaPersoCoco);
-        peliCoco2.setListaPersonajes(listaPersoCoco);
+        peliCoco.setListaPersonajes(listaPersoCoco1);
+        peliCoco2.setListaPersonajes(listaPersoCoco2);
         peliPrimer.setListaPersonajes(listaPersoPrimer);
 
         Collections.addAll(listaPelis,peliCoco,peliCoco2,peliPrimer);
