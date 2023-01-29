@@ -90,11 +90,7 @@ public class ControladoraPersonaje {
     public ResponseEntity<?> modiPerso(@RequestBody Personaje perso,
                                        @PathVariable int id){
         this.porSiListaPelisNull(perso);
-        Optional<Personaje> oPerso=getListaPerso()
-                                    .stream()
-                                    .filter(pel->pel.getId()==id)
-                                    .findAny();
-        if(oPerso.isEmpty()) {
+        if(!this.existePerso(id)) {
             return this.notSuccessResponse("El personaje con id %d ingresado no existe", id);
         }
         if(!ControladoraPelicula.sonPelisCorrectas(perso.getListaPeliculas())) {
@@ -117,6 +113,16 @@ public class ControladoraPersonaje {
         mensajeBody.put("Success",Boolean.TRUE);
         mensajeBody.put("data",getListaPerso().get(id-1));
         return ResponseEntity.ok(mensajeBody);
+    }
+
+    private boolean existePerso(int id){
+        boolean existe;
+        Optional<Personaje> oPerso=getListaPerso()
+                .stream()
+                .filter(pel->pel.getId()==id)
+                .findAny();
+        existe=oPerso.isPresent();
+        return existe;
     }
 
     public static boolean sonPersoCorrectos(List<Personaje> persosIn){
