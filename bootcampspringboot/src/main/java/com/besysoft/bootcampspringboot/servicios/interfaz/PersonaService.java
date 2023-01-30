@@ -4,7 +4,7 @@
  */
 package com.besysoft.bootcampspringboot.servicios.interfaz;
 
-import dominio.Persona;
+import com.besysoft.bootcampspringboot.dominio.Persona;
 
 import java.util.Optional;
 public interface PersonaService {

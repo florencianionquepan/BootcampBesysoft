@@ -1,6 +1,6 @@
 package com.besysoft.bootcampspringboot.repositorio;
 
-import dominio.Persona;
+import com.besysoft.bootcampspringboot.dominio.Persona;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;

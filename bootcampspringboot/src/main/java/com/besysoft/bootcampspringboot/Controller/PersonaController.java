@@ -1,9 +1,7 @@
 package com.besysoft.bootcampspringboot.Controller;
 
 import com.besysoft.bootcampspringboot.servicios.interfaz.PersonaService;
-import dominio.Persona;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import com.besysoft.bootcampspringboot.dominio.Persona;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +39,7 @@ public class PersonaController {
 
         return (List<Persona>)this.service.obtenerTodos();
     }
-
+/*
     @GetMapping("/{id}")
     public Persona buscarPorId(@PathVariable Long id) {
         return ((List<Persona>)this.service.obtenerTodos())
@@ -51,7 +49,7 @@ public class PersonaController {
                 .orElse(new Persona());
         //Sino existe una persona con ese id, me va a dar un objeto vacio por el orElse
     }
-/*
+
     public Persona altaPersona(@RequestBody Persona persona) {
         //agregar validaciones pragmaticas
         persona.setId((long) (this.listaPersonas.size() + 1));

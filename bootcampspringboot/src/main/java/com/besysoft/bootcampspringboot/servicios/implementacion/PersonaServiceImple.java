@@ -6,9 +6,8 @@ package com.besysoft.bootcampspringboot.servicios.implementacion;
 
 import com.besysoft.bootcampspringboot.servicios.interfaz.PersonaService;
 import com.besysoft.bootcampspringboot.repositorio.PersonaRepository;
-import dominio.Persona;
+import com.besysoft.bootcampspringboot.dominio.Persona;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

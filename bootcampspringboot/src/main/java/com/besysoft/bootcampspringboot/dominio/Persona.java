@@ -1,5 +1,5 @@
 
-package dominio;
+package com.besysoft.bootcampspringboot.dominio;
 
 
 public class Persona {
