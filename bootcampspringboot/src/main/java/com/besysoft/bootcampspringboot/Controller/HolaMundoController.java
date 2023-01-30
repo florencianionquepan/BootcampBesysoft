@@ -55,6 +55,7 @@ public class HolaMundoController {
     public Persona verPersona(@RequestParam String nombre,
                               @RequestParam(name="apellidos",required = false) String apellido){
         if(apellido==null){
+        //esto es mejor que ponerle un objeto basura en el caso de que no ingrese nada
             throw new RuntimeException("Debe ingresar el apellido");
         }
         Persona persona=new Persona(nombre,apellido);

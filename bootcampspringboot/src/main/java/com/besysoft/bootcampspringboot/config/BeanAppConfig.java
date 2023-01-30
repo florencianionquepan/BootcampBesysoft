@@ -1,15 +1,15 @@
 package com.besysoft.bootcampspringboot.config;
 
-import com.besysoft.bootcampspringboot.Servicios.implementacion.PersonaServiceImple;
-import com.besysoft.bootcampspringboot.Servicios.interfaz.PersonaService;
+import com.besysoft.bootcampspringboot.servicios.implementacion.PersonaServiceImple;
+import com.besysoft.bootcampspringboot.servicios.interfaz.PersonaService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
+//@Configuration
 public class BeanAppConfig {
-    @Bean
+/*    @Bean("nombreBean")
     public PersonaService getComponentPersonaService(){
-        return new PersonaServiceImple("personaRepositoryMemory");
-    }
+        return new PersonaServiceImple();
+    }*/
     //Si lo hago de esta forma no agrego la annotation Service en PersonaServiceImple
 }
