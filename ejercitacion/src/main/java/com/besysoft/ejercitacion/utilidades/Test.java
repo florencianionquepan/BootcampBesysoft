@@ -104,8 +104,8 @@ public class Test {
         this.setListaPelis(listaPelis);
 
         //-----Generos------
-        ArrayList<Pelicula> pelisInfan=new ArrayList<>();
-        ArrayList<Pelicula> pelisFiccion=new ArrayList<>();
+        List<Pelicula> pelisInfan=new ArrayList<>();
+        List<Pelicula> pelisFiccion=new ArrayList<>();
         pelisInfan.add(peliCoco);
         pelisInfan.add(peliCoco2);
         pelisFiccion.add(peliPrimer);

@@ -76,6 +76,7 @@ public class Personaje {
     public String toString() {
         return "Personaje{" +
                 "nombre='" + nombre + '\'' +
+                "peliculas=" +listaPeliculas +
                 '}';
     }
 

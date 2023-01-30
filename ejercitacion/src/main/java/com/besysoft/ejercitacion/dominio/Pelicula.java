@@ -73,7 +73,7 @@ public class Pelicula {
                 " titulo='" + titulo + '\'' +
                 ", fechaCreacion=" + fechaCreacion +
                 ", calificacion=" + calificacion +
-                ", listaPersonajes=" + listaPersonajes +
+
                 '}';
     }
 

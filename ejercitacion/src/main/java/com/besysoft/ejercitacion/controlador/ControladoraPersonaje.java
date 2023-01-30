@@ -61,7 +61,7 @@ public class ControladoraPersonaje {
     public ResponseEntity<?> buscarPersoRangoEdad(@RequestParam int desde,
                                                  @RequestParam int hasta){
         if(desde>hasta){
-            this.notSuccessResponse("Rango de edad no válido",0);
+            return this.notSuccessResponse("Rango de edad no válido",0);
         }
         List<Personaje> listaPerso=getListaPerso().stream()
                 .filter(per -> per.getEdad()<hasta && per.getEdad()>desde)
