@@ -1,8 +1,6 @@
 package com.besysoft.ejercitacion.repositorios;
 
-import com.besysoft.ejercitacion.controlador.ControladoraPersonaje;
 import com.besysoft.ejercitacion.dominio.Pelicula;
-import com.besysoft.ejercitacion.dominio.Personaje;
 import com.besysoft.ejercitacion.utilidades.Test;
 import org.springframework.stereotype.Repository;
 
@@ -14,6 +12,11 @@ import java.util.stream.Collectors;
 @Repository
 public class PeliculaRepositoryMemo implements IPeliculaRepository{
     private List<Pelicula> listaPelis= Test.listaPelis;
+    private IPersonajeRepository persoRepo;
+
+    public PeliculaRepositoryMemo(IPersonajeRepository persoRepo) {
+        this.persoRepo = persoRepo;
+    }
 
     @Override
     public List<Pelicula> verPelis() {
@@ -55,6 +58,8 @@ public class PeliculaRepositoryMemo implements IPeliculaRepository{
     public Pelicula altaPeli(Pelicula peli) {
         peli.setId(listaPelis.size()+1);
         listaPelis.add(peli);
+        //agrego la pelicula a los personajes que trae
+        this.persoRepo.addPeliAPerso(peli);
         return peli;
     }
 
@@ -66,10 +71,10 @@ public class PeliculaRepositoryMemo implements IPeliculaRepository{
                 pel.setFechaCreacion(peli.getFechaCreacion());
                 pel.setCalificacion(peli.getCalificacion());
                 //Primero del lado de los personajes remuevo la peli vieja pel
+                this.persoRepo.removePeliDePerson(pel);
                 //y agrego la pelicula actualizada a los personajes que trae
-                //peli.setId(id);
-                //ControladoraPersonaje.removePeliPerso(pel);
-                //ControladoraPersonaje.addPeliPerso(peli);
+                peli.setId(id);
+                this.persoRepo.addPeliAPerso(peli);
                 pel.setListaPersonajes(peli.getListaPersonajes());
             }
         });

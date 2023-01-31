@@ -1,6 +1,7 @@
 package com.besysoft.ejercitacion.repositorios;
 
 import com.besysoft.ejercitacion.controlador.ControladoraPelicula;
+import com.besysoft.ejercitacion.dominio.Pelicula;
 import com.besysoft.ejercitacion.dominio.Personaje;
 import com.besysoft.ejercitacion.utilidades.Test;
 import org.springframework.stereotype.Repository;
@@ -46,6 +47,7 @@ public class PersonajeRepositoryMemo implements IPersonajeRepository{
     public Personaje altaPersonaje(Personaje perso) {
         perso.setId(this.listaPerso.size()+1);
         this.listaPerso.add(perso);
+        //addPersoAPeliculas
         return perso;
     }
 
@@ -75,6 +77,24 @@ public class PersonajeRepositoryMemo implements IPersonajeRepository{
             }
                 });
         return perso;
+    }
+
+    @Override
+    public void addPeliAPerso(Pelicula peliNueva) {
+        for(Personaje per: peliNueva.getListaPersonajes()){
+            Personaje persoData=this.listaPerso.stream().filter(p->p.getId()==per.getId())
+                    .findAny().get();
+            persoData.getListaPeliculas().add(peliNueva);
+        }
+    }
+
+    @Override
+    public void removePeliDePerson(Pelicula peliVieja) {
+        for(Personaje per: peliVieja.getListaPersonajes()) {
+            Personaje persoData = this.listaPerso.stream().filter(p -> p.getId() == per.getId())
+                    .findAny().get();
+            persoData.getListaPeliculas().remove(peliVieja);
+        }
     }
 
 
