@@ -12,7 +12,6 @@ import java.util.Optional;
 
 @Service
 public class PersonajeServiceImp implements IPersonajeService {
-
     private final IPersonajeRepository repository;
 
     public PersonajeServiceImp(IPersonajeRepository repository) {
@@ -41,10 +40,11 @@ public class PersonajeServiceImp implements IPersonajeService {
 
     @Override
     public Personaje altaPersonaje(Personaje personaje) {
-        this.porSiListaPelisNull(personaje);
-        //en esta parte me falta chequear si las pelicuals son correctas-una vez que cree el refactor de pelis acomodo-
-        //tambien falta ControladoraPelicula.addPersoPeliculas(perso);
         return this.repository.altaPersonaje(personaje);
+    }
+    @Override
+    public Personaje modiPersonaje(Personaje perso, int id) {
+        return this.repository.modiPersonaje(perso,id);
     }
 
     @Override
@@ -76,20 +76,11 @@ public class PersonajeServiceImp implements IPersonajeService {
         return sonCorrectos;
     }
 
-    @Override
-    public Personaje modiPersonaje(Personaje perso, int id) {
-        this.porSiListaPelisNull(perso);
-        if(!this.existePerso(id)){
-            return null;
-        }
-        //if(!ControladoraPelicula.sonPelisCorrectas(perso.getListaPeliculas()))
-        return this.repository.modiPersonaje(perso,id);
-    }
-
-    private void porSiListaPelisNull(Personaje perso){
+    public Personaje porSiListaPelisNull(Personaje perso){
         if(perso.getListaPeliculas()==null){
             List<Pelicula> listaPelis=new ArrayList<>();
             perso.setListaPeliculas(listaPelis);
         }
+        return perso;
     }
 }

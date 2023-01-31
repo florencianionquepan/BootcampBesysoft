@@ -15,4 +15,5 @@ public interface IPeliculaService {
     Pelicula modiPeli(Pelicula peli, int id);
     boolean sonPelisCorrectas(List<Pelicula> pelisIn);
     boolean existePeli(int id);
+    Pelicula porSiListaPersoNull(Pelicula peli);
 }

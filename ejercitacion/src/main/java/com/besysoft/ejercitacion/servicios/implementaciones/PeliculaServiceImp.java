@@ -4,7 +4,6 @@ import com.besysoft.ejercitacion.dominio.Pelicula;
 import com.besysoft.ejercitacion.dominio.Personaje;
 import com.besysoft.ejercitacion.repositorios.IPeliculaRepository;
 import com.besysoft.ejercitacion.servicios.interfaces.IPeliculaService;
-import com.besysoft.ejercitacion.servicios.interfaces.IPersonajeService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -87,7 +86,8 @@ public class PeliculaServiceImp implements IPeliculaService {
         return existe;
     }
 
-    public Pelicula porSilistaPersoNull(Pelicula peli){
+    @Override
+    public Pelicula porSiListaPersoNull(Pelicula peli) {
         if(peli.getListaPersonajes()==null){
             List<Personaje> listaPerVacia=new ArrayList<>();
             peli.setListaPersonajes(listaPerVacia);

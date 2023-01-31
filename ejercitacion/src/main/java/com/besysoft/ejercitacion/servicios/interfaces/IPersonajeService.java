@@ -11,8 +11,9 @@ public interface IPersonajeService {
     List<Personaje> buscarPersoByEdad(int edad);
     List<Personaje> buscarPersoRangoEdad(int desde, int hasta);
     Personaje altaPersonaje(Personaje perso);
+    Personaje modiPersonaje(Personaje perso, int id);
     boolean existePerso(int id);
     boolean sonPersoCorrectos(List<Personaje> persosIn);
-    Personaje modiPersonaje(Personaje perso, int id);
+    Personaje porSiListaPelisNull(Personaje perso);
 
 }
