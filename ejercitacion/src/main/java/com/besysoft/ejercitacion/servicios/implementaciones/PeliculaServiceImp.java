@@ -49,23 +49,11 @@ public class PeliculaServiceImp implements IPeliculaService {
 
     @Override
     public Pelicula altaPeli(Pelicula peli) {
-        this.porSilistaPersoNull(peli);
-        if(!persoSer.sonPersoCorrectos(peli.getListaPersonajes())){
-            return null;
-        }
-        //ControladoraPersonaje.addPeliPerso(peli);
         return this.repoPeli.altaPeli(peli);
     }
 
     @Override
     public Pelicula modiPeli(Pelicula peli, int id) {
-        this.porSilistaPersoNull(peli);
-        if(!this.existePeli(id)){
-            return null;
-        }
-        if(!persoSer.sonPersoCorrectos(peli.getListaPersonajes())){
-            return null;
-        }
         return this.repoPeli.modiPeli(peli,id);
     }
 
@@ -99,10 +87,11 @@ public class PeliculaServiceImp implements IPeliculaService {
         return existe;
     }
 
-    private void porSilistaPersoNull(Pelicula peli){
+    public Pelicula porSilistaPersoNull(Pelicula peli){
         if(peli.getListaPersonajes()==null){
             List<Personaje> listaPerVacia=new ArrayList<>();
             peli.setListaPersonajes(listaPerVacia);
         }
+        return peli;
     }
 }
