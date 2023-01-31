@@ -63,27 +63,27 @@ public class ControladoraPersonaje {
 
     @PostMapping
     public ResponseEntity<?> altaPersonaje(@RequestBody Personaje perso){
-        this.persoService.porSiListaPelisNull(perso);
-        if(!this.peliService.sonPelisCorrectas(perso.getListaPeliculas())){
+        Personaje person=this.persoService.porSiListaPelisNull(perso);
+        if(!this.peliService.sonPelisCorrectas(person.getListaPeliculas())){
             return this.notSuccessResponse("ALguna pelicula asociada no existe",0);
         }
-        Personaje person=this.persoService.altaPersonaje(perso);
+        Personaje personaje=this.persoService.altaPersonaje(person);
         return ResponseEntity.status(HttpStatus.CREATED).body(person);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> modiPerso(@RequestBody Personaje perso,
                                        @PathVariable int id){
-        this.persoService.porSiListaPelisNull(perso);
+        Personaje person=this.persoService.porSiListaPelisNull(perso);
         if(!this.persoService.existePerso(id)) {
             return this.notSuccessResponse("El personaje con id %d ingresado no existe", id);
         }
-        if(!this.peliService.sonPelisCorrectas(perso.getListaPeliculas())) {
+        if(!this.peliService.sonPelisCorrectas(person.getListaPeliculas())) {
             return this.notSuccessResponse("Alguna pelicula asociada no existe",0);
         }
-        Personaje person=this.persoService.modiPersonaje(perso,id);
+        Personaje personaje=this.persoService.modiPersonaje(person,id);
         mensajeBody.put("Success",Boolean.TRUE);
-        mensajeBody.put("data",person);
+        mensajeBody.put("data",personaje);
         return ResponseEntity.ok(mensajeBody);
     }
 
