@@ -87,9 +87,6 @@ public class ControladoraPelicula {
             return this.notSuccessResponse("Algun personaje ingresado no existe",0);
         }
         Pelicula pelicula=this.peliService.altaPeli(pelicu);
-        //asociar esta pelicula a cada personaje que trae en su lista
-        //Los personajes no se enteraron aun de la nueva peli
-        //this.persoService.addPerso();
         return ResponseEntity.status(HttpStatus.CREATED).body(pelicula);
     }
 
@@ -103,33 +100,12 @@ public class ControladoraPelicula {
         if(!persoService.sonPersoCorrectos(pelicu.getListaPersonajes())){
             return this.notSuccessResponse("Algun personaje ingresado no existe",0);
         }
-        //this.persoService.addPerso();
-        //
         Pelicula peliM=this.peliService.modiPeli(pelicu,id);
         mensajeBody.put("Success",Boolean.TRUE);
         mensajeBody.put("data",peliM);
         return ResponseEntity.ok(mensajeBody);
     }
-
-    public static boolean sonPelisCorrectas(List<Pelicula> pelisIn){
-        boolean sonCorrectas;
-        int contadorCorrectas=0;
-        for(Pelicula peliIn:pelisIn){
-            Optional <Pelicula> oPeliAsociada=getListaPelis().stream()
-                                        .filter(peli->peli.getId()==peliIn.getId()).findAny();
-            if(oPeliAsociada.isEmpty()){
-                return false;
-            }
-            //Luego ver si al equals le puedo borrar la lista de personajes si no lo voy a necesitar en otro lado
-            List<Personaje> guardoPerso=oPeliAsociada.get().getListaPersonajes();
-            Pelicula aux = oPeliAsociada.get();
-            aux.setListaPersonajes(null);
-            contadorCorrectas=aux.equals(peliIn)?contadorCorrectas+1:contadorCorrectas;
-            aux.setListaPersonajes(guardoPerso);
-        }
-        sonCorrectas=contadorCorrectas==pelisIn.size();
-        return sonCorrectas;
-    }
+/*
 
     public static void addPersoPeliculas(Personaje perso) {
         for(Pelicula peli: perso.getListaPeliculas()){
@@ -150,5 +126,6 @@ public class ControladoraPelicula {
             peli.setListaPersonajes(listaPerso);
         }
     }
+*/
 
 }
