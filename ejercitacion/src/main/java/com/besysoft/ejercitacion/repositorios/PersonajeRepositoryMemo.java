@@ -1,6 +1,5 @@
 package com.besysoft.ejercitacion.repositorios;
 
-import com.besysoft.ejercitacion.controlador.ControladoraPelicula;
 import com.besysoft.ejercitacion.dominio.Pelicula;
 import com.besysoft.ejercitacion.dominio.Personaje;
 import com.besysoft.ejercitacion.utilidades.Test;
@@ -14,6 +13,12 @@ import java.util.stream.Collectors;
 public class PersonajeRepositoryMemo implements IPersonajeRepository{
 
     private List<Personaje> listaPerso= Test.listaPerso;
+    private final IPeliculaRepository peliRepo;
+
+    public PersonajeRepositoryMemo(IPeliculaRepository peliRepo) {
+        this.peliRepo = peliRepo;
+    }
+
     @Override
     public List<Personaje> verPerso() {
         return this.listaPerso;
@@ -47,7 +52,7 @@ public class PersonajeRepositoryMemo implements IPersonajeRepository{
     public Personaje altaPersonaje(Personaje perso) {
         perso.setId(this.listaPerso.size()+1);
         this.listaPerso.add(perso);
-        //addPersoAPeliculas
+        this.peliRepo.addPersoAPeli(perso);
         return perso;
     }
 
@@ -69,10 +74,10 @@ public class PersonajeRepositoryMemo implements IPersonajeRepository{
                 per.setHistoria(perso.getHistoria());
                 per.setPeso(perso.getPeso());
                 //Primero del lado de las peliculas remuevo el personaje anterior
+                this.peliRepo.removePersoDePeli(per);
                 //y agrego el personaje actual en las que trae. Para eso debo setearle el id.
-                //perso.setId(id);
-                //ControladoraPelicula.removePersoPeliculas(per);
-                //ControladoraPelicula.addPersoPeliculas(perso);
+                perso.setId(id);
+                this.peliRepo.addPersoAPeli(perso);
                 per.setListaPeliculas(perso.getListaPeliculas());
             }
                 });

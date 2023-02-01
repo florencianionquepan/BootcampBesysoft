@@ -1,6 +1,7 @@
 package com.besysoft.ejercitacion.repositorios;
 
 import com.besysoft.ejercitacion.dominio.Pelicula;
+import com.besysoft.ejercitacion.dominio.Personaje;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -15,4 +16,6 @@ public interface IPeliculaRepository {
     Pelicula altaPeli(Pelicula peli);
     Pelicula modiPeli(Pelicula peli, int id);
     Optional<Pelicula> buscarPeliById(int id);
+    void addPersoAPeli(Personaje persoNuevo);
+    void removePersoDePeli(Personaje persoViejo);
 }
