@@ -68,7 +68,7 @@ public class ControladoraPersonaje {
             return this.notSuccessResponse("ALguna pelicula asociada no existe",0);
         }
         Personaje personaje=this.persoService.altaPersonaje(person);
-        return ResponseEntity.status(HttpStatus.CREATED).body(person);
+        return ResponseEntity.status(HttpStatus.CREATED).body(personaje);
     }
 
     @PutMapping("/{id}")
