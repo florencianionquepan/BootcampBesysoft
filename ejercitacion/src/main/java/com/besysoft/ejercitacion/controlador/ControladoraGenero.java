@@ -40,6 +40,9 @@ public class ControladoraGenero {
     @PostMapping
     public ResponseEntity<?> altaGenero(@RequestBody Genero genero){
         this.genService.porSiListaPelisNull(genero);
+        if(!this.genService.existeNombre(genero)){
+            this.notSuccessResponse("El genero ya existe",0);
+        }
         if(!this.peliService.sonPelisCorrectas(genero.getListaPelis())){
             this.notSuccessResponse("Alguna pelicula ingresada no existe o no es correcta",0);
         }
@@ -53,6 +56,9 @@ public class ControladoraGenero {
         this.genService.porSiListaPelisNull(genero);
         if(this.genService.existeGenero(id)) {
             this.notSuccessResponse("El genero con id %d ingresado no existe", id);
+        }
+        if(!this.genService.existeNombre(genero)){
+            this.notSuccessResponse("El genero ya existe",0);
         }
         if(!this.peliService.sonPelisCorrectas(genero.getListaPelis())){
             this.notSuccessResponse("Alguna pelicula ingresada no existe",0);

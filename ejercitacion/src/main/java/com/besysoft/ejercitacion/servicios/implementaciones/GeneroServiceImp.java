@@ -49,4 +49,14 @@ public class GeneroServiceImp implements IGeneroService {
         }
         return existe;
     }
+
+    @Override
+    public boolean existeNombre(Genero genero) {
+        boolean existe=true;
+        Optional <Genero> oGen=this.genRepo.buscarGeneroByNombre(genero.getNombre());
+        if (oGen.isEmpty()){
+            existe=false;
+        }
+        return existe;
+    }
 }

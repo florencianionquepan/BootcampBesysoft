@@ -12,5 +12,6 @@ public interface IGeneroService {
     Genero modiGenero(Genero genero, int id);
     void porSiListaPelisNull(Genero genero);
     boolean existeGenero(int id);
+    boolean existeNombre(Genero genero);
 
 }

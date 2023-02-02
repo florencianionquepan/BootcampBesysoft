@@ -40,4 +40,11 @@ public class GeneroRepositoryMemo implements IGeneroRepository{
                 .filter(g->g.getId()==id).findAny();
         return oGen;
     }
+
+    @Override
+    public Optional<Genero> buscarGeneroByNombre(String nombre) {
+        Optional<Genero> oGen=this.listaGeneros.stream()
+                .filter(g->g.getNombre().equals(nombre)).findAny();
+        return oGen;
+    }
 }

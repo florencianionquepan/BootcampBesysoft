@@ -11,5 +11,6 @@ public interface IGeneroRepository {
     Genero altaGen(Genero gen);
     Genero modiGen(Genero gen,int id);
     Optional<Genero> buscarGeneroById(int id);
+    Optional<Genero> buscarGeneroByNombre(String nombre);
 
 }
