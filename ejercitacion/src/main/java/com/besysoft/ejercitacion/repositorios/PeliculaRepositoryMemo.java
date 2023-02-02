@@ -1,11 +1,13 @@
 package com.besysoft.ejercitacion.repositorios;
 
+import com.besysoft.ejercitacion.dominio.Genero;
 import com.besysoft.ejercitacion.dominio.Pelicula;
 import com.besysoft.ejercitacion.dominio.Personaje;
 import com.besysoft.ejercitacion.utilidades.Test;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -14,9 +16,11 @@ import java.util.stream.Collectors;
 public class PeliculaRepositoryMemo implements IPeliculaRepository{
     private List<Pelicula> listaPelis= Test.listaPelis;
     private final IPersonajeRepository persoRepo;
+    private final IGeneroRepository genRepo;
 
-    public PeliculaRepositoryMemo(IPersonajeRepository persoRepo) {
+    public PeliculaRepositoryMemo(IPersonajeRepository persoRepo, IGeneroRepository genRepo) {
         this.persoRepo = persoRepo;
+        this.genRepo = genRepo;
     }
 
     @Override
@@ -34,7 +38,12 @@ public class PeliculaRepositoryMemo implements IPeliculaRepository{
 
     @Override
     public List<Pelicula> buscarPeliByGenero(String genero) {
-        return null;
+        List<List<Pelicula>> listaPelis= this.genRepo.verGeneros().stream()
+                            .filter(gen->gen.getNombre().equals(genero))
+                            .map(Genero::getListaPelis)
+                            .collect(Collectors.toList());
+        List<Pelicula> listaPel=(listaPelis.size()>0)?listaPelis.get(0):new ArrayList<Pelicula>();
+        return listaPel;
     }
 
     @Override
