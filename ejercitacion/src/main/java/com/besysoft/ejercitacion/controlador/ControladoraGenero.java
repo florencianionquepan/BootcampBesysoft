@@ -40,11 +40,11 @@ public class ControladoraGenero {
     @PostMapping
     public ResponseEntity<?> altaGenero(@RequestBody Genero genero){
         this.genService.porSiListaPelisNull(genero);
-        if(!this.genService.existeNombre(genero)){
-            this.notSuccessResponse("El genero ya existe",0);
+        if(this.genService.existeNombre(genero)){
+            return this.notSuccessResponse("El genero ya existe",0);
         }
         if(!this.peliService.sonPelisCorrectas(genero.getListaPelis())){
-            this.notSuccessResponse("Alguna pelicula ingresada no existe o no es correcta",0);
+            return this.notSuccessResponse("Alguna pelicula ingresada no existe o no es correcta",0);
         }
         Genero generoNuevo=this.genService.altaGenero(genero);
         return ResponseEntity.status(HttpStatus.CREATED).body(generoNuevo);
@@ -55,13 +55,13 @@ public class ControladoraGenero {
                                          @PathVariable int id){
         this.genService.porSiListaPelisNull(genero);
         if(this.genService.existeGenero(id)) {
-            this.notSuccessResponse("El genero con id %d ingresado no existe", id);
+            return this.notSuccessResponse("El genero con id %d ingresado no existe", id);
         }
-        if(!this.genService.existeNombre(genero)){
-            this.notSuccessResponse("El genero ya existe",0);
+        if(this.genService.existeNombre(genero)){
+            return this.notSuccessResponse("El genero ya existe",0);
         }
         if(!this.peliService.sonPelisCorrectas(genero.getListaPelis())){
-            this.notSuccessResponse("Alguna pelicula ingresada no existe",0);
+            return this.notSuccessResponse("Alguna pelicula ingresada no existe",0);
         }
             Genero generoMod=this.genService.modiGenero(genero,id);
             mensajeBody.put("Success",Boolean.TRUE);
