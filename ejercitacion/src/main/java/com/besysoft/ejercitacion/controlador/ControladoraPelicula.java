@@ -99,7 +99,7 @@ public class ControladoraPelicula {
         Pelicula pelicu=this.peliService.porSiListaPersoNull(peli);
         if(this.peliService.existeTitulo(peli)){
             return this.notSuccessResponse("Ya existe una pelicula ese nombre", 0);
-        }
+        }//chequear que no se este hablando del mismo titulo
         if(!this.peliService.existePeli(id)) {
             return this.notSuccessResponse("La pelicula con id %d ingresado no existe", id);
         }

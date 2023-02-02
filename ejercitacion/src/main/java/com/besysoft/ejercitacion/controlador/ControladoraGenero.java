@@ -54,10 +54,10 @@ public class ControladoraGenero {
     public ResponseEntity<?> modiGenero(@RequestBody Genero genero,
                                          @PathVariable int id){
         this.genService.porSiListaPelisNull(genero);
-        if(this.genService.existeGenero(id)) {
+        if(!this.genService.existeGenero(id)) {
             return this.notSuccessResponse("El genero con id %d ingresado no existe", id);
         }
-        if(this.genService.existeNombre(genero)){
+        if(this.genService.existeNombreConOtroId(genero,id)){
             return this.notSuccessResponse("El genero ya existe",0);
         }
         if(!this.peliService.sonPelisCorrectas(genero.getListaPelis())){

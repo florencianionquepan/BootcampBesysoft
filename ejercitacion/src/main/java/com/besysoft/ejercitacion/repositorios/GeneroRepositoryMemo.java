@@ -2,7 +2,6 @@ package com.besysoft.ejercitacion.repositorios;
 
 import com.besysoft.ejercitacion.dominio.Genero;
 import com.besysoft.ejercitacion.dominio.Pelicula;
-import com.besysoft.ejercitacion.utilidades.Test;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -40,6 +39,7 @@ public class GeneroRepositoryMemo implements IGeneroRepository{
         this.listaGeneros.forEach(g->{
             if(g.getId()==gen.getId()){
                 g.setNombre(gen.getNombre());
+                g.setListaPelis(gen.getListaPelis());
             }
         });
         return genero;

@@ -59,4 +59,20 @@ public class GeneroServiceImp implements IGeneroService {
         }
         return existe;
     }
+
+    @Override
+    public boolean existeNombreConOtroId(Genero genero, int id) {
+        boolean existe=true;
+        Optional <Genero> oGen=this.genRepo.buscarGeneroByNombre(genero.getNombre());
+        Optional<Genero> gen=this.genRepo.buscarGeneroById(id);
+        //Si se modifica el nombre del genero por uno que aun no existe
+        if (oGen.isEmpty()){
+            existe=false;
+        }
+        //si el nombre existe, pero se esta tratando del mismo id:
+        if(oGen.isPresent() && oGen.get().getId()==gen.get().getId()){
+            existe=false;
+        }
+        return existe;
+    }
 }
