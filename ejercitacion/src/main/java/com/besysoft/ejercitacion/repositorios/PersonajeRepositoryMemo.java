@@ -90,7 +90,6 @@ public class PersonajeRepositoryMemo implements IPersonajeRepository{
         for(Personaje per: peliNueva.getListaPersonajes()){
             Personaje persoData=this.listaPerso.stream().filter(p->p.getId()==per.getId())
                     .findAny().get();
-            System.out.println(persoData);
             persoData.getListaPeliculas().add(peliNueva);
         }
     }
