@@ -8,19 +8,26 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
 public class PeliculaRepositoryMemo implements IPeliculaRepository{
-    private List<Pelicula> listaPelis= Test.listaPelis;
+    private List<Pelicula> listaPelis;
     private final IPersonajeRepository persoRepo;
     private final IGeneroRepository genRepo;
 
     public PeliculaRepositoryMemo(IPersonajeRepository persoRepo, IGeneroRepository genRepo) {
         this.persoRepo = persoRepo;
         this.genRepo = genRepo;
+        this.listaPelis=new ArrayList<Pelicula>(
+                Arrays.asList(
+                        new Pelicula(1,"Coco",LocalDate.of(2017,12,01),4,new ArrayList<Personaje>()),
+                        new Pelicula(2,"Primer", LocalDate.of(2014,02,22),5,new ArrayList<Personaje>())
+                )
+        );
     }
 
     @Override
@@ -121,7 +128,7 @@ public class PeliculaRepositoryMemo implements IPeliculaRepository{
     @Override
     public Optional<Pelicula> buscarPeliculaByTitulo(String titulo) {
         Optional<Pelicula> oPeli=this.listaPelis.stream()
-                .filter(p->p.getTitulo().equals(titulo)).findAny();
+                .filter(p->p.getTitulo().equalsIgnoreCase(titulo)).findAny();
         return oPeli;
     }
 }

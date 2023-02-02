@@ -6,6 +6,8 @@ import com.besysoft.ejercitacion.utilidades.Test;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -13,11 +15,19 @@ import java.util.stream.Collectors;
 @Repository
 public class PersonajeRepositoryMemo implements IPersonajeRepository{
 
-    private List<Personaje> listaPerso= Test.listaPerso;
+    private List<Personaje> listaPerso;
     private final IPeliculaRepository peliRepo;
 
     public PersonajeRepositoryMemo(@Lazy IPeliculaRepository peliRepo) {
         this.peliRepo = peliRepo;
+        this.listaPerso=new ArrayList<Personaje>(
+                Arrays.asList(
+                        new Personaje(1,"Miguel",11,38,"Sueña con convertirse en un cantante famoso como su ídolo Ernesto de la Cruz, " +
+                                "quien alcanzó la fama gracias a su tema 'Recuérdame'", new ArrayList<Pelicula>()),
+                        new Personaje(2,"Aaron",26,58,"Trabaja durante el dia en una empresa " +
+                                "y por la noche realiza experimentos con sus amigos", new ArrayList<Pelicula>())
+                )
+        );
     }
 
     @Override

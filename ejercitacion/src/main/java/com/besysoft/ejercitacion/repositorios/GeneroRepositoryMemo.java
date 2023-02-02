@@ -1,15 +1,26 @@
 package com.besysoft.ejercitacion.repositorios;
 
 import com.besysoft.ejercitacion.dominio.Genero;
+import com.besysoft.ejercitacion.dominio.Pelicula;
 import com.besysoft.ejercitacion.utilidades.Test;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public class GeneroRepositoryMemo implements IGeneroRepository{
-    private List<Genero> listaGeneros= Test.listaGeneros;
+    private List<Genero> listaGeneros;
+
+    public GeneroRepositoryMemo(){
+        this.listaGeneros=new ArrayList<Genero>(
+                Arrays.asList(
+                        new Genero(1,"Infantil",new ArrayList<Pelicula>())
+                )
+        );
+    }
     @Override
     public List<Genero> verGeneros() {
         return this.listaGeneros;
@@ -44,7 +55,7 @@ public class GeneroRepositoryMemo implements IGeneroRepository{
     @Override
     public Optional<Genero> buscarGeneroByNombre(String nombre) {
         Optional<Genero> oGen=this.listaGeneros.stream()
-                .filter(g->g.getNombre().equals(nombre)).findAny();
+                .filter(g->g.getNombre().equalsIgnoreCase(nombre)).findAny();
         return oGen;
     }
 }
