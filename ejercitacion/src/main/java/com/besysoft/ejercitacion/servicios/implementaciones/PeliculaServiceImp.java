@@ -14,11 +14,9 @@ import java.util.Optional;
 @Service
 public class PeliculaServiceImp implements IPeliculaService {
     private final IPeliculaRepository repoPeli;
-    private final PersonajeServiceImp persoSer;
 
-    public PeliculaServiceImp(IPeliculaRepository repoPeli, PersonajeServiceImp personServi) {
+    public PeliculaServiceImp(IPeliculaRepository repoPeli) {
         this.repoPeli = repoPeli;
-        this.persoSer=personServi;
     }
 
     @Override
@@ -65,12 +63,11 @@ public class PeliculaServiceImp implements IPeliculaService {
             if(oPeliAsociada.isEmpty()){
                 return false;
             }
-            //Luego ver si al equals le puedo borrar la lista de personajes si no lo voy a necesitar en otro lado
-            //List<Personaje> guardoPerso=oPeliAsociada.get().getListaPersonajes(); CREO QUE AHORA ESTO NO LO NECESITO
+            List<Personaje> guardoPerso=oPeliAsociada.get().getListaPersonajes();
             Pelicula aux = oPeliAsociada.get();
             aux.setListaPersonajes(null);
             contadorCorrectas=aux.equals(peliIn)?contadorCorrectas+1:contadorCorrectas;
-            //aux.setListaPersonajes(guardoPerso);CREO QUE AHORA ESTO NO LO NECESITO
+            aux.setListaPersonajes(guardoPerso);
         }
         sonCorrectas=contadorCorrectas==pelisIn.size();
         return sonCorrectas;
