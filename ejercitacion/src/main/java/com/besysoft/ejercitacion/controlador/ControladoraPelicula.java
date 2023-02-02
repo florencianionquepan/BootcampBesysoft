@@ -105,27 +105,5 @@ public class ControladoraPelicula {
         mensajeBody.put("data",peliM);
         return ResponseEntity.ok(mensajeBody);
     }
-/*
-
-    public static void addPersoPeliculas(Personaje perso) {
-        for(Pelicula peli: perso.getListaPeliculas()){
-            List<Personaje> listaPersoPeli=getListaPelis().stream()
-                    .filter(pel->pel.getId()==peli.getId())
-                    .map(Pelicula::getListaPersonajes).findAny().get();
-            listaPersoPeli.add(perso);
-            peli.setListaPersonajes(listaPersoPeli);
-        }
-    }
-
-    public static void removePersoPeliculas(Personaje perAnterior){
-        for(Pelicula peli: perAnterior.getListaPeliculas()){
-            List<Personaje> listaPerso=getListaPelis().stream()
-                    .filter(pel->pel.getId()==peli.getId())
-                    .map(Pelicula::getListaPersonajes).findAny().get();
-            listaPerso.remove(perAnterior);
-            peli.setListaPersonajes(listaPerso);
-        }
-    }
-*/
 
 }
