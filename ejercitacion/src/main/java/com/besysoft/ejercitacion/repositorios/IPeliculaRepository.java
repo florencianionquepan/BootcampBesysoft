@@ -18,4 +18,5 @@ public interface IPeliculaRepository {
     Optional<Pelicula> buscarPeliById(int id);
     void addPersoAPeli(Personaje persoNuevo);
     void removePersoDePeli(Personaje persoViejo);
+    Optional<Pelicula> buscarPeliculaByTitulo(String titulo);
 }

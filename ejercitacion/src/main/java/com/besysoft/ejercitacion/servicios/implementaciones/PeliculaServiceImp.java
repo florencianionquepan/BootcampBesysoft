@@ -91,4 +91,14 @@ public class PeliculaServiceImp implements IPeliculaService {
         }
         return peli;
     }
+
+    @Override
+    public boolean existeTitulo(Pelicula peli) {
+        boolean existe=true;
+        Optional <Pelicula> oPeli=this.repoPeli.buscarPeliculaByTitulo(peli.getTitulo());
+        if (oPeli.isEmpty()){
+            existe=false;
+        }
+        return existe;
+    }
 }

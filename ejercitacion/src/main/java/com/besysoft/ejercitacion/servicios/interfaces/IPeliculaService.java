@@ -16,4 +16,5 @@ public interface IPeliculaService {
     boolean sonPelisCorrectas(List<Pelicula> pelisIn);
     boolean existePeli(int id);
     Pelicula porSiListaPersoNull(Pelicula peli);
+    boolean existeTitulo(Pelicula peli);
 }

@@ -35,6 +35,7 @@ public class PeliculaRepositoryMemo implements IPeliculaRepository{
                 .collect(Collectors.toList());
         return listaPel;
     }
+    //Siempre dara una lista con un solo objeto ahora que no se pueden repetir titulos
 
     @Override
     public List<Pelicula> buscarPeliByGenero(String genero) {
@@ -116,5 +117,11 @@ public class PeliculaRepositoryMemo implements IPeliculaRepository{
                     .findAny().get();
             peliData.getListaPersonajes().remove(persoViejo);
         }
+    }
+    @Override
+    public Optional<Pelicula> buscarPeliculaByTitulo(String titulo) {
+        Optional<Pelicula> oPeli=this.listaPelis.stream()
+                .filter(p->p.getTitulo().equals(titulo)).findAny();
+        return oPeli;
     }
 }
