@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+@Deprecated
 public class Test {
     public static List<Personaje> listaPerso=new ArrayList<Personaje>();
     public static List<Pelicula> listaPelis=new ArrayList<Pelicula>();
