@@ -3,6 +3,7 @@ package com.besysoft.ejercitacion.repositorios;
 import com.besysoft.ejercitacion.dominio.Pelicula;
 import com.besysoft.ejercitacion.dominio.Personaje;
 import com.besysoft.ejercitacion.utilidades.Test;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public class PersonajeRepositoryMemo implements IPersonajeRepository{
     private List<Personaje> listaPerso= Test.listaPerso;
     private final IPeliculaRepository peliRepo;
 
-    public PersonajeRepositoryMemo(IPeliculaRepository peliRepo) {
+    public PersonajeRepositoryMemo(@Lazy IPeliculaRepository peliRepo) {
         this.peliRepo = peliRepo;
     }
 
@@ -89,6 +90,7 @@ public class PersonajeRepositoryMemo implements IPersonajeRepository{
         for(Personaje per: peliNueva.getListaPersonajes()){
             Personaje persoData=this.listaPerso.stream().filter(p->p.getId()==per.getId())
                     .findAny().get();
+            System.out.println(persoData);
             persoData.getListaPeliculas().add(peliNueva);
         }
     }

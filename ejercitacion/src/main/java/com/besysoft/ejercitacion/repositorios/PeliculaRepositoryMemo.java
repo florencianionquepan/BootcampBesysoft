@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @Repository
 public class PeliculaRepositoryMemo implements IPeliculaRepository{
     private List<Pelicula> listaPelis= Test.listaPelis;
-    private IPersonajeRepository persoRepo;
+    private final IPersonajeRepository persoRepo;
 
     public PeliculaRepositoryMemo(IPersonajeRepository persoRepo) {
         this.persoRepo = persoRepo;
