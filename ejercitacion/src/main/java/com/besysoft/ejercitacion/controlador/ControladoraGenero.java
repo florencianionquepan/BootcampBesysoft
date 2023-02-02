@@ -22,6 +22,14 @@ public class ControladoraGenero {
         this.peliService = peliService;
     }
 
+    private ResponseEntity<?> notSuccessResponse(String mensaje,int id){
+        mensajeBody.put("Success",Boolean.FALSE);
+        mensajeBody.put("data", String.format(mensaje,id));
+        return ResponseEntity
+                .badRequest()
+                .body(mensajeBody);
+    }
+
     @GetMapping
     public ResponseEntity<?>  verGeneros(){
         mensajeBody.put("Success",Boolean.TRUE);
@@ -33,11 +41,7 @@ public class ControladoraGenero {
     public ResponseEntity<?> altaGenero(@RequestBody Genero genero){
         this.genService.porSiListaPelisNull(genero);
         if(!this.peliService.sonPelisCorrectas(genero.getListaPelis())){
-            mensajeBody.put("Success", Boolean.FALSE);
-            mensajeBody.put("data", "Alguna pelicula ingresada no existe o no es correcta");
-            return ResponseEntity
-                    .badRequest()
-                    .body(mensajeBody);
+            this.notSuccessResponse("Alguna pelicula ingresada no existe o no es correcta",0);
         }
         Genero generoNuevo=this.genService.altaGenero(genero);
         return ResponseEntity.status(HttpStatus.CREATED).body(generoNuevo);
@@ -47,20 +51,11 @@ public class ControladoraGenero {
     public ResponseEntity<?> modiGenero(@RequestBody Genero genero,
                                          @PathVariable int id){
         this.genService.porSiListaPelisNull(genero);
-
         if(this.genService.existeGenero(id)) {
-            mensajeBody.put("Success", Boolean.FALSE);
-            mensajeBody.put("data", String.format("El genero con id %d ingresado no existe", id));
-            return ResponseEntity
-                    .badRequest()
-                    .body(mensajeBody);
+            this.notSuccessResponse("El genero con id %d ingresado no existe", id);
         }
         if(!this.peliService.sonPelisCorrectas(genero.getListaPelis())){
-            mensajeBody.put("Success", Boolean.FALSE);
-            mensajeBody.put("data", "Alguna pelicula ingresada no existe");
-            return ResponseEntity
-                    .badRequest()
-                    .body(mensajeBody);
+            this.notSuccessResponse("Alguna pelicula ingresada no existe",0);
         }
             Genero generoMod=this.genService.modiGenero(genero,id);
             mensajeBody.put("Success",Boolean.TRUE);
