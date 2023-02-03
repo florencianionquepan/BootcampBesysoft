@@ -66,11 +66,11 @@ public class PersonajeServiceImp implements IPersonajeService {
             if (oPerso.isEmpty()) {
                 return false;
             }
-            List<Pelicula> guardoLista = oPerso.get().getListaPeliculas();
-            Personaje aux = oPerso.get();
-            aux.setListaPeliculas(null);
-            contCorrectos = aux.equals(per) ? contCorrectos + 1 : contCorrectos;
-            aux.setListaPeliculas(guardoLista);
+            //List<Pelicula> guardoLista = oPerso.get().getListaPeliculas();
+            //Personaje aux = oPerso.get();
+            //aux.setListaPeliculas(null);
+            contCorrectos = oPerso.get().equals(per) ? contCorrectos + 1 : contCorrectos;
+            //aux.setListaPeliculas(guardoLista);
         }
         sonCorrectos=contCorrectos==persosIn.size();
         return sonCorrectos;

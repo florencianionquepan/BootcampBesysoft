@@ -63,11 +63,11 @@ public class PeliculaServiceImp implements IPeliculaService {
             if(oPeliAsociada.isEmpty()){
                 return false;
             }
-            List<Personaje> guardoPerso=oPeliAsociada.get().getListaPersonajes();
-            Pelicula aux = oPeliAsociada.get();
-            aux.setListaPersonajes(null);
-            contadorCorrectas=aux.equals(peliIn)?contadorCorrectas+1:contadorCorrectas;
-            aux.setListaPersonajes(guardoPerso);
+            //List<Personaje> guardoPerso=oPeliAsociada.get().getListaPersonajes();
+            //Pelicula aux = oPeliAsociada.get();
+            //aux.setListaPersonajes(null);
+            contadorCorrectas=oPeliAsociada.get().equals(peliIn)?contadorCorrectas+1:contadorCorrectas;
+            //aux.setListaPersonajes(guardoPerso);
         }
         sonCorrectas=contadorCorrectas==pelisIn.size();
         return sonCorrectas;

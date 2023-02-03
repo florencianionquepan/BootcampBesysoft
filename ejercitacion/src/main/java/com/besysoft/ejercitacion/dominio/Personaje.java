@@ -85,11 +85,11 @@ public class Personaje {
         if (this == o) return true;
         if (!(o instanceof Personaje)) return false;
         Personaje personaje = (Personaje) o;
-        return getId() == personaje.getId() && getEdad() == personaje.getEdad() && Double.compare(personaje.getPeso(), getPeso()) == 0 && Objects.equals(getNombre(), personaje.getNombre()) && Objects.equals(getHistoria(), personaje.getHistoria()) && Objects.equals(getListaPeliculas(), personaje.getListaPeliculas());
+        return getId() == personaje.getId() && getEdad() == personaje.getEdad() && Double.compare(personaje.getPeso(), getPeso()) == 0 && Objects.equals(getNombre(), personaje.getNombre()) && Objects.equals(getHistoria(), personaje.getHistoria());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getNombre(), getEdad(), getPeso(), getHistoria(), getListaPeliculas());
+        return Objects.hash(getId(), getNombre(), getEdad(), getPeso(), getHistoria());
     }
 }

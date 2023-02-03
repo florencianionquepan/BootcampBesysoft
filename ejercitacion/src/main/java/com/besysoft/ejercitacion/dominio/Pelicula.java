@@ -82,11 +82,11 @@ public class Pelicula {
         if (this == o) return true;
         if (!(o instanceof Pelicula)) return false;
         Pelicula pelicula = (Pelicula) o;
-        return getId() == pelicula.getId() && getCalificacion() == pelicula.getCalificacion() && Objects.equals(getTitulo(), pelicula.getTitulo()) && Objects.equals(getFechaCreacion(), pelicula.getFechaCreacion()) && Objects.equals(getListaPersonajes(), pelicula.getListaPersonajes());
+        return getId() == pelicula.getId() && getCalificacion() == pelicula.getCalificacion() && Objects.equals(getTitulo(), pelicula.getTitulo()) && Objects.equals(getFechaCreacion(), pelicula.getFechaCreacion());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getTitulo(), getFechaCreacion(), getCalificacion(), getListaPersonajes());
+        return Objects.hash(getId(), getTitulo(), getFechaCreacion(), getCalificacion());
     }
 }
