@@ -101,4 +101,20 @@ public class PeliculaServiceImp implements IPeliculaService {
         }
         return existe;
     }
+
+    @Override
+    public boolean existeTituloConOtroId(Pelicula peli, int id) {
+        boolean existe=true;
+        Optional <Pelicula> oPeli=this.repoPeli.buscarPeliculaByTitulo(peli.getTitulo());
+        Optional <Pelicula> oPeliId=this.repoPeli.buscarPeliById(id);
+        //Si se modifica el nombre del genero por uno que aun no existe
+        if (oPeli.isEmpty()){
+            existe=false;
+        }
+        //si el nombre existe, pero se esta tratando del mismo id:
+        if(oPeli.isPresent() && oPeli.get().getId()==oPeliId.get().getId()){
+            existe=false;
+        }
+        return existe;
+    }
 }

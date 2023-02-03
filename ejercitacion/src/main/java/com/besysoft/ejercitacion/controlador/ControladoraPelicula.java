@@ -97,9 +97,9 @@ public class ControladoraPelicula {
     public ResponseEntity<?> modiPelicula(@RequestBody Pelicula peli,
                                             @PathVariable int id){
         Pelicula pelicu=this.peliService.porSiListaPersoNull(peli);
-        if(this.peliService.existeTitulo(peli)){
+        if(this.peliService.existeTituloConOtroId(peli, id)){
             return this.notSuccessResponse("Ya existe una pelicula ese nombre", 0);
-        }//chequear que no se este hablando del mismo titulo
+        }
         if(!this.peliService.existePeli(id)) {
             return this.notSuccessResponse("La pelicula con id %d ingresado no existe", id);
         }

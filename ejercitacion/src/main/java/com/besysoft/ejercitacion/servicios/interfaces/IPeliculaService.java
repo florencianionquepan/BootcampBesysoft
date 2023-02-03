@@ -17,4 +17,5 @@ public interface IPeliculaService {
     boolean existePeli(int id);
     Pelicula porSiListaPersoNull(Pelicula peli);
     boolean existeTitulo(Pelicula peli);
+    boolean existeTituloConOtroId(Pelicula peli, int id);
 }
