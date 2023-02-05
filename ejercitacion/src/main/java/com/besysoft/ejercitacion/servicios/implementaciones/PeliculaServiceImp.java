@@ -1,57 +1,73 @@
 package com.besysoft.ejercitacion.servicios.implementaciones;
 
+import com.besysoft.ejercitacion.dominio.Genero;
 import com.besysoft.ejercitacion.dominio.Pelicula;
 import com.besysoft.ejercitacion.dominio.Personaje;
-import com.besysoft.ejercitacion.repositorios.IPeliculaRepository;
+import com.besysoft.ejercitacion.repositorios.database.GeneroRepository;
+import com.besysoft.ejercitacion.repositorios.database.PeliculaRepository;
 import com.besysoft.ejercitacion.servicios.interfaces.IPeliculaService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class PeliculaServiceImp implements IPeliculaService {
-    private final IPeliculaRepository repoPeli;
+    private final PeliculaRepository repoPeli;
+    private final GeneroRepository repoGen;
 
-    public PeliculaServiceImp(IPeliculaRepository repoPeli) {
+    public PeliculaServiceImp(PeliculaRepository repoPeli, GeneroRepository repoGen) {
         this.repoPeli = repoPeli;
+        this.repoGen = repoGen;
     }
+
 
     @Override
     public List<Pelicula> verPelis() {
-        return this.repoPeli.verPelis();
+        return (List<Pelicula>) this.repoPeli.findAll();
     }
 
     @Override
     public List<Pelicula> buscarPeliByTitulo(String titulo) {
-        return this.repoPeli.buscarPeliByTitulo(titulo);
+        Optional <Pelicula> oPeli=this.repoPeli.findByTitle(titulo);
+        if(oPeli.isEmpty()){
+            List<Pelicula> pelis=new ArrayList<>();
+        }
+        return new ArrayList<Pelicula>(Arrays.asList(oPeli.get()));
     }
 
     @Override
     public List<Pelicula> buscarPeliByGenero(String genero) {
-        return this.repoPeli.buscarPeliByGenero(genero);
+        List<Pelicula> listaPelis=new ArrayList<Pelicula>();
+        Optional <Genero> oGen=this.repoGen.findByName(genero);
+        if(oGen.isPresent()){
+            listaPelis=oGen.get().getListaPelis();
+        }
+        return listaPelis;
     }
 
     @Override
     public List<Pelicula> buscarPeliByFechas(LocalDate desde, LocalDate hasta) {
-        return this.repoPeli.buscarPeliByFechas(desde,hasta);
+        return (List<Pelicula>) this.repoPeli.findBetweenDates(desde,hasta);
     }
 
     @Override
     public List<Pelicula> buscarPeliByCal(int desde, int hasta) {
-        return this.repoPeli.buscarPeliByCal(desde,hasta);
+        return (List<Pelicula>) this.repoPeli.findBetweenCalif(desde,hasta);
     }
 
     @Override
     public Pelicula altaPeli(Pelicula peli) {
-        return this.repoPeli.altaPeli(peli);
+        return this.repoPeli.save(peli);
     }
 
     @Override
     public Pelicula modiPeli(Pelicula peli, int id) {
-        return this.repoPeli.modiPeli(peli,id);
+        peli.setId(id);
+        return this.repoPeli.save(peli);
     }
 
     @Override
@@ -59,7 +75,7 @@ public class PeliculaServiceImp implements IPeliculaService {
         boolean sonCorrectas;
         int contadorCorrectas=0;
         for(Pelicula peliIn:pelisIn){
-            Optional<Pelicula> oPeliAsociada=this.repoPeli.buscarPeliById(peliIn.getId());
+            Optional<Pelicula> oPeliAsociada=this.repoPeli.findById(peliIn.getId());
             if(oPeliAsociada.isEmpty()){
                 return false;
             }
@@ -76,7 +92,7 @@ public class PeliculaServiceImp implements IPeliculaService {
     @Override
     public boolean existePeli(int id) {
         boolean existe=false;
-        Optional <Pelicula> oPeli=this.repoPeli.buscarPeliById(id);
+        Optional <Pelicula> oPeli=this.repoPeli.findById(id);
         if(oPeli.isPresent()){
             existe=true;
         }
@@ -95,7 +111,7 @@ public class PeliculaServiceImp implements IPeliculaService {
     @Override
     public boolean existeTitulo(Pelicula peli) {
         boolean existe=true;
-        Optional <Pelicula> oPeli=this.repoPeli.buscarPeliculaByTitulo(peli.getTitulo());
+        Optional <Pelicula> oPeli=this.repoPeli.findByTitle(peli.getTitulo());
         if (oPeli.isEmpty()){
             existe=false;
         }
@@ -105,8 +121,8 @@ public class PeliculaServiceImp implements IPeliculaService {
     @Override
     public boolean existeTituloConOtroId(Pelicula peli, int id) {
         boolean existe=true;
-        Optional <Pelicula> oPeli=this.repoPeli.buscarPeliculaByTitulo(peli.getTitulo());
-        Optional <Pelicula> oPeliId=this.repoPeli.buscarPeliById(id);
+        Optional <Pelicula> oPeli=this.repoPeli.findByTitle(peli.getTitulo());
+        Optional <Pelicula> oPeliId=this.repoPeli.findById(id);
         //Si se modifica el nombre del genero por uno que aun no existe
         if (oPeli.isEmpty()){
             existe=false;

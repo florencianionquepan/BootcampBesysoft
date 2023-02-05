@@ -2,7 +2,7 @@ package com.besysoft.ejercitacion.servicios.implementaciones;
 
 import com.besysoft.ejercitacion.dominio.Genero;
 import com.besysoft.ejercitacion.dominio.Pelicula;
-import com.besysoft.ejercitacion.repositorios.IGeneroRepository;
+import com.besysoft.ejercitacion.repositorios.database.GeneroRepository;
 import com.besysoft.ejercitacion.servicios.interfaces.IGeneroService;
 import org.springframework.stereotype.Service;
 
@@ -13,25 +13,26 @@ import java.util.Optional;
 @Service
 public class GeneroServiceImp implements IGeneroService {
 
-    private final IGeneroRepository genRepo;
+    private final GeneroRepository genRepo;
 
-    public GeneroServiceImp(IGeneroRepository genRepo) {
+    public GeneroServiceImp(GeneroRepository genRepo) {
         this.genRepo = genRepo;
     }
 
     @Override
     public List<Genero> verGeneros() {
-        return this.genRepo.verGeneros();
+        return (List<Genero>) this.genRepo.findAll();
     }
 
     @Override
     public Genero altaGenero(Genero genero) {
-        return this.genRepo.altaGen(genero);
+        return this.genRepo.save(genero);
     }
 
     @Override
     public Genero modiGenero(Genero genero, int id) {
-        return this.genRepo.modiGen(genero,id);
+        genero.setId(id);
+        return this.genRepo.save(genero);
     }
 
     public void porSiListaPelisNull(Genero genero){
@@ -43,7 +44,7 @@ public class GeneroServiceImp implements IGeneroService {
 
     public boolean existeGenero(int id){
         boolean existe=false;
-        Optional<Genero> gen=this.genRepo.buscarGeneroById(id);
+        Optional<Genero> gen=this.genRepo.findById(id);
         if(gen.isPresent()){
             existe=true;
         }
@@ -53,7 +54,7 @@ public class GeneroServiceImp implements IGeneroService {
     @Override
     public boolean existeNombre(Genero genero) {
         boolean existe=true;
-        Optional <Genero> oGen=this.genRepo.buscarGeneroByNombre(genero.getNombre());
+        Optional <Genero> oGen=this.genRepo.findByName(genero.getNombre());
         if (oGen.isEmpty()){
             existe=false;
         }
@@ -63,8 +64,8 @@ public class GeneroServiceImp implements IGeneroService {
     @Override
     public boolean existeNombreConOtroId(Genero genero, int id) {
         boolean existe=true;
-        Optional <Genero> oGen=this.genRepo.buscarGeneroByNombre(genero.getNombre());
-        Optional<Genero> gen=this.genRepo.buscarGeneroById(id);
+        Optional <Genero> oGen=this.genRepo.findByName(genero.getNombre());
+        Optional<Genero> gen=this.genRepo.findById(id);
         //Si se modifica el nombre del genero por uno que aun no existe
         if (oGen.isEmpty()){
             existe=false;
