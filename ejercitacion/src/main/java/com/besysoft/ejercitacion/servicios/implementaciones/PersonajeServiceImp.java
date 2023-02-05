@@ -2,7 +2,7 @@ package com.besysoft.ejercitacion.servicios.implementaciones;
 
 import com.besysoft.ejercitacion.dominio.Pelicula;
 import com.besysoft.ejercitacion.dominio.Personaje;
-import com.besysoft.ejercitacion.repositorios.IPersonajeRepository;
+import com.besysoft.ejercitacion.repositorios.database.PersonajeRepository;
 import com.besysoft.ejercitacion.servicios.interfaces.IPersonajeService;
 import org.springframework.stereotype.Service;
 
@@ -12,45 +12,48 @@ import java.util.Optional;
 
 @Service
 public class PersonajeServiceImp implements IPersonajeService {
-    private final IPersonajeRepository repository;
+    private final PersonajeRepository persoRepo;
 
-    public PersonajeServiceImp(IPersonajeRepository repository) {
-        this.repository = repository;
+    public PersonajeServiceImp(PersonajeRepository persoRepo) {
+        this.persoRepo = persoRepo;
     }
+
 
     @Override
     public List<Personaje> verPerso() {
-        return this.repository.verPerso();
+        return (List<Personaje>) this.persoRepo.findAll();
     }
 
     @Override
     public List<Personaje> buscarPersoByNombre(String nombre) {
-        return this.repository.buscarPersoByNombre(nombre);
+        return this.persoRepo.findByName(nombre);
+
     }
 
     @Override
     public List<Personaje> buscarPersoByEdad(int edad) {
-        return this.repository.buscarPersoByEdad(edad);
+        return this.persoRepo.findByAge(edad);
     }
 
     @Override
     public List<Personaje> buscarPersoRangoEdad(int desde, int hasta) {
-        return this.repository.buscarPersoRangoEdad(desde,hasta);
+        return this.persoRepo.findBetweenAges(desde,hasta);
     }
 
     @Override
     public Personaje altaPersonaje(Personaje personaje) {
-        return this.repository.altaPersonaje(personaje);
+        return this.persoRepo.save(personaje);
     }
     @Override
     public Personaje modiPersonaje(Personaje perso, int id) {
-        return this.repository.modiPersonaje(perso,id);
+        perso.setId(id);
+        return this.persoRepo.save(perso);
     }
 
     @Override
     public boolean existePerso(int id) {
         boolean existe=false;
-        Optional <Personaje> oPerso=this.repository.buscarPersoById(id);
+        Optional <Personaje> oPerso=this.persoRepo.findById(id);
         if(oPerso.isPresent()){
             existe=true;
         }
@@ -62,7 +65,7 @@ public class PersonajeServiceImp implements IPersonajeService {
         boolean sonCorrectos;
         int contCorrectos = 0;
         for (Personaje per : persosIn) {
-            Optional <Personaje> oPerso = this.repository.buscarPersoById(per.getId());
+            Optional <Personaje> oPerso = this.persoRepo.findById(per.getId());
             if (oPerso.isEmpty()) {
                 return false;
             }
