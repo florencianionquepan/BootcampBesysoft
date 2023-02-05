@@ -2,11 +2,17 @@ package com.besysoft.ejercitacion.dominio;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import javax.persistence.*;
 import java.util.List;
-
+@Entity
+@Table(name="generos")
 public class Genero {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(nullable = false, length = 15)
     private String nombre;
+    @OneToMany(mappedBy = "genero", cascade = CascadeType.MERGE)
     private List <Pelicula> listaPelis;
     public Genero() {
     }

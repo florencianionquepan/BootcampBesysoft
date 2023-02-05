@@ -1,15 +1,22 @@
 package com.besysoft.ejercitacion.dominio;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
+@Entity
+@Table(name="personajes")
 public class Personaje {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(nullable = false, length = 30)
     private String nombre;
     private int edad;
     private double peso;
     private String historia;
+    @ManyToMany(mappedBy = "listaPersonajes", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JsonIgnoreProperties(value="listaPersonajes")
     private List<Pelicula> listaPeliculas;
 

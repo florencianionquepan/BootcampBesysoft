@@ -2,18 +2,36 @@ package com.besysoft.ejercitacion.dominio;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
+@Entity
+@Table(name="peliculas")
 public class Pelicula {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(nullable = false, length = 15)
     private String titulo;
     private LocalDate fechaCreacion;
     private int calificacion;
+    @ManyToMany(mappedBy = "listaPeliculas", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JsonIgnoreProperties(value="listaPeliculas")
     private List<Personaje> listaPersonajes;
+
+    @ManyToOne
+    @JoinColumn(name = "genero_id")
+    private Genero genero;
+
+    public Genero getGenero() {
+        return genero;
+    }
+
+    public void setGenero(Genero genero) {
+        this.genero = genero;
+    }
 
     public Pelicula() {
     }
