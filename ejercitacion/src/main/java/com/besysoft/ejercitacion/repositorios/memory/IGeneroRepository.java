@@ -1,4 +1,4 @@
-package com.besysoft.ejercitacion.repositorios;
+package com.besysoft.ejercitacion.repositorios.memory;
 
 import com.besysoft.ejercitacion.dominio.Genero;
 import org.springframework.stereotype.Repository;

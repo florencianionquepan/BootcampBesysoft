@@ -1,9 +1,8 @@
-package com.besysoft.ejercitacion.repositorios;
+package com.besysoft.ejercitacion.repositorios.memory;
 
 import com.besysoft.ejercitacion.dominio.Genero;
 import com.besysoft.ejercitacion.dominio.Pelicula;
 import com.besysoft.ejercitacion.dominio.Personaje;
-import com.besysoft.ejercitacion.utilidades.Test;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
