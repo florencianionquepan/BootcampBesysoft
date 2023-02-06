@@ -36,11 +36,7 @@ public class GeneroServiceImp implements IGeneroService {
     @Override
     public Genero modiGenero(Genero genero, int id) {
         genero.setId(id);
-        if(genero.getListaPelis()==null){
-            //Sino trae pelis en el json seguira con las mismas
-            List<Pelicula> listaPelis=this.genRepo.findById(genero.getId()).get().getListaPelis();
-            genero.setListaPelis(listaPelis);
-        }
+        //SI O SI AL MODIFICAR GENERO DEBE TRAER SU LISTA DE PELICULAS O SE BORRARAN
         this.removePeli(id);
         this.addPeli(genero);
         return this.genRepo.save(genero);
