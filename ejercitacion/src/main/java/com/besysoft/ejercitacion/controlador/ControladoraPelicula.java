@@ -97,11 +97,11 @@ public class ControladoraPelicula {
     public ResponseEntity<?> modiPelicula(@RequestBody Pelicula peli,
                                             @PathVariable int id){
         Pelicula pelicu=this.peliService.porSiListaPersoNull(peli);
-        if(this.peliService.existeTituloConOtroId(peli, id)){
-            return this.notSuccessResponse("Ya existe una pelicula ese nombre", 0);
-        }
         if(!this.peliService.existePeli(id)) {
             return this.notSuccessResponse("La pelicula con id %d ingresado no existe", id);
+        }
+        if(this.peliService.existeTituloConOtroId(peli, id)){
+            return this.notSuccessResponse("Ya existe una pelicula ese nombre", 0);
         }
         if(!persoService.sonPersoCorrectos(pelicu.getListaPersonajes())){
             return this.notSuccessResponse("Algun personaje ingresado no existe",0);
