@@ -67,12 +67,16 @@ public class PeliculaServiceImp implements IPeliculaService {
     @Override
     public Pelicula modiPeli(Pelicula peli, int id) {
         peli.setId(id);
+        this.retenerGenero(peli);
+        return this.repoPeli.save(peli);
+    }
+
+    public void retenerGenero(Pelicula peli){
         if(peli.getGenero()==null){
             //Sino trae genero en el json seguira con el mismo
             Genero gen=this.repoPeli.findById(peli.getId()).get().getGenero();
             peli.setGenero(gen);
         }
-        return this.repoPeli.save(peli);
     }
     @Override
     public boolean sonPelisCorrectas(List<Pelicula> pelisIn) {
