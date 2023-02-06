@@ -18,4 +18,5 @@ public interface IPeliculaService {
     Pelicula porSiListaPersoNull(Pelicula peli);
     boolean existeTitulo(Pelicula peli);
     boolean existeTituloConOtroId(Pelicula peli, int id);
+    void retenerGenero(Pelicula peli);
 }

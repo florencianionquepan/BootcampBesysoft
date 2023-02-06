@@ -3,6 +3,7 @@ package com.besysoft.ejercitacion.servicios.implementaciones;
 import com.besysoft.ejercitacion.dominio.Pelicula;
 import com.besysoft.ejercitacion.dominio.Personaje;
 import com.besysoft.ejercitacion.repositorios.database.PersonajeRepository;
+import com.besysoft.ejercitacion.servicios.interfaces.IPeliculaService;
 import com.besysoft.ejercitacion.servicios.interfaces.IPersonajeService;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +14,11 @@ import java.util.Optional;
 @Service
 public class PersonajeServiceImp implements IPersonajeService {
     private final PersonajeRepository persoRepo;
+    private final IPeliculaService peliService;
 
-    public PersonajeServiceImp(PersonajeRepository persoRepo) {
+    public PersonajeServiceImp(PersonajeRepository persoRepo, IPeliculaService peliService) {
         this.persoRepo = persoRepo;
+        this.peliService = peliService;
     }
 
 
@@ -42,11 +45,17 @@ public class PersonajeServiceImp implements IPersonajeService {
 
     @Override
     public Personaje altaPersonaje(Personaje personaje) {
+        for(Pelicula peli: personaje.getListaPeliculas()){
+            this.peliService.retenerGenero(peli);
+        }
         return this.persoRepo.save(personaje);
     }
     @Override
     public Personaje modiPersonaje(Personaje perso, int id) {
         perso.setId(id);
+        for(Pelicula peli: perso.getListaPeliculas()){
+            this.peliService.retenerGenero(peli);
+        }
         return this.persoRepo.save(perso);
     }
 
