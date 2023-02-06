@@ -75,6 +75,17 @@ public class GeneroServiceImp implements IGeneroService {
         return existe;
     }
 
+    public boolean esGeneroCorrecto(Genero genero){
+        if(genero!=null){
+            boolean ok=false;
+            if(this.existeGenero(genero.getId())){
+                ok=this.genRepo.findById(genero.getId()).get().equals(genero);
+            }
+            return ok;
+        }
+        return true;
+    }
+
     @Override
     public boolean existeNombre(Genero genero) {
         boolean existe=true;
