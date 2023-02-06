@@ -1,10 +1,9 @@
 package com.besysoft.ejercitacion.controlador;
 
+import com.besysoft.ejercitacion.servicios.interfaces.IGeneroService;
 import com.besysoft.ejercitacion.servicios.interfaces.IPeliculaService;
 import com.besysoft.ejercitacion.servicios.interfaces.IPersonajeService;
-import com.besysoft.ejercitacion.dominio.Genero;
 import com.besysoft.ejercitacion.dominio.Pelicula;
-import com.besysoft.ejercitacion.dominio.Personaje;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/peliculas")
@@ -21,9 +19,12 @@ public class ControladoraPelicula {
     private final IPeliculaService peliService;
     private final IPersonajeService persoService;
 
-    public ControladoraPelicula(IPeliculaService peliService, IPersonajeService persoService) {
+    private final IGeneroService genService;
+
+    public ControladoraPelicula(IPeliculaService peliService, IPersonajeService persoService, IGeneroService genService) {
         this.peliService = peliService;
         this.persoService = persoService;
+        this.genService = genService;
     }
 
     public Map<String,Object> mensajeBody= new HashMap<>();
@@ -89,6 +90,9 @@ public class ControladoraPelicula {
         if(!this.persoService.sonPersoCorrectos(pelicu.getListaPersonajes())){
             return this.notSuccessResponse("Algun personaje ingresado no existe",0);
         }
+        if(!this.genService.esGeneroCorrecto(peli.getGenero())){
+            return this.notSuccessResponse("El genero no es correcto",0);
+        }
         Pelicula pelicula=this.peliService.altaPeli(pelicu);
         return ResponseEntity.status(HttpStatus.CREATED).body(pelicula);
     }
@@ -105,6 +109,9 @@ public class ControladoraPelicula {
         }
         if(!persoService.sonPersoCorrectos(pelicu.getListaPersonajes())){
             return this.notSuccessResponse("Algun personaje ingresado no existe",0);
+        }
+        if(!this.genService.esGeneroCorrecto(peli.getGenero())){
+            return this.notSuccessResponse("El genero no es correcto",0);
         }
         Pelicula peliM=this.peliService.modiPeli(pelicu,id);
         mensajeBody.put("Success",Boolean.TRUE);
