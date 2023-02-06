@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
+
 @Entity
 @Table(name="generos")
 public class Genero implements Serializable {
@@ -47,5 +49,18 @@ public class Genero implements Serializable {
                 "nombre='" + nombre + '\'' +
 
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Genero)) return false;
+        Genero genero = (Genero) o;
+        return getId() == genero.getId() && Objects.equals(getNombre(), genero.getNombre());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getNombre());
     }
 }
