@@ -3,16 +3,18 @@ package com.besysoft.ejercitacion.dominio;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 @Entity
 @Table(name="generos")
-public class Genero {
+public class Genero implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(nullable = false, length = 15)
     private String nombre;
-    @OneToMany(mappedBy = "genero", cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = "genero")
+    @JsonIgnoreProperties(value="genero")
     private List <Pelicula> listaPelis;
     public Genero() {
     }
@@ -43,7 +45,7 @@ public class Genero {
     public String toString() {
         return "Genero{" +
                 "nombre='" + nombre + '\'' +
-                ", listaPelis=" + listaPelis +
+
                 '}';
     }
 }

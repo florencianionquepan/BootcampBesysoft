@@ -3,13 +3,13 @@ package com.besysoft.ejercitacion.dominio;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 @Entity
 @Table(name="peliculas")
-public class Pelicula {
+public class Pelicula implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -21,8 +21,10 @@ public class Pelicula {
     @JsonIgnoreProperties(value="listaPeliculas")
     private List<Personaje> listaPersonajes;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY,
+            cascade = {CascadeType.REFRESH,CascadeType.MERGE})
     @JoinColumn(name = "genero_id")
+    @JsonIgnoreProperties(value="listaPelis")
     private Genero genero;
 
     public Genero getGenero() {
@@ -87,11 +89,12 @@ public class Pelicula {
     @Override
     public String toString() {
         return "Pelicula{" +
-                "id= "+id+
-                " titulo='" + titulo + '\'' +
+                "id=" + id +
+                ", titulo='" + titulo + '\'' +
                 ", fechaCreacion=" + fechaCreacion +
                 ", calificacion=" + calificacion +
-
+                ", listaPersonajes=" + listaPersonajes +
+                ", genero=" + genero +
                 '}';
     }
 
