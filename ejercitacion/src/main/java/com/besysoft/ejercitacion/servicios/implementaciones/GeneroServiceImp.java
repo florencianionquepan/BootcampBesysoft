@@ -3,6 +3,7 @@ package com.besysoft.ejercitacion.servicios.implementaciones;
 import com.besysoft.ejercitacion.dominio.Genero;
 import com.besysoft.ejercitacion.dominio.Pelicula;
 import com.besysoft.ejercitacion.repositorios.database.GeneroRepository;
+import com.besysoft.ejercitacion.repositorios.database.PeliculaRepository;
 import com.besysoft.ejercitacion.servicios.interfaces.IGeneroService;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +15,11 @@ import java.util.Optional;
 public class GeneroServiceImp implements IGeneroService {
 
     private final GeneroRepository genRepo;
+    private final PeliculaRepository peliRepo;
 
-    public GeneroServiceImp(GeneroRepository genRepo) {
+    public GeneroServiceImp(GeneroRepository genRepo, PeliculaRepository peliRepo) {
         this.genRepo = genRepo;
+        this.peliRepo = peliRepo;
     }
 
     @Override
@@ -26,13 +29,34 @@ public class GeneroServiceImp implements IGeneroService {
 
     @Override
     public Genero altaGenero(Genero genero) {
+        this.addPeli(genero);
         return this.genRepo.save(genero);
     }
 
     @Override
     public Genero modiGenero(Genero genero, int id) {
         genero.setId(id);
+        this.removePeli(id);
+        this.addPeli(genero);
         return this.genRepo.save(genero);
+    }
+
+    private void addPeli(Genero genero){
+        List<Pelicula> listaPelis=genero.getListaPelis();
+        for(Pelicula peli: listaPelis){
+            Pelicula pelGen=peliRepo.findById(peli.getId()).get();
+            pelGen.setGenero(genero);
+        }
+    }
+
+    //las peliculas que no traiga en la lista dejaran de estar asociadas al genero
+    private void removePeli(int id){
+            Genero genAnte=this.genRepo.findById(id).get();
+            List<Pelicula> listaAnte=genAnte.getListaPelis();
+            for(Pelicula peliAnte: listaAnte){
+                Pelicula pelGen=peliRepo.findById(peliAnte.getId()).get();
+                pelGen.setGenero(null);
+            }
     }
 
     public void porSiListaPelisNull(Genero genero){
