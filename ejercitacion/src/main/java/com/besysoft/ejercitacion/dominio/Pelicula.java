@@ -21,8 +21,7 @@ public class Pelicula implements Serializable {
     @JsonIgnoreProperties(value="listaPeliculas")
     private List<Personaje> listaPersonajes;
 
-    @ManyToOne(fetch = FetchType.LAZY,
-            cascade = {CascadeType.REFRESH,CascadeType.MERGE})
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "genero_id")
     @JsonIgnoreProperties(value="listaPelis")
     private Genero genero;
