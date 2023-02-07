@@ -1,5 +1,6 @@
 package com.besysoft.ejercitacion.dominio;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -23,7 +24,7 @@ public class Pelicula implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "genero_id")
-    @JsonIgnoreProperties(value="listaPelis")
+    @JsonIgnore
     private Genero genero;
 
     public Genero getGenero() {
