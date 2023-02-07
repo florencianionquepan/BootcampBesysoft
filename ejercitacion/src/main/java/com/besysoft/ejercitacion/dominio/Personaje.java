@@ -89,7 +89,6 @@ public class Personaje implements Serializable {
     public String toString() {
         return "Personaje{" +
                 "nombre='" + nombre + '\'' +
-                "peliculas=" +listaPeliculas +
                 '}';
     }
 
