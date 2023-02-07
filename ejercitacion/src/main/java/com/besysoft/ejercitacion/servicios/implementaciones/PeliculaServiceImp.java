@@ -5,6 +5,7 @@ import com.besysoft.ejercitacion.dominio.Pelicula;
 import com.besysoft.ejercitacion.dominio.Personaje;
 import com.besysoft.ejercitacion.repositorios.database.GeneroRepository;
 import com.besysoft.ejercitacion.repositorios.database.PeliculaRepository;
+import com.besysoft.ejercitacion.repositorios.database.PersonajeRepository;
 import com.besysoft.ejercitacion.servicios.interfaces.IPeliculaService;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +19,12 @@ import java.util.Optional;
 public class PeliculaServiceImp implements IPeliculaService {
     private final PeliculaRepository repoPeli;
     private final GeneroRepository repoGen;
+    private final PersonajeRepository persoRepo;
 
-    public PeliculaServiceImp(PeliculaRepository repoPeli, GeneroRepository repoGen) {
+    public PeliculaServiceImp(PeliculaRepository repoPeli, GeneroRepository repoGen, PersonajeRepository persoRepo) {
         this.repoPeli = repoPeli;
         this.repoGen = repoGen;
+        this.persoRepo = persoRepo;
     }
 
 
@@ -61,6 +64,7 @@ public class PeliculaServiceImp implements IPeliculaService {
 
     @Override
     public Pelicula altaPeli(Pelicula peli) {
+        this.addPeliPersos(peli);
         return this.repoPeli.save(peli);
     }
 
@@ -68,7 +72,28 @@ public class PeliculaServiceImp implements IPeliculaService {
     public Pelicula modiPeli(Pelicula peli, int id) {
         peli.setId(id);
         this.retenerGenero(peli);
+        this.removePeliPersos(id);
+        this.addPeliPersos(peli);
         return this.repoPeli.save(peli);
+    }
+
+    private void addPeliPersos(Pelicula peli){
+        for(Personaje perso: peli.getListaPersonajes()){
+            Personaje persoIn=this.persoRepo.findById(perso.getId()).get();
+            List<Pelicula> listaPelisPersoNuevo=persoIn.getListaPeliculas();
+            listaPelisPersoNuevo.add(peli);
+            persoIn.setListaPeliculas(listaPelisPersoNuevo);
+        }
+    }
+
+    private void removePeliPersos(int id){
+        Pelicula peliVieja=this.repoPeli.findById(id).get();
+        for(Personaje perso: peliVieja.getListaPersonajes()){
+            Personaje persoInBD=this.persoRepo.findById(perso.getId()).get();
+            List<Pelicula> listaPelisPersoAnt=persoInBD.getListaPeliculas();
+            listaPelisPersoAnt.remove(peliVieja);
+            persoInBD.setListaPeliculas(listaPelisPersoAnt);
+        }
     }
 
     public void retenerGenero(Pelicula peli){
