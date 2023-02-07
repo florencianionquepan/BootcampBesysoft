@@ -14,7 +14,7 @@ public class Pelicula implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(nullable = false, length = 15)
+    @Column(nullable = false, length = 30)
     private String titulo;
     private LocalDate fechaCreacion;
     private int calificacion;
