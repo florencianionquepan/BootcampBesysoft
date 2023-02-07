@@ -65,7 +65,7 @@ public class ControladoraPersonaje {
     public ResponseEntity<?> altaPersonaje(@RequestBody Personaje perso){
         Personaje person=this.persoService.porSiListaPelisNull(perso);
         if(!this.peliService.sonPelisCorrectas(person.getListaPeliculas())){
-            return this.notSuccessResponse("ALguna pelicula asociada no existe",0);
+            return this.notSuccessResponse("Alguna pelicula asociada no existe",0);
         }
         Personaje personaje=this.persoService.altaPersonaje(person);
         return ResponseEntity.status(HttpStatus.CREATED).body(personaje);
