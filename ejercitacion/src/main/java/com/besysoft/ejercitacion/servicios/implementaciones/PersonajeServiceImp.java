@@ -2,6 +2,7 @@ package com.besysoft.ejercitacion.servicios.implementaciones;
 
 import com.besysoft.ejercitacion.dominio.Pelicula;
 import com.besysoft.ejercitacion.dominio.Personaje;
+import com.besysoft.ejercitacion.repositorios.database.PeliculaRepository;
 import com.besysoft.ejercitacion.repositorios.database.PersonajeRepository;
 import com.besysoft.ejercitacion.servicios.interfaces.IPeliculaService;
 import com.besysoft.ejercitacion.servicios.interfaces.IPersonajeService;
@@ -15,10 +16,12 @@ import java.util.Optional;
 public class PersonajeServiceImp implements IPersonajeService {
     private final PersonajeRepository persoRepo;
     private final IPeliculaService peliService;
+    private final PeliculaRepository peliRepo;
 
-    public PersonajeServiceImp(PersonajeRepository persoRepo, IPeliculaService peliService) {
+    public PersonajeServiceImp(PersonajeRepository persoRepo, IPeliculaService peliService, PeliculaRepository peliRepo) {
         this.persoRepo = persoRepo;
         this.peliService = peliService;
+        this.peliRepo = peliRepo;
     }
 
 
@@ -48,6 +51,7 @@ public class PersonajeServiceImp implements IPersonajeService {
         for(Pelicula peli: personaje.getListaPeliculas()){
             this.peliService.retenerGenero(peli);
         }
+        this.addPersoPelis(personaje);
         return this.persoRepo.save(personaje);
     }
     @Override
@@ -56,7 +60,28 @@ public class PersonajeServiceImp implements IPersonajeService {
         for(Pelicula peli: perso.getListaPeliculas()){
             this.peliService.retenerGenero(peli);
         }
+        this.removePersoPelis(id);
+        this.addPersoPelis(perso);
         return this.persoRepo.save(perso);
+    }
+
+    private void addPersoPelis(Personaje perso){
+        for(Pelicula peliNueva:perso.getListaPeliculas()){
+            Pelicula peliIn=this.peliRepo.findById(peliNueva.getId()).get();
+            List<Personaje> listaPersoPeliNueva=peliIn.getListaPersonajes();
+            listaPersoPeliNueva.add(perso);
+            peliIn.setListaPersonajes(listaPersoPeliNueva);
+        }
+    }
+
+    private void removePersoPelis(int id){
+        Personaje persoViejo=this.persoRepo.findById(id).get();
+        for(Pelicula peliAnt:persoViejo.getListaPeliculas()){
+            Pelicula peliAntBD=this.peliRepo.findById(peliAnt.getId()).get();
+            List<Personaje> listaPersoPeli=peliAntBD.getListaPersonajes();
+            listaPersoPeli.remove(persoViejo);
+            peliAntBD.setListaPersonajes(listaPersoPeli);
+        }
     }
 
     @Override
