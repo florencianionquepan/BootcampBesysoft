@@ -14,6 +14,4 @@ public interface IGeneroService {
     boolean existeGenero(int id);
     boolean existeNombre(Genero genero);
     boolean existeNombreConOtroId(Genero genero, int id);
-    boolean esGeneroCorrecto(Genero genero);
-
 }

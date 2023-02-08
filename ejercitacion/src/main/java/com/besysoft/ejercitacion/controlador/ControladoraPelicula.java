@@ -18,7 +18,6 @@ public class ControladoraPelicula {
 
     private final IPeliculaService peliService;
     private final IPersonajeService persoService;
-
     private final IGeneroService genService;
 
     public ControladoraPelicula(IPeliculaService peliService, IPersonajeService persoService, IGeneroService genService) {
@@ -90,9 +89,6 @@ public class ControladoraPelicula {
         if(!this.persoService.sonPersoCorrectos(pelicu.getListaPersonajes())){
             return this.notSuccessResponse("Algun personaje ingresado no existe",0);
         }
-        if(!this.genService.esGeneroCorrecto(peli.getGenero())){
-            return this.notSuccessResponse("El genero no es correcto",0);
-        }
         Pelicula pelicula=this.peliService.altaPeli(pelicu);
         return ResponseEntity.status(HttpStatus.CREATED).body(pelicula);
     }
@@ -105,13 +101,10 @@ public class ControladoraPelicula {
             return this.notSuccessResponse("La pelicula con id %d ingresado no existe", id);
         }
         if(this.peliService.existeTituloConOtroId(peli, id)){
-            return this.notSuccessResponse("Ya existe una pelicula ese nombre", 0);
+            return this.notSuccessResponse("Ya existe una pelicula con ese nombre", 0);
         }
         if(!persoService.sonPersoCorrectos(pelicu.getListaPersonajes())){
             return this.notSuccessResponse("Algun personaje ingresado no existe",0);
-        }
-        if(!this.genService.esGeneroCorrecto(peli.getGenero())){
-            return this.notSuccessResponse("El genero no es correcto",0);
         }
         Pelicula peliM=this.peliService.modiPeli(pelicu,id);
         mensajeBody.put("Success",Boolean.TRUE);

@@ -31,7 +31,7 @@ public class ControladoraGenero {
     }
 
     @GetMapping
-    public ResponseEntity<?>  verGeneros(){
+    private ResponseEntity<?>  verGeneros(){
         mensajeBody.put("Success",Boolean.TRUE);
         mensajeBody.put("data",this.genService.verGeneros());
         return ResponseEntity.ok(mensajeBody);
