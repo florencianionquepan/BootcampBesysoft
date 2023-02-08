@@ -17,7 +17,7 @@ public class Personaje implements Serializable {
     private int edad;
     private double peso;
     private String historia;
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     @JoinTable(
             name="personajes_peliculas",
             joinColumns = @JoinColumn(name="personaje_id"),

@@ -18,7 +18,7 @@ public class Pelicula implements Serializable {
     private String titulo;
     private LocalDate fechaCreacion;
     private int calificacion;
-    @ManyToMany(mappedBy = "listaPeliculas", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @ManyToMany(mappedBy = "listaPeliculas", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     @JsonIgnoreProperties(value="listaPeliculas")
     private List<Personaje> listaPersonajes;
 
