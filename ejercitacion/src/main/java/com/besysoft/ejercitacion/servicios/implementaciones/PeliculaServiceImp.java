@@ -78,21 +78,23 @@ public class PeliculaServiceImp implements IPeliculaService {
     }
 
     private void addPeliPersos(Pelicula peli){
+        //En este caso para que tome bien la relacion la BD debi guardale la pelicula a perso
+        //no a persoIn
         for(Personaje perso: peli.getListaPersonajes()){
             Personaje persoIn=this.persoRepo.findById(perso.getId()).get();
             List<Pelicula> listaPelisPersoNuevo=persoIn.getListaPeliculas();
             listaPelisPersoNuevo.add(peli);
-            persoIn.setListaPeliculas(listaPelisPersoNuevo);
+            perso.setListaPeliculas(listaPelisPersoNuevo);
         }
     }
 
     private void removePeliPersos(int id){
         Pelicula peliVieja=this.repoPeli.findById(id).get();
-        for(Personaje perso: peliVieja.getListaPersonajes()){
-            Personaje persoInBD=this.persoRepo.findById(perso.getId()).get();
-            List<Pelicula> listaPelisPersoAnt=persoInBD.getListaPeliculas();
-            listaPelisPersoAnt.remove(peliVieja);
-            persoInBD.setListaPeliculas(listaPelisPersoAnt);
+        for(Personaje persoAnt: peliVieja.getListaPersonajes()){
+            Personaje persoAntBD=this.persoRepo.findById(persoAnt.getId()).get();
+            List<Pelicula> listaPelisPerso=persoAntBD.getListaPeliculas();
+            listaPelisPerso.remove(peliVieja);
+            persoAntBD.setListaPeliculas(listaPelisPerso);
         }
     }
 
