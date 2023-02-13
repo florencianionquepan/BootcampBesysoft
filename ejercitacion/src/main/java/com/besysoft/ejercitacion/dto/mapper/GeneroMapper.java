@@ -3,10 +3,12 @@ package com.besysoft.ejercitacion.dto.mapper;
 import com.besysoft.ejercitacion.dominio.Genero;
 import com.besysoft.ejercitacion.dto.GeneroReqDTO;
 import com.besysoft.ejercitacion.dto.GeneroRespDTO;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class GeneroMapper implements IGeneroMapper{
 
     public Genero mapToEntity(GeneroReqDTO dto){
