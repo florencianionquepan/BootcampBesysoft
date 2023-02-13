@@ -16,7 +16,7 @@ public class Genero implements Serializable {
     @Column(nullable = false, length = 15)
     private String nombre;
     @OneToMany(mappedBy = "genero")
-    @JsonIgnoreProperties(value="genero")
+    //@JsonIgnoreProperties(value="genero")
     private List <Pelicula> listaPelis;
     public Genero() {
     }

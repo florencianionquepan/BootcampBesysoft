@@ -24,7 +24,7 @@ public class Pelicula implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "genero_id")
-    @JsonIgnore
+    //@JsonIgnore
     private Genero genero;
 
     public Genero getGenero() {
