@@ -1,6 +1,8 @@
 package com.besysoft.ejercitacion.controlador;
 
-import com.besysoft.ejercitacion.servicios.interfaces.IGeneroService;
+import com.besysoft.ejercitacion.dto.PeliculaReqDTO;
+import com.besysoft.ejercitacion.dto.PeliculaRespDTO;
+import com.besysoft.ejercitacion.dto.mapper.IPeliculaMapper;
 import com.besysoft.ejercitacion.servicios.interfaces.IPeliculaService;
 import com.besysoft.ejercitacion.servicios.interfaces.IPersonajeService;
 import com.besysoft.ejercitacion.dominio.Pelicula;
@@ -18,12 +20,12 @@ public class ControladoraPelicula {
 
     private final IPeliculaService peliService;
     private final IPersonajeService persoService;
-    private final IGeneroService genService;
+    private final IPeliculaMapper peliMap;
 
-    public ControladoraPelicula(IPeliculaService peliService, IPersonajeService persoService, IGeneroService genService) {
+    public ControladoraPelicula(IPeliculaService peliService, IPersonajeService persoService, IPeliculaMapper peliMap) {
         this.peliService = peliService;
         this.persoService = persoService;
-        this.genService = genService;
+        this.peliMap = peliMap;
     }
 
     public Map<String,Object> mensajeBody= new HashMap<>();
@@ -44,17 +46,20 @@ public class ControladoraPelicula {
 
     @GetMapping
     public ResponseEntity<?> verPelis(){
-        return this.successResponse(this.peliService.verPelis());
+        List< PeliculaRespDTO> pelisDto=this.peliMap.mapListToDto(this.peliService.verPelis());
+        return this.successResponse(pelisDto);
     }
 
     @GetMapping("/{titulo}")
     public ResponseEntity<?> buscarPeliByTitulo(@PathVariable String titulo){
-        return this.successResponse(this.peliService.buscarPeliByTitulo(titulo));
+        List< PeliculaRespDTO> pelisDto=this.peliMap.mapListToDto(this.peliService.buscarPeliByTitulo(titulo));
+        return this.successResponse(pelisDto);
     }
 
     @GetMapping("/genero/{genero}")
     public ResponseEntity<?> buscarPeliByGenero(@PathVariable String genero){
-        return this.successResponse(this.peliService.buscarPeliByGenero(genero));
+        List< PeliculaRespDTO> pelisDto=this.peliMap.mapListToDto(this.peliService.buscarPeliByGenero(genero));
+        return this.successResponse(pelisDto);
     }
 
     @GetMapping("/fechas")
@@ -68,7 +73,8 @@ public class ControladoraPelicula {
                     .badRequest()
                     .body(mensajeBody);
         }else {
-            return this.successResponse(this.peliService.buscarPeliByFechas(desde,hasta));
+            List< PeliculaRespDTO> pelisDto=this.peliMap.mapListToDto(this.peliService.buscarPeliByFechas(desde,hasta));
+            return this.successResponse(pelisDto);
         }
     }
 
@@ -78,10 +84,12 @@ public class ControladoraPelicula {
         if(desde>hasta || desde<1 || hasta>5){
             return this.notSuccessResponse("Rango no válido",0);
         }
-        return this.successResponse(this.peliService.buscarPeliByCal(desde,hasta));
+        List< PeliculaRespDTO> pelisDto=this.peliMap.mapListToDto(this.peliService.buscarPeliByCal(desde,hasta));
+        return this.successResponse(pelisDto);
     }
     @PostMapping
-    public ResponseEntity<?> altaPelicula(@RequestBody Pelicula peli){
+    public ResponseEntity<?> altaPelicula(@RequestBody PeliculaReqDTO peliDto){
+        Pelicula peli=this.peliMap.mapToEntity(peliDto);
         Pelicula pelicu=this.peliService.porSiListaPersoNull(peli);
         if(this.peliService.existeTitulo(peli)){
             return this.notSuccessResponse("Ya existe una pelicula ese nombre", 0);
@@ -90,12 +98,14 @@ public class ControladoraPelicula {
             return this.notSuccessResponse("Algun personaje ingresado no existe",0);
         }
         Pelicula pelicula=this.peliService.altaPeli(pelicu);
-        return ResponseEntity.status(HttpStatus.CREATED).body(pelicula);
+        PeliculaRespDTO peliRespDto=this.peliMap.mapToDto(pelicula);
+        return ResponseEntity.status(HttpStatus.CREATED).body(peliRespDto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> modiPelicula(@RequestBody Pelicula peli,
+    public ResponseEntity<?> modiPelicula(@RequestBody PeliculaReqDTO peliDto,
                                             @PathVariable int id){
+        Pelicula peli=this.peliMap.mapToEntity(peliDto);
         Pelicula pelicu=this.peliService.porSiListaPersoNull(peli);
         if(!this.peliService.existePeli(id)) {
             return this.notSuccessResponse("La pelicula con id %d ingresado no existe", id);
@@ -107,8 +117,9 @@ public class ControladoraPelicula {
             return this.notSuccessResponse("Algun personaje ingresado no existe",0);
         }
         Pelicula peliM=this.peliService.modiPeli(pelicu,id);
+        PeliculaRespDTO peliRespDto=this.peliMap.mapToDto(peliM);
         mensajeBody.put("Success",Boolean.TRUE);
-        mensajeBody.put("data",peliM);
+        mensajeBody.put("data",peliRespDto);
         return ResponseEntity.ok(mensajeBody);
     }
 
