@@ -14,5 +14,5 @@ import java.util.List;
 public class GeneroRespDTO {
     private int id;
     private String nombre;
-    private List<Pelicula> listaPelis;
+    private List<PeliculaRespDTO> peliculas;
 }
