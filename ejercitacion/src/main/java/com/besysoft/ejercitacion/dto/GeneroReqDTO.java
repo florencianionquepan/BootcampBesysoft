@@ -13,8 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GeneroReqDTO {
-
     private int id;
     private String nombre;
-    private List<Pelicula> listaPelis;
+    private List<PeliculaRespDTO> peliculas;
 }
