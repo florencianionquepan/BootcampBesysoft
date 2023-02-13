@@ -1,5 +1,9 @@
 package com.besysoft.ejercitacion.controlador;
 
+import com.besysoft.ejercitacion.dto.GeneroReqDTO;
+import com.besysoft.ejercitacion.dto.GeneroRespDTO;
+import com.besysoft.ejercitacion.dto.mapper.GeneroMapper;
+import com.besysoft.ejercitacion.dto.mapper.IGeneroMapper;
 import com.besysoft.ejercitacion.servicios.interfaces.IGeneroService;
 import com.besysoft.ejercitacion.dominio.Genero;
 import com.besysoft.ejercitacion.servicios.interfaces.IPeliculaService;
@@ -15,11 +19,13 @@ public class ControladoraGenero {
 
     private final IGeneroService genService;
     private final IPeliculaService peliService;
+    private final IGeneroMapper genMap;
     public Map<String,Object> mensajeBody= new HashMap<>();
 
-    public ControladoraGenero(IGeneroService genService, IPeliculaService peliService) {
+    public ControladoraGenero(IGeneroService genService, IPeliculaService peliService, IGeneroMapper genMap) {
         this.genService = genService;
         this.peliService = peliService;
+        this.genMap = genMap;
     }
 
     private ResponseEntity<?> notSuccessResponse(String mensaje,int id){
@@ -32,13 +38,15 @@ public class ControladoraGenero {
 
     @GetMapping
     private ResponseEntity<?>  verGeneros(){
+        List<GeneroRespDTO> genRespDto=this.genMap.mapListToDto(this.genService.verGeneros());
         mensajeBody.put("Success",Boolean.TRUE);
-        mensajeBody.put("data",this.genService.verGeneros());
+        mensajeBody.put("data",genRespDto);
         return ResponseEntity.ok(mensajeBody);
     }
 
     @PostMapping
-    public ResponseEntity<?> altaGenero(@RequestBody Genero genero){
+    public ResponseEntity<?> altaGenero(@RequestBody GeneroReqDTO generoReq){
+        Genero genero=genMap.mapToEntity(generoReq);
         this.genService.porSiListaPelisNull(genero);
         if(this.genService.existeNombre(genero)){
             return this.notSuccessResponse("El genero ya existe",0);
@@ -47,12 +55,14 @@ public class ControladoraGenero {
             return this.notSuccessResponse("Alguna pelicula ingresada no existe o no es correcta",0);
         }
         Genero generoNuevo=this.genService.altaGenero(genero);
-        return ResponseEntity.status(HttpStatus.CREATED).body(generoNuevo);
+        GeneroRespDTO genDto=this.genMap.mapToDto(generoNuevo);
+        return ResponseEntity.status(HttpStatus.CREATED).body(genDto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> modiGenero(@RequestBody Genero genero,
+    public ResponseEntity<?> modiGenero(@RequestBody GeneroReqDTO generoReq,
                                          @PathVariable int id){
+        Genero genero=genMap.mapToEntity(generoReq);
         this.genService.porSiListaPelisNull(genero);
         if(!this.genService.existeGenero(id)) {
             return this.notSuccessResponse("El genero con id %d ingresado no existe", id);
@@ -64,8 +74,9 @@ public class ControladoraGenero {
             return this.notSuccessResponse("Alguna pelicula ingresada no existe",0);
         }
             Genero generoMod=this.genService.modiGenero(genero,id);
+            GeneroRespDTO genDto=this.genMap.mapToDto(generoMod);
             mensajeBody.put("Success",Boolean.TRUE);
-            mensajeBody.put("data",generoMod);
+            mensajeBody.put("data",genDto);
             return ResponseEntity.ok(mensajeBody);
     }
 
