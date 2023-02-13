@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class PeliculaMapper {
+public class PeliculaMapper implements IPeliculaMapper{
 
     public Pelicula mapToEntity(PeliculaReqDTO dto){
         Pelicula peli=new Pelicula();
