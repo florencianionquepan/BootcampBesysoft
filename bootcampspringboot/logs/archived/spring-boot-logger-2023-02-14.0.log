@@ -1,0 +1,15 @@
+2023-02-14 17:28:02,038 INFO org.hibernate.validator.internal.util.Version [background-preinit] HV000001: Hibernate Validator 6.2.5.Final
+2023-02-14 17:28:02,059 INFO org.springframework.boot.StartupInfoLogger [main] Starting BootcampspringbootApplication using Java 11.0.17 on florencia-IdeaPad-3-15IIL05 with PID 19435 (/home/florencia/Documentos/GitHub/BootcampBesysoft/bootcampspringboot/target/classes started by florencia in /home/florencia/Documentos/GitHub/BootcampBesysoft/bootcampspringboot)
+2023-02-14 17:28:02,064 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2023-02-14 17:28:02,894 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-02-14 17:28:02,968 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 58 ms. Found 3 JPA repository interfaces.
+2023-02-14 17:28:03,668 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 9080 (http)
+2023-02-14 17:28:03,669 INFO org.apache.juli.logging.DirectJDKLog [main] Loaded Apache Tomcat Native library [1.2.31] using APR version [1.7.0].
+2023-02-14 17:28:03,670 INFO org.apache.juli.logging.DirectJDKLog [main] APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true], UDS [true].
+2023-02-14 17:28:03,670 INFO org.apache.juli.logging.DirectJDKLog [main] APR/OpenSSL configuration: useAprConnector [false], useOpenSSL [true]
+2023-02-14 17:28:03,676 INFO org.apache.juli.logging.DirectJDKLog [main] OpenSSL successfully initialized [OpenSSL 3.0.2 15 Mar 2022]
+2023-02-14 17:28:03,688 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-9080"]
+2023-02-14 17:28:03,689 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2023-02-14 17:28:03,689 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.70]
+2023-02-14 17:28:03,811 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2023-02-14 17:28:03,812 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 1678 ms
