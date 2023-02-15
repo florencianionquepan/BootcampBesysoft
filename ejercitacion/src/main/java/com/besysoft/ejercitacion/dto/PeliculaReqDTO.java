@@ -1,6 +1,7 @@
 package com.besysoft.ejercitacion.dto;
 
 import com.besysoft.ejercitacion.dominio.Personaje;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ public class PeliculaReqDTO {
     private String titulo;
     private LocalDate fechaCreacion;
     private int calificacion;
-    private List<Personaje> personajes;
+    @JsonIgnoreProperties(value="peliculas")
+    private List<PersonajeRespDTO> personajes;
 
 }
