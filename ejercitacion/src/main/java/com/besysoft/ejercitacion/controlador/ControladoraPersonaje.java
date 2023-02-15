@@ -1,6 +1,8 @@
 package com.besysoft.ejercitacion.controlador;
 
-import com.besysoft.ejercitacion.dominio.Pelicula;
+import com.besysoft.ejercitacion.dto.PersonajeReqDTO;
+import com.besysoft.ejercitacion.dto.PersonajeRespDTO;
+import com.besysoft.ejercitacion.dto.mapper.IPersonajeMapper;
 import com.besysoft.ejercitacion.servicios.interfaces.IPeliculaService;
 import com.besysoft.ejercitacion.servicios.interfaces.IPersonajeService;
 import com.besysoft.ejercitacion.dominio.Personaje;
@@ -16,10 +18,12 @@ public class ControladoraPersonaje {
 
     private final IPersonajeService persoService;
     private final IPeliculaService peliService;
+    private final IPersonajeMapper persoMap;
 
-    public ControladoraPersonaje(IPersonajeService service, IPeliculaService peliService){
+    public ControladoraPersonaje(IPersonajeService service, IPeliculaService peliService, IPersonajeMapper persoMap){
         this.persoService = service;
         this.peliService = peliService;
+        this.persoMap = persoMap;
     }
     public Map<String,Object> mensajeBody= new HashMap<>();
 
@@ -39,17 +43,17 @@ public class ControladoraPersonaje {
 
     @GetMapping
     public ResponseEntity<?> verPerso(){
-        return this.successResponse(this.persoService.verPerso());
+        return this.successResponse(this.persoMap.mapListToDto(this.persoService.verPerso()));
     }
 
     @GetMapping("/{nombre}")
     public ResponseEntity<?> buscarPersoByNombre(@PathVariable String nombre){
-        return this.successResponse(this.persoService.buscarPersoByNombre(nombre));
+        return this.successResponse(this.persoMap.mapListToDto(this.persoService.buscarPersoByNombre(nombre)));
     }
 
     @GetMapping("/edad/{edad}")
     public ResponseEntity<?> buscarPersoByEdad(@PathVariable int edad){
-        return this.successResponse(this.persoService.buscarPersoByEdad(edad));
+        return this.successResponse(this.persoMap.mapListToDto(this.persoService.buscarPersoByEdad(edad)));
     }
 
     @GetMapping("/edad")
@@ -58,22 +62,27 @@ public class ControladoraPersonaje {
         if(desde>hasta){
             return this.notSuccessResponse("Rango de edad no válido",0);
         }
-        return this.successResponse(this.persoService.buscarPersoRangoEdad(desde,hasta));
+        return this.successResponse(this.persoMap.mapListToDto(this.persoService.buscarPersoRangoEdad(desde,hasta)));
     }
 
     @PostMapping
-    public ResponseEntity<?> altaPersonaje(@RequestBody Personaje perso){
+    public ResponseEntity<?> altaPersonaje(@RequestBody PersonajeReqDTO persoDto){
+        Personaje perso=this.persoMap.mapToEntity(persoDto);
+        System.out.println(persoDto);
         Personaje person=this.persoService.porSiListaPelisNull(perso);
+        System.out.println(person);
         if(!this.peliService.sonPelisCorrectas(person.getListaPeliculas())){
             return this.notSuccessResponse("Alguna pelicula asociada no existe",0);
         }
         Personaje personaje=this.persoService.altaPersonaje(person);
-        return ResponseEntity.status(HttpStatus.CREATED).body(personaje);
+        PersonajeRespDTO persoRespDto=this.persoMap.mapToDto(personaje);
+        return ResponseEntity.status(HttpStatus.CREATED).body(persoRespDto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> modiPerso(@RequestBody Personaje perso,
+    public ResponseEntity<?> modiPerso(@RequestBody PersonajeReqDTO persoDto,
                                        @PathVariable int id){
+        Personaje perso=this.persoMap.mapToEntity(persoDto);
         Personaje person=this.persoService.porSiListaPelisNull(perso);
         if(!this.persoService.existePerso(id)) {
             return this.notSuccessResponse("El personaje con id %d ingresado no existe", id);
@@ -82,8 +91,9 @@ public class ControladoraPersonaje {
             return this.notSuccessResponse("Alguna pelicula asociada no existe",0);
         }
         Personaje personaje=this.persoService.modiPersonaje(person,id);
+        PersonajeRespDTO persoRespDto=this.persoMap.mapToDto(personaje);
         mensajeBody.put("Success",Boolean.TRUE);
-        mensajeBody.put("data",personaje);
+        mensajeBody.put("data",persoRespDto);
         return ResponseEntity.ok(mensajeBody);
     }
 
