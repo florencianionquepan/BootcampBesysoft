@@ -94,7 +94,6 @@ public class Pelicula implements Serializable {
                 ", fechaCreacion=" + fechaCreacion +
                 ", calificacion=" + calificacion +
                 ", listaPersonajes=" + listaPersonajes +
-                ", genero=" + genero +
                 '}';
     }
 

@@ -93,7 +93,6 @@ public class Personaje implements Serializable {
                 ", edad=" + edad +
                 ", peso=" + peso +
                 ", historia='" + historia + '\'' +
-                ", listaPeliculas=" + listaPeliculas +
                 '}';
     }
 
