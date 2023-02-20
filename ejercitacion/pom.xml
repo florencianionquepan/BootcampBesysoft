@@ -64,11 +64,12 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
+					<source>11</source>
 					<target>11</target>
 					<annotationProcessorPaths>
 						<path>
 							<groupId>org.mapstruct</groupId>
-							<artifactId>mapstruct</artifactId>
+							<artifactId>mapstruct-processor</artifactId>
 							<version>1.5.3.Final</version>
 						</path>
 						<path>
@@ -77,11 +78,9 @@
 							<version>1.18.26</version>
 						</path>
 						<path>
-							<dependency>
-								<groupId>org.projectlombok</groupId>
-								<artifactId>lombok-mapstruct-binding</artifactId>
-								<version>0.2.0</version>
-							</dependency>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok-mapstruct-binding</artifactId>
+							<version>0.2.0</version>
 						</path>
 					</annotationProcessorPaths>
 				</configuration>
