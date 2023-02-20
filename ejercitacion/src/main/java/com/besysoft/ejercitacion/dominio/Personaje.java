@@ -23,7 +23,7 @@ public class Personaje implements Serializable {
             joinColumns = @JoinColumn(name="personaje_id"),
             inverseJoinColumns = @JoinColumn (name="peli_id")
     )
-    @JsonIgnoreProperties(value="listaPersonajes")
+    //@JsonIgnoreProperties(value="listaPersonajes")
     private List<Pelicula> listaPeliculas;
 
     public Personaje() {
