@@ -88,7 +88,12 @@ public class Personaje implements Serializable {
     @Override
     public String toString() {
         return "Personaje{" +
-                "nombre='" + nombre + '\'' +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", edad=" + edad +
+                ", peso=" + peso +
+                ", historia='" + historia + '\'' +
+                ", listaPeliculas=" + listaPeliculas +
                 '}';
     }
 

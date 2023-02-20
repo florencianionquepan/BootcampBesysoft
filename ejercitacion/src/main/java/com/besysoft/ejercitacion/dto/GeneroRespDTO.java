@@ -1,16 +1,14 @@
 package com.besysoft.ejercitacion.dto;
 
 import com.besysoft.ejercitacion.dominio.Pelicula;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class GeneroRespDTO {
     private int id;
     private String nombre;

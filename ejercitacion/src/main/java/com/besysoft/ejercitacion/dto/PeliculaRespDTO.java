@@ -2,10 +2,7 @@ package com.besysoft.ejercitacion.dto;
 
 import com.besysoft.ejercitacion.dominio.Personaje;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -14,6 +11,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class PeliculaRespDTO {
     private int id;
     private String titulo;

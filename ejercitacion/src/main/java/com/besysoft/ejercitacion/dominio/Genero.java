@@ -47,7 +47,7 @@ public class Genero implements Serializable {
     public String toString() {
         return "Genero{" +
                 "nombre='" + nombre + '\'' +
-
+                "peliculas='" + listaPelis + '\'' +
                 '}';
     }
 
