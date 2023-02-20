@@ -1,11 +1,14 @@
 package com.besysoft.ejercitacion.servicios.implementaciones;
 
+import com.besysoft.ejercitacion.controlador.ControladoraPersonaje;
 import com.besysoft.ejercitacion.dominio.Pelicula;
 import com.besysoft.ejercitacion.dominio.Personaje;
 import com.besysoft.ejercitacion.repositorios.database.PeliculaRepository;
 import com.besysoft.ejercitacion.repositorios.database.PersonajeRepository;
 import com.besysoft.ejercitacion.servicios.interfaces.IPeliculaService;
 import com.besysoft.ejercitacion.servicios.interfaces.IPersonajeService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,6 +17,8 @@ import java.util.Optional;
 
 @Service
 public class PersonajeServiceImp implements IPersonajeService {
+
+    private Logger logger= LoggerFactory.getLogger(PersonajeServiceImp.class);
     private final PersonajeRepository persoRepo;
     private final IPeliculaService peliService;
     private final PeliculaRepository peliRepo;
@@ -33,7 +38,6 @@ public class PersonajeServiceImp implements IPersonajeService {
     @Override
     public List<Personaje> buscarPersoByNombre(String nombre) {
         return this.persoRepo.findByName(nombre);
-
     }
 
     @Override
@@ -71,6 +75,7 @@ public class PersonajeServiceImp implements IPersonajeService {
             List<Personaje> listaPersoPeliNueva=peliIn.getListaPersonajes();
             listaPersoPeliNueva.add(perso);
             peliIn.setListaPersonajes(listaPersoPeliNueva);
+            logger.info("Se añadio el personaje a la pelicula "+peliIn);
         }
     }
 
@@ -81,6 +86,7 @@ public class PersonajeServiceImp implements IPersonajeService {
             List<Personaje> listaPersoPeli=peliAntBD.getListaPersonajes();
             listaPersoPeli.remove(persoViejo);
             peliAntBD.setListaPersonajes(listaPersoPeli);
+            logger.info("Se removio el personaje de la pelicula "+peliAntBD);
         }
     }
 

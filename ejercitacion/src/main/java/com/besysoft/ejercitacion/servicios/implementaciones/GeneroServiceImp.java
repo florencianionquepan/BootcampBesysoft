@@ -1,10 +1,13 @@
 package com.besysoft.ejercitacion.servicios.implementaciones;
 
+import com.besysoft.ejercitacion.controlador.ControladoraGenero;
 import com.besysoft.ejercitacion.dominio.Genero;
 import com.besysoft.ejercitacion.dominio.Pelicula;
 import com.besysoft.ejercitacion.repositorios.database.GeneroRepository;
 import com.besysoft.ejercitacion.repositorios.database.PeliculaRepository;
 import com.besysoft.ejercitacion.servicios.interfaces.IGeneroService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,6 +17,7 @@ import java.util.Optional;
 @Service
 public class GeneroServiceImp implements IGeneroService {
 
+    private Logger logger= LoggerFactory.getLogger(GeneroServiceImp.class);
     private final GeneroRepository genRepo;
     private final PeliculaRepository peliRepo;
 
@@ -47,6 +51,7 @@ public class GeneroServiceImp implements IGeneroService {
         for(Pelicula peli: listaPelis){
             Pelicula pelGen=peliRepo.findById(peli.getId()).get();
             pelGen.setGenero(genero);
+            logger.info("Genero asociado/agregado a pelicula: "+pelGen);
         }
     }
 
@@ -57,6 +62,7 @@ public class GeneroServiceImp implements IGeneroService {
             for(Pelicula peliAnte: listaAnte){
                 Pelicula pelGen=peliRepo.findById(peliAnte.getId()).get();
                 pelGen.setGenero(null);
+                logger.info("Genero removido de pelicula: "+pelGen);
             }
     }
 

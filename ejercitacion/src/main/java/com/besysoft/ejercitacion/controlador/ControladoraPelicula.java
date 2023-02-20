@@ -6,6 +6,8 @@ import com.besysoft.ejercitacion.dto.mapper.IPeliculaMapper;
 import com.besysoft.ejercitacion.servicios.interfaces.IPeliculaService;
 import com.besysoft.ejercitacion.servicios.interfaces.IPersonajeService;
 import com.besysoft.ejercitacion.dominio.Pelicula;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ import java.util.*;
 @RequestMapping("/peliculas")
 public class ControladoraPelicula {
 
+    private Logger logger= LoggerFactory.getLogger(ControladoraPelicula.class);
     private final IPeliculaService peliService;
     private final IPersonajeService persoService;
     private final IPeliculaMapper peliMap;
@@ -90,6 +93,7 @@ public class ControladoraPelicula {
     @PostMapping
     public ResponseEntity<?> altaPelicula(@RequestBody PeliculaReqDTO peliDto){
         Pelicula peli=this.peliMap.mapToEntity(peliDto);
+        logger.info("Pelicula a crear: "+peli);
         Pelicula pelicu=this.peliService.porSiListaPersoNull(peli);
         if(this.peliService.existeTitulo(peli)){
             return this.notSuccessResponse("Ya existe una pelicula ese nombre", 0);
@@ -106,6 +110,7 @@ public class ControladoraPelicula {
     public ResponseEntity<?> modiPelicula(@RequestBody PeliculaReqDTO peliDto,
                                             @PathVariable int id){
         Pelicula peli=this.peliMap.mapToEntity(peliDto);
+        logger.info("Pelicula a modificar: "+peli);
         Pelicula pelicu=this.peliService.porSiListaPersoNull(peli);
         if(!this.peliService.existePeli(id)) {
             return this.notSuccessResponse("La pelicula con id %d ingresado no existe", id);

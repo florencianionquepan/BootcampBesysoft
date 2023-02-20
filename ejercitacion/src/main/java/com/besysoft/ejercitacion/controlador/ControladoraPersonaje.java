@@ -6,6 +6,8 @@ import com.besysoft.ejercitacion.dto.mapper.IPersonajeMapper;
 import com.besysoft.ejercitacion.servicios.interfaces.IPeliculaService;
 import com.besysoft.ejercitacion.servicios.interfaces.IPersonajeService;
 import com.besysoft.ejercitacion.dominio.Personaje;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,7 @@ import java.util.*;
 @RequestMapping("/personajes")
 public class ControladoraPersonaje {
 
+    private Logger logger= LoggerFactory.getLogger(ControladoraPersonaje.class);
     private final IPersonajeService persoService;
     private final IPeliculaService peliService;
     private final IPersonajeMapper persoMap;
@@ -68,9 +71,8 @@ public class ControladoraPersonaje {
     @PostMapping
     public ResponseEntity<?> altaPersonaje(@RequestBody PersonajeReqDTO persoDto){
         Personaje perso=this.persoMap.mapToEntity(persoDto);
-        System.out.println(persoDto);
+        logger.info("Personaje entidad a crear: " + perso);
         Personaje person=this.persoService.porSiListaPelisNull(perso);
-        System.out.println(person);
         if(!this.peliService.sonPelisCorrectas(person.getListaPeliculas())){
             return this.notSuccessResponse("Alguna pelicula asociada no existe",0);
         }
@@ -83,6 +85,7 @@ public class ControladoraPersonaje {
     public ResponseEntity<?> modiPerso(@RequestBody PersonajeReqDTO persoDto,
                                        @PathVariable int id){
         Personaje perso=this.persoMap.mapToEntity(persoDto);
+        logger.info("Personaje entidad a modificar: " + perso);
         Personaje person=this.persoService.porSiListaPelisNull(perso);
         if(!this.persoService.existePerso(id)) {
             return this.notSuccessResponse("El personaje con id %d ingresado no existe", id);

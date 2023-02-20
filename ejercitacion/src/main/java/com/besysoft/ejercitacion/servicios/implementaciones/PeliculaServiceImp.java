@@ -1,5 +1,6 @@
 package com.besysoft.ejercitacion.servicios.implementaciones;
 
+import com.besysoft.ejercitacion.controlador.ControladoraGenero;
 import com.besysoft.ejercitacion.dominio.Genero;
 import com.besysoft.ejercitacion.dominio.Pelicula;
 import com.besysoft.ejercitacion.dominio.Personaje;
@@ -7,6 +8,8 @@ import com.besysoft.ejercitacion.repositorios.database.GeneroRepository;
 import com.besysoft.ejercitacion.repositorios.database.PeliculaRepository;
 import com.besysoft.ejercitacion.repositorios.database.PersonajeRepository;
 import com.besysoft.ejercitacion.servicios.interfaces.IPeliculaService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -17,6 +20,8 @@ import java.util.Optional;
 
 @Service
 public class PeliculaServiceImp implements IPeliculaService {
+
+    private Logger logger= LoggerFactory.getLogger(PeliculaServiceImp.class);
     private final PeliculaRepository repoPeli;
     private final GeneroRepository repoGen;
     private final PersonajeRepository persoRepo;
@@ -85,6 +90,8 @@ public class PeliculaServiceImp implements IPeliculaService {
             List<Pelicula> listaPelisPersoNuevo=persoIn.getListaPeliculas();
             listaPelisPersoNuevo.add(peli);
             perso.setListaPeliculas(listaPelisPersoNuevo);
+            logger.info("Peli agregada a personaje: "+perso);
+            logger.info("El persoIn de BD: "+persoIn);
         }
     }
 
@@ -95,6 +102,7 @@ public class PeliculaServiceImp implements IPeliculaService {
             List<Pelicula> listaPelisPerso=persoAntBD.getListaPeliculas();
             listaPelisPerso.remove(peliVieja);
             persoAntBD.setListaPeliculas(listaPelisPerso);
+            logger.info("Peli eliminada de personaje: "+persoAntBD);
         }
     }
 
