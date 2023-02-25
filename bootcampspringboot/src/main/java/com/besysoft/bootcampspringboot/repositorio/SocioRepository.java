@@ -10,6 +10,6 @@ import java.util.Optional;
 public interface SocioRepository extends CrudRepository<Socio, Long> {
 
     @Query("from Socio s where s.nombre= ?1")
-    Optional<Socio> findByName(String nombre);
+    Optional<Socio> buscarPorNombre(String nombre);
 
 }

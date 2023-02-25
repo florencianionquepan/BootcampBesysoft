@@ -15,6 +15,11 @@ public class Socio implements Serializable {
     public Socio() {
     }
 
+    public Socio(Long id, String nombre) {
+        this.id = id;
+        this.nombre = nombre;
+    }
+
     public Long getId() {
         return id;
     }
