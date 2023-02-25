@@ -2,6 +2,8 @@ package com.besysoft.bootcampspringboot.repositorio;
 
 import com.besysoft.bootcampspringboot.datos.DatosDummy;
 import com.besysoft.bootcampspringboot.entidades.oneToOne.Socio;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -17,14 +19,23 @@ class SocioRepositoryTest {
     @Autowired
     private SocioRepository repository;
 
+    @BeforeEach
+    void setUp() {
+        repository.save(DatosDummy.getSocioUno());
+        repository.save(DatosDummy.getSocioDos());
+        repository.save(DatosDummy.getSocioTres());
+    }
+
+    @AfterEach
+    void tearDown() {
+        repository.deleteAll();
+    }
+
     @Test
     void buscarPorNombre() {
 
         //GIVEN
         String test="Socio uno";
-        repository.save(DatosDummy.getSocioUno());
-        repository.save(DatosDummy.getSocioDos());
-        repository.save(DatosDummy.getSocioTres());
 
         //WHEN
         Optional<Socio> oSocio = repository.buscarPorNombre(DatosDummy.getSocioUno().getNombre());
