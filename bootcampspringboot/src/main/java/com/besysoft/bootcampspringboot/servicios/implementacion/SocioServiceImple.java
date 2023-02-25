@@ -1,6 +1,7 @@
 package com.besysoft.bootcampspringboot.servicios.implementacion;
 
 import com.besysoft.bootcampspringboot.entidades.oneToOne.Socio;
+import com.besysoft.bootcampspringboot.excepciones.SocioExistException;
 import com.besysoft.bootcampspringboot.repositorio.SocioRepository;
 import com.besysoft.bootcampspringboot.servicios.interfaz.SocioService;
 import org.springframework.stereotype.Service;
@@ -19,9 +20,11 @@ public class SocioServiceImple implements SocioService {
     @Override
     @Transactional(readOnly = false)
     public Socio altaSocio(Socio socio) {
-        Optional <Socio> oSocio= this.repo.findByName(socio.getNombre());
+        Optional <Socio> oSocio= this.repo.buscarPorNombre(socio.getNombre());
         if(oSocio.isPresent()){
-            throw new RuntimeException("socio existente");
+            throw new SocioExistException(String.format("El socio %s ya existe", socio.getNombre()),
+            new RuntimeException("Causa original")
+            );
         }
         return this.repo.save(socio);
     }
