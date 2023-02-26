@@ -1,11 +1,11 @@
 package com.besysoft.ejercitacion.servicios.implementaciones;
 
-import com.besysoft.ejercitacion.controlador.ControladoraGenero;
 import com.besysoft.ejercitacion.dominio.Genero;
 import com.besysoft.ejercitacion.dominio.Pelicula;
 import com.besysoft.ejercitacion.repositorios.database.GeneroRepository;
 import com.besysoft.ejercitacion.repositorios.database.PeliculaRepository;
 import com.besysoft.ejercitacion.servicios.interfaces.IGeneroService;
+import com.besysoft.ejercitacion.servicios.interfaces.IPeliculaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -20,10 +20,12 @@ public class GeneroServiceImp implements IGeneroService {
     private Logger logger= LoggerFactory.getLogger(GeneroServiceImp.class);
     private final GeneroRepository genRepo;
     private final PeliculaRepository peliRepo;
+    private final IPeliculaService peliService;
 
-    public GeneroServiceImp(GeneroRepository genRepo, PeliculaRepository peliRepo) {
+    public GeneroServiceImp(GeneroRepository genRepo, PeliculaRepository peliRepo, IPeliculaService peliService) {
         this.genRepo = genRepo;
         this.peliRepo = peliRepo;
+        this.peliService = peliService;
     }
 
     @Override
@@ -33,12 +35,34 @@ public class GeneroServiceImp implements IGeneroService {
 
     @Override
     public Genero altaGenero(Genero genero) {
+        this.porSiListaPelisNull(genero);
+        if(this.existeNombre(genero)){
+            //"El genero ya existe",0
+            return null;
+        }
+        if(!this.peliService.sonPelisCorrectas(genero.getListaPelis())){
+            //"Alguna pelicula ingresada no existe o no es correcta",0);
+            return null;
+        }
         this.addPeli(genero);
         return this.genRepo.save(genero);
     }
 
     @Override
     public Genero modiGenero(Genero genero, int id) {
+        this.porSiListaPelisNull(genero);
+        if(!this.existeGenero(id)) {
+            //"El genero con id %d ingresado no existe", id;
+            return null;
+        }
+        if(this.existeNombreConOtroId(genero,id)){
+            return null;
+            //"El genero ya existe"
+        }
+        if(!this.peliService.sonPelisCorrectas(genero.getListaPelis())){
+            //"Alguna pelicula ingresada no existe"
+            return null;
+        }
         genero.setId(id);
         //SI O SI AL MODIFICAR GENERO DEBE TRAER SU LISTA DE PELICULAS O SE BORRARAN
         this.removePeli(id);
