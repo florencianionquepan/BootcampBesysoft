@@ -22,12 +22,10 @@ public class ControladoraPelicula {
 
     private Logger logger= LoggerFactory.getLogger(ControladoraPelicula.class);
     private final IPeliculaService peliService;
-    private final IPersonajeService persoService;
     private final IPeliculaMapper peliMap;
 
-    public ControladoraPelicula(IPeliculaService peliService, IPersonajeService persoService, IPeliculaMapper peliMap) {
+    public ControladoraPelicula(IPeliculaService peliService, IPeliculaMapper peliMap) {
         this.peliService = peliService;
-        this.persoService = persoService;
         this.peliMap = peliMap;
     }
 
@@ -94,14 +92,12 @@ public class ControladoraPelicula {
     public ResponseEntity<?> altaPelicula(@RequestBody PeliculaReqDTO peliDto){
         Pelicula peli=this.peliMap.mapToEntity(peliDto);
         logger.info("Pelicula a crear: "+peli);
-        Pelicula pelicu=this.peliService.porSiListaPersoNull(peli);
-        if(this.peliService.existeTitulo(peli)){
-            return this.notSuccessResponse("Ya existe una pelicula ese nombre", 0);
+        Pelicula pelicula=this.peliService.altaPeli(peli);
+        //El mensaje de error de BadRequest especifico vendrá luego por excepcion
+        // y será manejado por ApiControllerAdvice
+        if(pelicula==null){
+            return this.notSuccessResponse("No se puede crear la pelicula", 0);
         }
-        if(!this.persoService.sonPersoCorrectos(pelicu.getListaPersonajes())){
-            return this.notSuccessResponse("Algun personaje ingresado no existe",0);
-        }
-        Pelicula pelicula=this.peliService.altaPeli(pelicu);
         PeliculaRespDTO peliRespDto=this.peliMap.mapToDto(pelicula);
         return ResponseEntity.status(HttpStatus.CREATED).body(peliRespDto);
     }
@@ -111,17 +107,10 @@ public class ControladoraPelicula {
                                             @PathVariable int id){
         Pelicula peli=this.peliMap.mapToEntity(peliDto);
         logger.info("Pelicula a modificar: "+peli);
-        Pelicula pelicu=this.peliService.porSiListaPersoNull(peli);
-        if(!this.peliService.existePeli(id)) {
-            return this.notSuccessResponse("La pelicula con id %d ingresado no existe", id);
+        Pelicula peliM=this.peliService.modiPeli(peli,id);
+        if(peliM==null){
+            return this.notSuccessResponse("La pelicula no pudo ser modificada",0);
         }
-        if(this.peliService.existeTituloConOtroId(peli, id)){
-            return this.notSuccessResponse("Ya existe una pelicula con ese nombre", 0);
-        }
-        if(!persoService.sonPersoCorrectos(pelicu.getListaPersonajes())){
-            return this.notSuccessResponse("Algun personaje ingresado no existe",0);
-        }
-        Pelicula peliM=this.peliService.modiPeli(pelicu,id);
         PeliculaRespDTO peliRespDto=this.peliMap.mapToDto(peliM);
         mensajeBody.put("Success",Boolean.TRUE);
         mensajeBody.put("data",peliRespDto);

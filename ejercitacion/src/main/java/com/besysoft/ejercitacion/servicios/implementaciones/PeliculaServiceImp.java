@@ -1,6 +1,5 @@
 package com.besysoft.ejercitacion.servicios.implementaciones;
 
-import com.besysoft.ejercitacion.controlador.ControladoraGenero;
 import com.besysoft.ejercitacion.dominio.Genero;
 import com.besysoft.ejercitacion.dominio.Pelicula;
 import com.besysoft.ejercitacion.dominio.Personaje;
@@ -8,6 +7,7 @@ import com.besysoft.ejercitacion.repositorios.database.GeneroRepository;
 import com.besysoft.ejercitacion.repositorios.database.PeliculaRepository;
 import com.besysoft.ejercitacion.repositorios.database.PersonajeRepository;
 import com.besysoft.ejercitacion.servicios.interfaces.IPeliculaService;
+import com.besysoft.ejercitacion.servicios.interfaces.IPersonajeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -25,11 +25,13 @@ public class PeliculaServiceImp implements IPeliculaService {
     private final PeliculaRepository repoPeli;
     private final GeneroRepository repoGen;
     private final PersonajeRepository persoRepo;
+    private final IPersonajeService persoService;
 
-    public PeliculaServiceImp(PeliculaRepository repoPeli, GeneroRepository repoGen, PersonajeRepository persoRepo) {
+    public PeliculaServiceImp(PeliculaRepository repoPeli, GeneroRepository repoGen, PersonajeRepository persoRepo, IPersonajeService persoService) {
         this.repoPeli = repoPeli;
         this.repoGen = repoGen;
         this.persoRepo = persoRepo;
+        this.persoService = persoService;
     }
 
 
@@ -69,12 +71,34 @@ public class PeliculaServiceImp implements IPeliculaService {
 
     @Override
     public Pelicula altaPeli(Pelicula peli) {
+        Pelicula pelicu=this.porSiListaPersoNull(peli);
+        if(this.existeTitulo(peli)){
+            //"Pelicula existente", 0
+            return null;
+        }
+        if(!this.persoService.sonPersoCorrectos(pelicu.getListaPersonajes())){
+            //"Algun personaje ingresado no existe",0
+            return null;
+        }
         this.addPeliPersos(peli);
         return this.repoPeli.save(peli);
     }
 
     @Override
     public Pelicula modiPeli(Pelicula peli, int id) {
+        Pelicula pelicu=this.porSiListaPersoNull(peli);
+        if(!this.existePeli(id)) {
+            //"La pelicula con id %d ingresado no existe", id
+            return null;
+        }
+        if(this.existeTituloConOtroId(peli, id)){
+            //"Ya existe una pelicula con ese nombre", 0
+            return null;
+        }
+        if(!persoService.sonPersoCorrectos(pelicu.getListaPersonajes())){
+            //"Algun personaje ingresado no existe",0
+            return null;
+        }
         peli.setId(id);
         this.retenerGenero(peli);
         this.removePeliPersos(id);
@@ -91,7 +115,6 @@ public class PeliculaServiceImp implements IPeliculaService {
             listaPelisPersoNuevo.add(peli);
             perso.setListaPeliculas(listaPelisPersoNuevo);
             logger.info("Peli agregada a personaje: "+perso);
-            logger.info("El persoIn de BD: "+persoIn);
         }
     }
 
@@ -128,6 +151,7 @@ public class PeliculaServiceImp implements IPeliculaService {
         return sonCorrectas;
     }
 
+    //puedo reemplazar con existsById
     @Override
     public boolean existePeli(int id) {
         boolean existe=false;
