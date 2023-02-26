@@ -52,6 +52,11 @@ public class PersonajeServiceImp implements IPersonajeService {
 
     @Override
     public Personaje altaPersonaje(Personaje personaje) {
+        Personaje person=this.porSiListaPelisNull(personaje);
+        if(!this.peliService.sonPelisCorrectas(person.getListaPeliculas())){
+            //"Alguna pelicula asociada no existe"
+            return null;
+        }
         for(Pelicula peli: personaje.getListaPeliculas()){
             this.peliService.retenerGenero(peli);
         }
@@ -60,6 +65,15 @@ public class PersonajeServiceImp implements IPersonajeService {
     }
     @Override
     public Personaje modiPersonaje(Personaje perso, int id) {
+        Personaje person=this.porSiListaPelisNull(perso);
+        if(!this.existePerso(id)) {
+            //"El personaje con id %d ingresado no existe", id);
+            return null;
+        }
+        if(!this.peliService.sonPelisCorrectas(person.getListaPeliculas())) {
+            //"Alguna pelicula asociada no existe",0);
+            return null;
+        }
         perso.setId(id);
         for(Pelicula peli: perso.getListaPeliculas()){
             this.peliService.retenerGenero(peli);

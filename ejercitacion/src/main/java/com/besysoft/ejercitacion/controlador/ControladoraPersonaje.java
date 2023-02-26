@@ -20,12 +20,10 @@ public class ControladoraPersonaje {
 
     private Logger logger= LoggerFactory.getLogger(ControladoraPersonaje.class);
     private final IPersonajeService persoService;
-    private final IPeliculaService peliService;
     private final IPersonajeMapper persoMap;
 
-    public ControladoraPersonaje(IPersonajeService service, IPeliculaService peliService, IPersonajeMapper persoMap){
+    public ControladoraPersonaje(IPersonajeService service, IPersonajeMapper persoMap){
         this.persoService = service;
-        this.peliService = peliService;
         this.persoMap = persoMap;
     }
     public Map<String,Object> mensajeBody= new HashMap<>();
@@ -72,11 +70,10 @@ public class ControladoraPersonaje {
     public ResponseEntity<?> altaPersonaje(@RequestBody PersonajeReqDTO persoDto){
         Personaje perso=this.persoMap.mapToEntity(persoDto);
         logger.info("Personaje entidad a crear: " + perso);
-        Personaje person=this.persoService.porSiListaPelisNull(perso);
-        if(!this.peliService.sonPelisCorrectas(person.getListaPeliculas())){
+        Personaje personaje=this.persoService.altaPersonaje(perso);
+        if(personaje==null){
             return this.notSuccessResponse("Alguna pelicula asociada no existe",0);
         }
-        Personaje personaje=this.persoService.altaPersonaje(person);
         PersonajeRespDTO persoRespDto=this.persoMap.mapToDto(personaje);
         return ResponseEntity.status(HttpStatus.CREATED).body(persoRespDto);
     }
@@ -86,14 +83,10 @@ public class ControladoraPersonaje {
                                        @PathVariable int id){
         Personaje perso=this.persoMap.mapToEntity(persoDto);
         logger.info("Personaje entidad a modificar: " + perso);
-        Personaje person=this.persoService.porSiListaPelisNull(perso);
-        if(!this.persoService.existePerso(id)) {
-            return this.notSuccessResponse("El personaje con id %d ingresado no existe", id);
+        Personaje personaje=this.persoService.modiPersonaje(perso,id);
+        if(personaje==null){
+            return this.notSuccessResponse("Existe un error en la peticion y el personaje no pudo ser modificado",0);
         }
-        if(!this.peliService.sonPelisCorrectas(person.getListaPeliculas())) {
-            return this.notSuccessResponse("Alguna pelicula asociada no existe",0);
-        }
-        Personaje personaje=this.persoService.modiPersonaje(person,id);
         PersonajeRespDTO persoRespDto=this.persoMap.mapToDto(personaje);
         mensajeBody.put("Success",Boolean.TRUE);
         mensajeBody.put("data",persoRespDto);
