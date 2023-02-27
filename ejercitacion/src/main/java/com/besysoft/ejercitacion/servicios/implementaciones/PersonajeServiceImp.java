@@ -1,6 +1,5 @@
 package com.besysoft.ejercitacion.servicios.implementaciones;
 
-import com.besysoft.ejercitacion.controlador.ControladoraPersonaje;
 import com.besysoft.ejercitacion.dominio.Pelicula;
 import com.besysoft.ejercitacion.dominio.Personaje;
 import com.besysoft.ejercitacion.repositorios.database.PeliculaRepository;
@@ -63,6 +62,7 @@ public class PersonajeServiceImp implements IPersonajeService {
         this.addPersoPelis(personaje);
         return this.persoRepo.save(personaje);
     }
+
     @Override
     public Personaje modiPersonaje(Personaje perso, int id) {
         Personaje person=this.porSiListaPelisNull(perso);
@@ -104,8 +104,7 @@ public class PersonajeServiceImp implements IPersonajeService {
         }
     }
 
-    @Override
-    public boolean existePerso(int id) {
+    private boolean existePerso(int id) {
         boolean existe=false;
         Optional <Personaje> oPerso=this.persoRepo.findById(id);
         if(oPerso.isPresent()){
@@ -114,22 +113,7 @@ public class PersonajeServiceImp implements IPersonajeService {
         return existe;
     }
 
-    @Override
-    public boolean sonPersoCorrectos(List<Personaje> persosIn) {
-        boolean sonCorrectos;
-        int contCorrectos = 0;
-        for (Personaje per : persosIn) {
-            Optional <Personaje> oPerso = this.persoRepo.findById(per.getId());
-            if (oPerso.isEmpty()) {
-                return false;
-            }
-            contCorrectos = oPerso.get().equals(per) ? contCorrectos + 1 : contCorrectos;
-        }
-        sonCorrectos=contCorrectos==persosIn.size();
-        return sonCorrectos;
-    }
-
-    public Personaje porSiListaPelisNull(Personaje perso){
+    private Personaje porSiListaPelisNull(Personaje perso){
         if(perso.getListaPeliculas()==null){
             List<Pelicula> listaPelis=new ArrayList<>();
             perso.setListaPeliculas(listaPelis);
