@@ -90,24 +90,18 @@ public class GeneroServiceImp implements IGeneroService {
             }
     }
 
-    public void porSiListaPelisNull(Genero genero){
+    private void porSiListaPelisNull(Genero genero){
         if(genero.getListaPelis()==null){
             List<Pelicula> listaPelis=new ArrayList<>();
             genero.setListaPelis(listaPelis);
         }
     }
 
-    public boolean existeGenero(int id){
-        boolean existe=false;
-        Optional<Genero> gen=this.genRepo.findById(id);
-        if(gen.isPresent()){
-            existe=true;
-        }
-        return existe;
+    private boolean existeGenero(int id){
+        return this.genRepo.existsById(id);
     }
 
-    @Override
-    public boolean existeNombre(Genero genero) {
+    private boolean existeNombre(Genero genero) {
         boolean existe=true;
         Optional <Genero> oGen=this.genRepo.findByName(genero.getNombre());
         if (oGen.isEmpty()){
@@ -116,8 +110,7 @@ public class GeneroServiceImp implements IGeneroService {
         return existe;
     }
 
-    @Override
-    public boolean existeNombreConOtroId(Genero genero, int id) {
+    private boolean existeNombreConOtroId(Genero genero, int id) {
         boolean existe=true;
         Optional <Genero> oGen=this.genRepo.findByName(genero.getNombre());
         Optional<Genero> gen=this.genRepo.findById(id);
