@@ -26,4 +26,14 @@ public class DatosDummy {
         return new Pelicula(2,"Up",LocalDate.of(2009,10,15),
                 2,new ArrayList<Personaje>());
     }
+
+    public static Personaje getPersonajeMiguel(){
+        return new Personaje(1,"Miguel",11,30,
+                "Sueña con convertirse en un cantante famoso", new ArrayList<Pelicula>());
+    }
+
+    public static Personaje getPersonajeCarl(){
+        return new Personaje(3,"Carl",80, 75.0,
+                "Desde que era niño sueña con ser un gran explorador.", new ArrayList<Pelicula>());
+    }
 }
