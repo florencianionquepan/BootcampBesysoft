@@ -13,10 +13,6 @@ public interface IPeliculaService {
     List<Pelicula> buscarPeliByCal(int desde, int hasta);
     Pelicula altaPeli(Pelicula peli);
     Pelicula modiPeli(Pelicula peli, int id);
-    boolean sonPelisCorrectas(List<Pelicula> pelisIn);
-    boolean existePeli(int id);
-    Pelicula porSiListaPersoNull(Pelicula peli);
-    boolean existeTitulo(Pelicula peli);
-    boolean existeTituloConOtroId(Pelicula peli, int id);
     void retenerGenero(Pelicula peli);
+    boolean sonPelisCorrectas(List<Pelicula> pelisIn);
 }

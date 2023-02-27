@@ -25,13 +25,11 @@ public class PeliculaServiceImp implements IPeliculaService {
     private final PeliculaRepository repoPeli;
     private final GeneroRepository repoGen;
     private final PersonajeRepository persoRepo;
-    private final IPersonajeService persoService;
 
-    public PeliculaServiceImp(PeliculaRepository repoPeli, GeneroRepository repoGen, PersonajeRepository persoRepo, IPersonajeService persoService) {
+    public PeliculaServiceImp(PeliculaRepository repoPeli, GeneroRepository repoGen, PersonajeRepository persoRepo) {
         this.repoPeli = repoPeli;
         this.repoGen = repoGen;
         this.persoRepo = persoRepo;
-        this.persoService = persoService;
     }
 
 
@@ -76,7 +74,7 @@ public class PeliculaServiceImp implements IPeliculaService {
             //"Pelicula existente", 0
             return null;
         }
-        if(!this.persoService.sonPersoCorrectos(pelicu.getListaPersonajes())){
+        if(!this.sonPersoCorrectos(pelicu.getListaPersonajes())){
             //"Algun personaje ingresado no existe",0
             return null;
         }
@@ -95,7 +93,7 @@ public class PeliculaServiceImp implements IPeliculaService {
             //"Ya existe una pelicula con ese nombre", 0
             return null;
         }
-        if(!persoService.sonPersoCorrectos(pelicu.getListaPersonajes())){
+        if(!this.sonPersoCorrectos(pelicu.getListaPersonajes())){
             //"Algun personaje ingresado no existe",0
             return null;
         }
@@ -136,6 +134,43 @@ public class PeliculaServiceImp implements IPeliculaService {
             peli.setGenero(gen);
         }
     }
+
+    private boolean existePeli(int id) {
+        return this.repoPeli.existsById(id);
+    }
+
+    private Pelicula porSiListaPersoNull(Pelicula peli) {
+        if(peli.getListaPersonajes()==null){
+            List<Personaje> listaPerVacia=new ArrayList<>();
+            peli.setListaPersonajes(listaPerVacia);
+        }
+        return peli;
+    }
+
+    private boolean existeTitulo(Pelicula peli) {
+        boolean existe=true;
+        Optional <Pelicula> oPeli=this.repoPeli.findByTitle(peli.getTitulo());
+        if (oPeli.isEmpty()){
+            existe=false;
+        }
+        return existe;
+    }
+
+    private boolean existeTituloConOtroId(Pelicula peli, int id) {
+        boolean existe=true;
+        Optional <Pelicula> oPeli=this.repoPeli.findByTitle(peli.getTitulo());
+        Optional <Pelicula> oPeliId=this.repoPeli.findById(id);
+        //Si se modifica el nombre del genero por uno que aun no existe
+        if (oPeli.isEmpty()){
+            existe=false;
+        }
+        //si el nombre existe, pero se esta tratando del mismo id:
+        if(oPeli.isPresent() && oPeli.get().getId()==oPeliId.get().getId()){
+            existe=false;
+        }
+        return existe;
+    }
+
     @Override
     public boolean sonPelisCorrectas(List<Pelicula> pelisIn) {
         boolean sonCorrectas;
@@ -151,49 +186,17 @@ public class PeliculaServiceImp implements IPeliculaService {
         return sonCorrectas;
     }
 
-    //puedo reemplazar con existsById
-    @Override
-    public boolean existePeli(int id) {
-        boolean existe=false;
-        Optional <Pelicula> oPeli=this.repoPeli.findById(id);
-        if(oPeli.isPresent()){
-            existe=true;
+    private boolean sonPersoCorrectos(List<Personaje> persosIn) {
+        boolean sonCorrectos;
+        int contCorrectos = 0;
+        for (Personaje per : persosIn) {
+            Optional <Personaje> oPerso = this.persoRepo.findById(per.getId());
+            if (oPerso.isEmpty()) {
+                return false;
+            }
+            contCorrectos = oPerso.get().equals(per) ? contCorrectos + 1 : contCorrectos;
         }
-        return existe;
-    }
-
-    @Override
-    public Pelicula porSiListaPersoNull(Pelicula peli) {
-        if(peli.getListaPersonajes()==null){
-            List<Personaje> listaPerVacia=new ArrayList<>();
-            peli.setListaPersonajes(listaPerVacia);
-        }
-        return peli;
-    }
-
-    @Override
-    public boolean existeTitulo(Pelicula peli) {
-        boolean existe=true;
-        Optional <Pelicula> oPeli=this.repoPeli.findByTitle(peli.getTitulo());
-        if (oPeli.isEmpty()){
-            existe=false;
-        }
-        return existe;
-    }
-
-    @Override
-    public boolean existeTituloConOtroId(Pelicula peli, int id) {
-        boolean existe=true;
-        Optional <Pelicula> oPeli=this.repoPeli.findByTitle(peli.getTitulo());
-        Optional <Pelicula> oPeliId=this.repoPeli.findById(id);
-        //Si se modifica el nombre del genero por uno que aun no existe
-        if (oPeli.isEmpty()){
-            existe=false;
-        }
-        //si el nombre existe, pero se esta tratando del mismo id:
-        if(oPeli.isPresent() && oPeli.get().getId()==oPeliId.get().getId()){
-            existe=false;
-        }
-        return existe;
+        sonCorrectos=contCorrectos==persosIn.size();
+        return sonCorrectos;
     }
 }
