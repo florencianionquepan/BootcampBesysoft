@@ -1,10 +1,9 @@
 package com.besysoft.ejercitacion.repositorios.database;
 
-import com.besysoft.ejercitacion.datos.DatosDummy;
 import com.besysoft.ejercitacion.dominio.Pelicula;
+import com.besysoft.ejercitacion.utilidades.TestDatos;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
@@ -12,11 +11,8 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 class PeliculaRepositoryTest {
@@ -26,21 +22,21 @@ class PeliculaRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        repo.save(DatosDummy.getPeliculaCoco());
-        repo.save(DatosDummy.getPeliculaUp());
+        repo.save(TestDatos.getPeliculaCoco());
+        repo.save(TestDatos.getPeliculaUp());
     }
 
     @AfterEach
     void tearDown() {
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     void findByTitle() {
         //GIVEN
         String titulo="Coco";
 
         //WHEN
-        Optional<Pelicula> oPeli = repo.findByTitle(DatosDummy.getPeliculaCoco().getTitulo());
+        Optional<Pelicula> oPeli = repo.findByTitle(TestDatos.getPeliculaCoco().getTitulo());
 
         //THEN
         assertThat(oPeli.isPresent())
@@ -48,12 +44,12 @@ class PeliculaRepositoryTest {
         assertThat(oPeli.get().getTitulo()).isEqualTo(titulo);
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     void findBetweenDates() {
         //GIVEN
         List<Pelicula> pelisDates=new ArrayList<>(
                 List.of(
-                        DatosDummy.getPeliculaCoco()
+                        TestDatos.getPeliculaCoco()
                 )
         );
 
@@ -67,12 +63,12 @@ class PeliculaRepositoryTest {
 
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     void findBetweenCalif() {
         //GIVEN
         List<Pelicula> pelisCalif=new ArrayList<>(
                 List.of(
-                        DatosDummy.getPeliculaUp()
+                        TestDatos.getPeliculaUp()
                 )
         );
 

@@ -1,7 +1,7 @@
 package com.besysoft.ejercitacion.repositorios.database;
 
-import com.besysoft.ejercitacion.datos.DatosDummy;
 import com.besysoft.ejercitacion.dominio.Genero;
+import com.besysoft.ejercitacion.utilidades.TestDatos;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,7 +11,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 class GeneroRepositoryTest {
@@ -21,8 +20,8 @@ class GeneroRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        repo.save(DatosDummy.getGeneroTerror());
-        repo.save(DatosDummy.getGeneroDrama());
+        repo.save(TestDatos.getGeneroTerror());
+        repo.save(TestDatos.getGeneroDrama());
     }
 
     @AfterEach
@@ -35,7 +34,7 @@ class GeneroRepositoryTest {
         String test="Terror";
 
         //WHEN
-        Optional<Genero> oGenero = repo.findByName(DatosDummy.getGeneroTerror().getNombre());
+        Optional<Genero> oGenero = repo.findByName(TestDatos.getGeneroTerror().getNombre());
 
         //THEN
         assertThat(oGenero.isPresent()).isTrue();

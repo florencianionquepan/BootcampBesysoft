@@ -1,7 +1,7 @@
 package com.besysoft.ejercitacion.repositorios.database;
 
-import com.besysoft.ejercitacion.datos.DatosDummy;
 import com.besysoft.ejercitacion.dominio.Personaje;
+import com.besysoft.ejercitacion.utilidades.TestDatos;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 class PersonajeRepositoryTest {
@@ -23,8 +22,8 @@ class PersonajeRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        repo.save(DatosDummy.getPersonajeMiguel());
-        repo.save(DatosDummy.getPersonajeCarl());
+        repo.save(TestDatos.getPersonajeMiguel());
+        repo.save(TestDatos.getPersonajeCarl());
     }
 
     @AfterEach
@@ -37,7 +36,7 @@ class PersonajeRepositoryTest {
         String name="Carl";
 
         //WHEN
-        List<Personaje> listaPerso= repo.findByName(DatosDummy.getPersonajeCarl().getNombre());
+        List<Personaje> listaPerso= repo.findByName(TestDatos.getPersonajeCarl().getNombre());
 
         //THEN
         assertThat(listaPerso.size()).isEqualTo(1);
@@ -51,7 +50,7 @@ class PersonajeRepositoryTest {
         int edad=11;
 
         //WHEN
-        List<Personaje> listaPerso=repo.findByAge(DatosDummy.getPersonajeMiguel().getEdad());
+        List<Personaje> listaPerso=repo.findByAge(TestDatos.getPersonajeMiguel().getEdad());
 
         //THEN
         assertThat(listaPerso.size()).isEqualTo(1);
@@ -62,12 +61,12 @@ class PersonajeRepositoryTest {
     void findBetweenAges() {
         //GIVEN
         List<Personaje> listaPeque=new ArrayList<Personaje>(
-                Arrays.asList(DatosDummy.getPersonajeMiguel())
+                Arrays.asList(TestDatos.getPersonajeMiguel())
         );
 
         //WHEN
-        List<Personaje> listaPerso=repo.findBetweenAges(DatosDummy.getPersonajeMiguel().getEdad()
-                                                        ,DatosDummy.getPersonajeCarl().getEdad()-1);
+        List<Personaje> listaPerso=repo.findBetweenAges(TestDatos.getPersonajeMiguel().getEdad()
+                                                        , TestDatos.getPersonajeCarl().getEdad()-1);
 
         //THEN
         assertThat(listaPerso.size()).isEqualTo(1);
