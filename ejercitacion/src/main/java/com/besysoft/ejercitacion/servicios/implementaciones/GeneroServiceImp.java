@@ -36,7 +36,8 @@ public class GeneroServiceImp implements IGeneroService {
     @Override
     public Genero altaGenero(Genero genero) {
         this.porSiListaPelisNull(genero);
-        if(this.existeNombre(genero)){
+        Optional <Genero> oGen=this.genRepo.findByName(genero.getNombre());
+        if(oGen.isPresent()){
             //"El genero ya existe",0
             return null;
         }
@@ -101,16 +102,7 @@ public class GeneroServiceImp implements IGeneroService {
         return this.genRepo.existsById(id);
     }
 
-    private boolean existeNombre(Genero genero) {
-        boolean existe=true;
-        Optional <Genero> oGen=this.genRepo.findByName(genero.getNombre());
-        if (oGen.isEmpty()){
-            existe=false;
-        }
-        return existe;
-    }
-
-    private boolean existeNombreConOtroId(Genero genero, int id) {
+    protected boolean existeNombreConOtroId(Genero genero, int id) {
         boolean existe=true;
         Optional <Genero> oGen=this.genRepo.findByName(genero.getNombre());
         Optional<Genero> gen=this.genRepo.findById(id);
