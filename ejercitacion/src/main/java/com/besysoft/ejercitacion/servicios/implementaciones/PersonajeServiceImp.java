@@ -89,7 +89,7 @@ public class PersonajeServiceImp implements IPersonajeService {
             List<Personaje> listaPersoPeliNueva=peliIn.getListaPersonajes();
             listaPersoPeliNueva.add(perso);
             peliIn.setListaPersonajes(listaPersoPeliNueva);
-            logger.info("Se añadio el personaje a la pelicula "+peliIn);
+            logger.info("Se añadio el personaje a la pelicula "+peliIn +peliIn.getListaPersonajes());
         }
     }
 
