@@ -104,7 +104,7 @@ public class PeliculaServiceImp implements IPeliculaService {
         return this.repoPeli.save(peli);
     }
 
-    private void addPeliPersos(Pelicula peli){
+    protected void addPeliPersos(Pelicula peli){
         //En este caso para que tome bien la relacion la BD debi guardale la pelicula a perso
         //no a persoIn, sino ejecuta los delete de la fc. remove y no hace los nuevos insert.
         for(Personaje perso: peli.getListaPersonajes()){
@@ -116,7 +116,7 @@ public class PeliculaServiceImp implements IPeliculaService {
         }
     }
 
-    private void removePeliPersos(int id){
+    protected void removePeliPersos(int id){
         Pelicula peliVieja=this.repoPeli.findById(id).get();
         for(Personaje persoAnt: peliVieja.getListaPersonajes()){
             Personaje persoAntBD=this.persoRepo.findById(persoAnt.getId()).get();
