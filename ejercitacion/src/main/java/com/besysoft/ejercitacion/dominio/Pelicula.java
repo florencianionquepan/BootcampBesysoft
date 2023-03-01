@@ -93,7 +93,6 @@ public class Pelicula implements Serializable {
                 ", titulo='" + titulo + '\'' +
                 ", fechaCreacion=" + fechaCreacion +
                 ", calificacion=" + calificacion +
-                ", listaPersonajes=" + listaPersonajes +
                 '}';
     }
 
