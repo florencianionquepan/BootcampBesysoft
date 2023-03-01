@@ -30,7 +30,7 @@ class PersonajeServiceImpTest {
     private PersonajeRepository persoRepo;
     private IPeliculaService peliService;
     private PeliculaRepository peliRepo;
-    private Logger logger= LoggerFactory.getLogger(PersonajeServiceImp.class);
+    private Logger logger= LoggerFactory.getLogger(PersonajeServiceImpTest.class);
 
     @BeforeEach
     void setUp() {
@@ -38,8 +38,6 @@ class PersonajeServiceImpTest {
         peliService=mock(IPeliculaService.class);
         peliRepo=mock(PeliculaRepository.class);
         persoService=new PersonajeServiceImp(persoRepo,peliService,peliRepo);
-        TestDatos test=new TestDatos();
-        test.generarDatos();
     }
 
     @AfterEach
@@ -49,6 +47,8 @@ class PersonajeServiceImpTest {
     @Test
     void verPerso() {
         //GIVEN
+        TestDatos test=new TestDatos();
+        test.generarDatos();
         when(persoRepo.findAll())
                 .thenReturn(TestDatos.getListaPerso());
         //WHEN
@@ -66,25 +66,27 @@ class PersonajeServiceImpTest {
                         Arrays.asList(TestDatos.getPersonajeCarl())
                 ));
         //WHEN
-        List<Personaje> personajesCarl= persoService
-                .buscarPersoByNombre(TestDatos.getPersonajeCarl().getNombre());
+        List<Personaje> personajesEsperados= persoService
+                .buscarPersoByNombre("Carl");
         //THEN
-        assertThat(personajesCarl.get(0)).isEqualTo(TestDatos.getPersonajeCarl());
+        assertThat(personajesEsperados.get(0)).isEqualTo(TestDatos.getPersonajeCarl());
         verify(persoRepo).findByName("Carl");
     }
 
     @Test
     void buscarPersoByEdad() {
         //GIVEN
-        when(persoRepo.findByAge(11))
+        int edad=11;
+        when(persoRepo.findByAge(edad))
                 .thenReturn(new ArrayList<Personaje>(
                         Arrays.asList(TestDatos.getPersonajeMiguel())
                 ));
         //WHEN
-        List<Personaje> personajes= persoService
-                .buscarPersoByEdad(TestDatos.getPersonajeMiguel().getEdad());
+        List<Personaje> personajesEsperados= persoService
+                .buscarPersoByEdad(edad);
         //THEN
-        assertThat(personajes.size()).isEqualTo(1);
+        assertThat(personajesEsperados.size()).isEqualTo(1);
+        assertThat(personajesEsperados.get(0)).isEqualTo(TestDatos.getPersonajeMiguel());
         verify(persoRepo).findByAge(TestDatos.getPersonajeMiguel().getEdad());
     }
 
@@ -100,6 +102,7 @@ class PersonajeServiceImpTest {
                 .buscarPersoRangoEdad(10,30);
         //THEN
         assertThat(personajes.size()).isEqualTo(1);
+        assertThat(personajes.get(0)).isEqualTo(TestDatos.getPersonajeMiguel());
         verify(persoRepo).findBetweenAges(10,30);
     }
 
@@ -164,11 +167,9 @@ class PersonajeServiceImpTest {
                 Arrays.asList(peliPrueba)
         );
         persoCarl.setListaPeliculas(listaPelis);
-        logger.info(" pelisPerso " + listaPelis);
-        //Pelicula peliGuardada = mock(Pelicula.class);
-        logger.info("peliPrueba "+ when(peliRepo.save(peliPrueba)).thenReturn(peliPrueba));
-        logger.info("a ver: " + when(peliRepo.findById(peliPrueba.getId()))
-                .thenReturn(Optional.of(peliPrueba)));
+        when(peliRepo.save(peliPrueba)).thenReturn(peliPrueba);
+        when(peliRepo.findById(peliPrueba.getId()))
+                .thenReturn(Optional.of(peliPrueba));
         //WHEN
         persoService.addPersoPelis(persoCarl);
         //THEN
