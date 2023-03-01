@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -99,12 +100,18 @@ class GeneroServiceImpTest {
     void modiGenero() {
         Genero genDrama= TestDatos.getGeneroDrama();
         //GIVEN
-        given(genRepo.save(genDrama)).willReturn(genDrama);
-        genDrama.setNombre("Infantil");
+        when(genRepo.save(genDrama)).thenReturn(genDrama);
+        when(genRepo.findById(genDrama.getId())).thenReturn(Optional.of(genDrama));
+        Genero genModi=genDrama;
+        genModi.setNombre("Infantil");
+        when(peliService.sonPelisCorrectas(any())).thenReturn(true);
+        when(genRepo.existsById(genModi.getId())).thenReturn(true);
+        when(genRepo.findByName(genModi.getNombre())).thenReturn(Optional.empty());
         //WHEN
-        genService.modiGenero(genDrama,genDrama.getId());
+        genService.modiGenero(genModi,genModi.getId());
         //THEN
         assertThat(genDrama.getNombre()).isEqualTo("Infantil");
+        verify(genRepo).save(genModi);
     }
 
     @Test
