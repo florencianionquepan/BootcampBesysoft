@@ -83,7 +83,7 @@ public class PersonajeServiceImp implements IPersonajeService {
         return this.persoRepo.save(perso);
     }
 
-    private void addPersoPelis(Personaje perso){
+    protected void addPersoPelis(Personaje perso){
         for(Pelicula peliNueva:perso.getListaPeliculas()){
             Pelicula peliIn=this.peliRepo.findById(peliNueva.getId()).get();
             List<Personaje> listaPersoPeliNueva=peliIn.getListaPersonajes();
@@ -93,7 +93,7 @@ public class PersonajeServiceImp implements IPersonajeService {
         }
     }
 
-    private void removePersoPelis(int id){
+    protected void removePersoPelis(int id){
         Personaje persoViejo=this.persoRepo.findById(id).get();
         for(Pelicula peliAnt:persoViejo.getListaPeliculas()){
             Pelicula peliAntBD=this.peliRepo.findById(peliAnt.getId()).get();
