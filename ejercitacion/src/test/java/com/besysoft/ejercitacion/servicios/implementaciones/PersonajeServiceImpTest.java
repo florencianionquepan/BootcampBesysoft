@@ -138,13 +138,15 @@ class PersonajeServiceImpTest {
     void modiPersonaje() {
         Personaje per1=TestDatos.getPersonajeCarl();
         //GIVEN
-        given(persoRepo.save(per1))
-                .willReturn(per1);
+        when(persoRepo.save(per1)).thenReturn(per1);
+        when(persoRepo.findById(per1.getId())).thenReturn(Optional.of(per1));
+        when(peliService.sonPelisCorrectas(per1.getListaPeliculas())).thenReturn(true);
         per1.setNombre("Carlos");
         //WHEN
         persoService.modiPersonaje(per1,per1.getId());
         //THEN
         assertThat(per1.getNombre()).isEqualTo("Carlos");
+        verify(persoRepo).save(per1);
     }
 
     @Test
