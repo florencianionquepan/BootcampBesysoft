@@ -2,6 +2,8 @@ package com.besysoft.ejercitacion.servicios.implementaciones;
 
 import com.besysoft.ejercitacion.dominio.Genero;
 import com.besysoft.ejercitacion.dominio.Pelicula;
+import com.besysoft.ejercitacion.excepciones.GeneroExistException;
+import com.besysoft.ejercitacion.excepciones.GeneroPeIncorrectasException;
 import com.besysoft.ejercitacion.repositorios.database.GeneroRepository;
 import com.besysoft.ejercitacion.repositorios.database.PeliculaRepository;
 import com.besysoft.ejercitacion.servicios.interfaces.IGeneroService;
@@ -34,16 +36,15 @@ public class GeneroServiceImp implements IGeneroService {
     }
 
     @Override
-    public Genero altaGenero(Genero genero) {
+    public Genero altaGenero(Genero genero)  {
         this.porSiListaPelisNull(genero);
         Optional <Genero> oGen=this.genRepo.findByName(genero.getNombre());
         if(oGen.isPresent()){
-            //"El genero ya existe",0
-            return null;
+            throw new GeneroExistException(String.format("El Genero %s ya existe",genero.getNombre())
+            );
         }
         if(!this.peliService.sonPelisCorrectas(genero.getListaPelis())){
-            //"Alguna pelicula ingresada no existe o no es correcta",0);
-            return null;
+            throw new GeneroPeIncorrectasException("Alguna pelicula ingresada no existe o no es correcta");
         }
         this.addPeli(genero);
         return this.genRepo.save(genero);
