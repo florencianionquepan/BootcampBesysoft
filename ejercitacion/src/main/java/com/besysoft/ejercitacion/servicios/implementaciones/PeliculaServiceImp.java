@@ -3,6 +3,8 @@ package com.besysoft.ejercitacion.servicios.implementaciones;
 import com.besysoft.ejercitacion.dominio.Genero;
 import com.besysoft.ejercitacion.dominio.Pelicula;
 import com.besysoft.ejercitacion.dominio.Personaje;
+import com.besysoft.ejercitacion.excepciones.ExistException;
+import com.besysoft.ejercitacion.excepciones.ListaIncorrectaException;
 import com.besysoft.ejercitacion.repositorios.database.GeneroRepository;
 import com.besysoft.ejercitacion.repositorios.database.PeliculaRepository;
 import com.besysoft.ejercitacion.repositorios.database.PersonajeRepository;
@@ -71,12 +73,13 @@ public class PeliculaServiceImp implements IPeliculaService {
     public Pelicula altaPeli(Pelicula peli) {
         Pelicula pelicu=this.porSiListaPersoNull(peli);
         if(this.existeTitulo(peli)){
-            //"Pelicula existente", 0
-            return null;
+            throw new ExistException(
+                    String.format("La pelicula %s ya existe",pelicu.getTitulo())
+            );
         }
         if(!this.sonPersoCorrectos(pelicu.getListaPersonajes())){
-            //"Algun personaje ingresado no existe",0
-            return null;
+            throw new ListaIncorrectaException(
+                    "Algun personaje ingresado no existe o no es correcto");
         }
         this.addPeliPersos(peli);
         return this.repoPeli.save(peli);
@@ -86,16 +89,17 @@ public class PeliculaServiceImp implements IPeliculaService {
     public Pelicula modiPeli(Pelicula peli, int id) {
         Pelicula pelicu=this.porSiListaPersoNull(peli);
         if(!this.existePeli(id)) {
-            //"La pelicula con id %d ingresado no existe", id
-            return null;
+            throw new ExistException(String.format("La pelicula con id %d no existe",id)
+            );
         }
         if(this.existeTituloConOtroId(peli, id)){
-            //"Ya existe una pelicula con ese nombre", 0
-            return null;
+            throw new ExistException(
+                    String.format("La pelicula %s ya existe",pelicu.getTitulo())
+            );
         }
         if(!this.sonPersoCorrectos(pelicu.getListaPersonajes())){
-            //"Algun personaje ingresado no existe",0
-            return null;
+            throw new ListaIncorrectaException(
+                    "Algun personaje ingresado no existe o no es correcto");
         }
         peli.setId(id);
         this.retenerGenero(peli);
