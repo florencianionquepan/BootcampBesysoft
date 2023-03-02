@@ -89,16 +89,12 @@ public class ControladoraPelicula {
         List< PeliculaRespDTO> pelisDto=this.peliMap.mapListToDto(this.peliService.buscarPeliByCal(desde,hasta));
         return this.successResponse(pelisDto);
     }
+
     @PostMapping
     public ResponseEntity<?> altaPelicula(@Valid @RequestBody PeliculaReqDTO peliDto){
         Pelicula peli=this.peliMap.mapToEntity(peliDto);
         logger.info("Pelicula a crear: "+peli);
         Pelicula pelicula=this.peliService.altaPeli(peli);
-        //El mensaje de error de BadRequest especifico vendrá luego por excepcion
-        // y será manejado por ApiControllerAdvice
-        if(pelicula==null){
-            return this.notSuccessResponse("No se puede crear la pelicula", 0);
-        }
         PeliculaRespDTO peliRespDto=this.peliMap.mapToDto(pelicula);
         return ResponseEntity.status(HttpStatus.CREATED).body(peliRespDto);
     }
@@ -109,9 +105,6 @@ public class ControladoraPelicula {
         Pelicula peli=this.peliMap.mapToEntity(peliDto);
         logger.info("Pelicula a modificar: "+peli);
         Pelicula peliM=this.peliService.modiPeli(peli,id);
-        if(peliM==null){
-            return this.notSuccessResponse("La pelicula no pudo ser modificada",0);
-        }
         PeliculaRespDTO peliRespDto=this.peliMap.mapToDto(peliM);
         mensajeBody.put("Success",Boolean.TRUE);
         mensajeBody.put("data",peliRespDto);
