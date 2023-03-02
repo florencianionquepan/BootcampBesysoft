@@ -2,6 +2,8 @@ package com.besysoft.ejercitacion.servicios.implementaciones;
 
 import com.besysoft.ejercitacion.dominio.Pelicula;
 import com.besysoft.ejercitacion.dominio.Personaje;
+import com.besysoft.ejercitacion.excepciones.ExistException;
+import com.besysoft.ejercitacion.excepciones.ListaIncorrectaException;
 import com.besysoft.ejercitacion.repositorios.database.PeliculaRepository;
 import com.besysoft.ejercitacion.repositorios.database.PersonajeRepository;
 import com.besysoft.ejercitacion.servicios.interfaces.IPeliculaService;
@@ -53,8 +55,8 @@ public class PersonajeServiceImp implements IPersonajeService {
     public Personaje altaPersonaje(Personaje personaje) {
         Personaje person=this.porSiListaPelisNull(personaje);
         if(!this.peliService.sonPelisCorrectas(person.getListaPeliculas())){
-            //"Alguna pelicula asociada no existe"
-            return null;
+            throw new ListaIncorrectaException(
+                    "Alguna pelicula ingresada no existe o no es correcta");
         }
         for(Pelicula peli: personaje.getListaPeliculas()){
             this.peliService.retenerGenero(peli);
@@ -67,12 +69,13 @@ public class PersonajeServiceImp implements IPersonajeService {
     public Personaje modiPersonaje(Personaje perso, int id) {
         Personaje person=this.porSiListaPelisNull(perso);
         if(!this.existePerso(id)) {
-            //"El personaje con id %d ingresado no existe", id);
-            return null;
+            throw new ExistException(
+                    String.format("El Genero con id %d no existe",person.getId())
+            );
         }
         if(!this.peliService.sonPelisCorrectas(person.getListaPeliculas())) {
-            //"Alguna pelicula asociada no existe",0);
-            return null;
+            throw new ListaIncorrectaException(
+                    "Alguna pelicula ingresada no existe o no es correcta");
         }
         perso.setId(id);
         for(Pelicula peli: perso.getListaPeliculas()){
