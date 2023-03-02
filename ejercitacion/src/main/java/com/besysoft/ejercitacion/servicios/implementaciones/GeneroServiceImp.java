@@ -2,8 +2,8 @@ package com.besysoft.ejercitacion.servicios.implementaciones;
 
 import com.besysoft.ejercitacion.dominio.Genero;
 import com.besysoft.ejercitacion.dominio.Pelicula;
-import com.besysoft.ejercitacion.excepciones.GeneroExistException;
-import com.besysoft.ejercitacion.excepciones.GeneroPeIncorrectasException;
+import com.besysoft.ejercitacion.excepciones.ExistException;
+import com.besysoft.ejercitacion.excepciones.ListaIncorrectaException;
 import com.besysoft.ejercitacion.repositorios.database.GeneroRepository;
 import com.besysoft.ejercitacion.repositorios.database.PeliculaRepository;
 import com.besysoft.ejercitacion.servicios.interfaces.IGeneroService;
@@ -40,11 +40,11 @@ public class GeneroServiceImp implements IGeneroService {
         this.porSiListaPelisNull(genero);
         Optional <Genero> oGen=this.genRepo.findByName(genero.getNombre());
         if(oGen.isPresent()){
-            throw new GeneroExistException(String.format("El Genero %s ya existe",genero.getNombre())
+            throw new ExistException(String.format("El Genero %s ya existe",genero.getNombre())
             );
         }
         if(!this.peliService.sonPelisCorrectas(genero.getListaPelis())){
-            throw new GeneroPeIncorrectasException("Alguna pelicula ingresada no existe o no es correcta");
+            throw new ListaIncorrectaException("Alguna pelicula ingresada no existe o no es correcta");
         }
         this.addPeli(genero);
         return this.genRepo.save(genero);
@@ -54,16 +54,15 @@ public class GeneroServiceImp implements IGeneroService {
     public Genero modiGenero(Genero genero, int id) {
         this.porSiListaPelisNull(genero);
         if(!this.existeGenero(id)) {
-            //"El genero con id %d ingresado no existe", id;
-            return null;
+            throw new ExistException(String.format("El Genero con id %d no existe",id)
+            );
         }
         if(this.existeNombreConOtroId(genero,id)){
-            return null;
-            //"El genero ya existe"
+            throw new ExistException(String.format("El Genero %s ya existe",genero.getNombre())
+            );
         }
         if(!this.peliService.sonPelisCorrectas(genero.getListaPelis())){
-            //"Alguna pelicula ingresada no existe"
-            return null;
+            throw new ListaIncorrectaException("Alguna pelicula ingresada no existe o no es correcta");
         }
         genero.setId(id);
         //SI O SI AL MODIFICAR GENERO DEBE TRAER SU LISTA DE PELICULAS O SE BORRARAN
