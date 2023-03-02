@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.*;
 
 @RestController
@@ -67,7 +68,7 @@ public class ControladoraPersonaje {
     }
 
     @PostMapping
-    public ResponseEntity<?> altaPersonaje(@RequestBody PersonajeReqDTO persoDto){
+    public ResponseEntity<?> altaPersonaje(@Valid @RequestBody PersonajeReqDTO persoDto){
         Personaje perso=this.persoMap.mapToEntity(persoDto);
         logger.info("Personaje entidad a crear: " + perso);
         Personaje personaje=this.persoService.altaPersonaje(perso);
@@ -79,7 +80,7 @@ public class ControladoraPersonaje {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> modiPerso(@RequestBody PersonajeReqDTO persoDto,
+    public ResponseEntity<?> modiPerso(@Valid @RequestBody PersonajeReqDTO persoDto,
                                        @PathVariable int id){
         Personaje perso=this.persoMap.mapToEntity(persoDto);
         logger.info("Personaje entidad a modificar: " + perso);

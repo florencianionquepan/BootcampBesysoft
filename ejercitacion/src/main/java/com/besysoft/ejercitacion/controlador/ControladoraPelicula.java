@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -89,7 +90,7 @@ public class ControladoraPelicula {
         return this.successResponse(pelisDto);
     }
     @PostMapping
-    public ResponseEntity<?> altaPelicula(@RequestBody PeliculaReqDTO peliDto){
+    public ResponseEntity<?> altaPelicula(@Valid @RequestBody PeliculaReqDTO peliDto){
         Pelicula peli=this.peliMap.mapToEntity(peliDto);
         logger.info("Pelicula a crear: "+peli);
         Pelicula pelicula=this.peliService.altaPeli(peli);
@@ -103,7 +104,7 @@ public class ControladoraPelicula {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> modiPelicula(@RequestBody PeliculaReqDTO peliDto,
+    public ResponseEntity<?> modiPelicula(@Valid @RequestBody PeliculaReqDTO peliDto,
                                             @PathVariable int id){
         Pelicula peli=this.peliMap.mapToEntity(peliDto);
         logger.info("Pelicula a modificar: "+peli);
