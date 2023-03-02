@@ -88,7 +88,6 @@ class ControladoraPeliculaTest {
         //THEN
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON));
-        //.andExpect(jsonPath("$.data").value(peliculas));
     }
 
     @Test

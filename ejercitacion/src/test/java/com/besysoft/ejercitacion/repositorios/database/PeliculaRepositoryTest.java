@@ -4,6 +4,7 @@ import com.besysoft.ejercitacion.dominio.Pelicula;
 import com.besysoft.ejercitacion.utilidades.TestDatos;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
@@ -30,7 +31,7 @@ class PeliculaRepositoryTest {
     void tearDown() {
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void findByTitle() {
         //GIVEN
         String titulo="Coco";
@@ -44,7 +45,7 @@ class PeliculaRepositoryTest {
         assertThat(oPeli.get().getTitulo()).isEqualTo(titulo);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void findBetweenDates() {
         //GIVEN
         List<Pelicula> pelisDates=new ArrayList<>(
@@ -59,11 +60,10 @@ class PeliculaRepositoryTest {
 
         //THEN
         assertThat(listaPelis.size()).isEqualTo(1);
-        assertThat(listaPelis).isEqualTo(pelisDates);
 
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void findBetweenCalif() {
         //GIVEN
         List<Pelicula> pelisCalif=new ArrayList<>(

@@ -107,7 +107,7 @@ class ControladoraGeneroTest {
         resp.setNombre("Comedia");
         when(mapper.mapToEntity(genReq)).thenReturn(new Genero());
         when(service.altaGenero(any())).thenReturn(null);
-        
+
         mockMvc.perform(post(this.url)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(this.objMapper.writeValueAsString(genReq))

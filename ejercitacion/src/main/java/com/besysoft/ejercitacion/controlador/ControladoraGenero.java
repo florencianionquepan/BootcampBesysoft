@@ -37,7 +37,7 @@ public class ControladoraGenero {
     }
 
     @GetMapping
-    private ResponseEntity<?>  verGeneros(){
+    public ResponseEntity<?>  verGeneros(){
         List<GeneroRespDTO> genRespDto=this.genMap.mapListToDto(this.genService.verGeneros());
         mensajeBody.put("Success",Boolean.TRUE);
         mensajeBody.put("data",genRespDto);

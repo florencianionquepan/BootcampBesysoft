@@ -2,6 +2,7 @@ package com.besysoft.ejercitacion.dto;
 
 import com.besysoft.ejercitacion.dominio.Personaje;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.*;
 
 import java.time.LocalDate;
