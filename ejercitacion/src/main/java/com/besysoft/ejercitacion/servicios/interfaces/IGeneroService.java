@@ -1,7 +1,6 @@
 package com.besysoft.ejercitacion.servicios.interfaces;
 
 import com.besysoft.ejercitacion.dominio.Genero;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
