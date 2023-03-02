@@ -30,20 +30,16 @@ public class ControladoraGenero {
         this.genMap = genMap;
     }
 
-    private ResponseEntity<?> notSuccessResponse(String mensaje,int id){
-        mensajeBody.put("Success",Boolean.FALSE);
-        mensajeBody.put("data", String.format(mensaje,id));
-        return ResponseEntity
-                .badRequest()
-                .body(mensajeBody);
+    private ResponseEntity<?> successResponse(List<?> lista){
+        mensajeBody.put("Success",Boolean.TRUE);
+        mensajeBody.put("data",lista);
+        return ResponseEntity.ok(mensajeBody);
     }
 
     @GetMapping
     public ResponseEntity<?>  verGeneros(){
         List<GeneroRespDTO> genRespDto=this.genMap.mapListToDto(this.genService.verGeneros());
-        mensajeBody.put("Success",Boolean.TRUE);
-        mensajeBody.put("data",genRespDto);
-        return ResponseEntity.ok(mensajeBody);
+        return this.successResponse(genRespDto);
     }
 
     @PostMapping
