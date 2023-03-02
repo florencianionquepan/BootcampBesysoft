@@ -3,6 +3,8 @@ package com.besysoft.ejercitacion.controlador;
 import com.besysoft.ejercitacion.dto.GeneroReqDTO;
 import com.besysoft.ejercitacion.dto.GeneroRespDTO;
 import com.besysoft.ejercitacion.dto.mapper.IGeneroMapper;
+import com.besysoft.ejercitacion.excepciones.GeneroExistException;
+import com.besysoft.ejercitacion.excepciones.GeneroPeIncorrectasException;
 import com.besysoft.ejercitacion.servicios.interfaces.IGeneroService;
 import com.besysoft.ejercitacion.dominio.Genero;
 import com.besysoft.ejercitacion.servicios.interfaces.IPeliculaService;
@@ -11,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import javax.validation.Valid;
 
 import java.util.*;
 
@@ -45,20 +48,22 @@ public class ControladoraGenero {
     }
 
     @PostMapping
-    public ResponseEntity<?> altaGenero(@RequestBody GeneroReqDTO generoReq){
+    public ResponseEntity<?> altaGenero(@Valid @RequestBody GeneroReqDTO generoReq){
         Genero genero=genMap.mapToEntity(generoReq);
         logger.info("genero a crear: "+genero);
-        Genero generoNuevo=this.genService.altaGenero(genero);
-        //Luego se implementaran excepciones y se devolvera el error especifico
-        if(generoNuevo==null){
-            return this.notSuccessResponse("El genero ya existe o alguna pelicula no existe",0);
+        try{
+            genero=this.genService.altaGenero(genero);
+        } catch(GeneroExistException e) {
+            return this.notSuccessResponse(e.getMessage(),0);
+        } catch(GeneroPeIncorrectasException e){
+            return this.notSuccessResponse(e.getMessage(),0);
         }
-        GeneroRespDTO genDto=this.genMap.mapToDto(generoNuevo);
+        GeneroRespDTO genDto=this.genMap.mapToDto(genero);
         return ResponseEntity.status(HttpStatus.CREATED).body(genDto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> modiGenero(@RequestBody GeneroReqDTO generoReq,
+    public ResponseEntity<?> modiGenero(@Valid @RequestBody GeneroReqDTO generoReq,
                                          @PathVariable int id){
         Genero genero=genMap.mapToEntity(generoReq);
         logger.info("genero a modificar: "+genero);
