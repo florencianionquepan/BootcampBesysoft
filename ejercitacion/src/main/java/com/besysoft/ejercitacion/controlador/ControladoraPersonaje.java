@@ -72,9 +72,6 @@ public class ControladoraPersonaje {
         Personaje perso=this.persoMap.mapToEntity(persoDto);
         logger.info("Personaje entidad a crear: " + perso);
         Personaje personaje=this.persoService.altaPersonaje(perso);
-        if(personaje==null){
-            return this.notSuccessResponse("Alguna pelicula asociada no existe",0);
-        }
         PersonajeRespDTO persoRespDto=this.persoMap.mapToDto(personaje);
         return ResponseEntity.status(HttpStatus.CREATED).body(persoRespDto);
     }
@@ -85,9 +82,6 @@ public class ControladoraPersonaje {
         Personaje perso=this.persoMap.mapToEntity(persoDto);
         logger.info("Personaje entidad a modificar: " + perso);
         Personaje personaje=this.persoService.modiPersonaje(perso,id);
-        if(personaje==null){
-            return this.notSuccessResponse("Existe un error en la peticion y el personaje no pudo ser modificado",0);
-        }
         PersonajeRespDTO persoRespDto=this.persoMap.mapToDto(personaje);
         mensajeBody.put("Success",Boolean.TRUE);
         mensajeBody.put("data",persoRespDto);
