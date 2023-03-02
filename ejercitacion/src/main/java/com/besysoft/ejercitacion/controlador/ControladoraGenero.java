@@ -3,11 +3,10 @@ package com.besysoft.ejercitacion.controlador;
 import com.besysoft.ejercitacion.dto.GeneroReqDTO;
 import com.besysoft.ejercitacion.dto.GeneroRespDTO;
 import com.besysoft.ejercitacion.dto.mapper.IGeneroMapper;
-import com.besysoft.ejercitacion.excepciones.GeneroExistException;
-import com.besysoft.ejercitacion.excepciones.GeneroPeIncorrectasException;
+import com.besysoft.ejercitacion.excepciones.ExistException;
+import com.besysoft.ejercitacion.excepciones.ListaIncorrectaException;
 import com.besysoft.ejercitacion.servicios.interfaces.IGeneroService;
 import com.besysoft.ejercitacion.dominio.Genero;
-import com.besysoft.ejercitacion.servicios.interfaces.IPeliculaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -51,14 +50,8 @@ public class ControladoraGenero {
     public ResponseEntity<?> altaGenero(@Valid @RequestBody GeneroReqDTO generoReq){
         Genero genero=genMap.mapToEntity(generoReq);
         logger.info("genero a crear: "+genero);
-        try{
-            genero=this.genService.altaGenero(genero);
-        } catch(GeneroExistException e) {
-            return this.notSuccessResponse(e.getMessage(),0);
-        } catch(GeneroPeIncorrectasException e){
-            return this.notSuccessResponse(e.getMessage(),0);
-        }
-        GeneroRespDTO genDto=this.genMap.mapToDto(genero);
+        Genero generoNuevo=this.genService.altaGenero(genero);
+        GeneroRespDTO genDto=this.genMap.mapToDto(generoNuevo);
         return ResponseEntity.status(HttpStatus.CREATED).body(genDto);
     }
 
@@ -68,10 +61,8 @@ public class ControladoraGenero {
         Genero genero=genMap.mapToEntity(generoReq);
         logger.info("genero a modificar: "+genero);
         Genero generoMod=this.genService.modiGenero(genero,id);
-        if(generoMod==null){
-            return this.notSuccessResponse("Existe un error en la peticion y el genero no pudo modificarse",0);
-        }
         GeneroRespDTO genDto=this.genMap.mapToDto(generoMod);
+
         mensajeBody.put("Success",Boolean.TRUE);
         mensajeBody.put("data",genDto);
         return ResponseEntity.ok(mensajeBody);
