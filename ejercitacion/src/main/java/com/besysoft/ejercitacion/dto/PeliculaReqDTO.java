@@ -5,10 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.*;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -25,6 +22,8 @@ public class PeliculaReqDTO {
     @Size(min = 3, max = 20)
     private String titulo;
     private LocalDate fechaCreacion;
+    @Min(1)
+    @Max(5)
     private int calificacion;
     @JsonIgnoreProperties(value="peliculas")
     private List<PersonajeRespDTO> personajes;
