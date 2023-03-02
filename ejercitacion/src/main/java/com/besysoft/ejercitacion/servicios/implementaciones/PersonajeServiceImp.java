@@ -70,7 +70,7 @@ public class PersonajeServiceImp implements IPersonajeService {
         Personaje person=this.porSiListaPelisNull(perso);
         if(!this.existePerso(id)) {
             throw new ExistException(
-                    String.format("El Genero con id %d no existe",person.getId())
+                    String.format("El Genero con id %d no existe",id)
             );
         }
         if(!this.peliService.sonPelisCorrectas(person.getListaPeliculas())) {
