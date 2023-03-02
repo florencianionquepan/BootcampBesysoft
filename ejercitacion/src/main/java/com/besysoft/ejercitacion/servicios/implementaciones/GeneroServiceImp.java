@@ -40,11 +40,13 @@ public class GeneroServiceImp implements IGeneroService {
         this.porSiListaPelisNull(genero);
         Optional <Genero> oGen=this.genRepo.findByName(genero.getNombre());
         if(oGen.isPresent()){
-            throw new ExistException(String.format("El Genero %s ya existe",genero.getNombre())
+            throw new ExistException(
+                    String.format("El Genero %s ya existe",genero.getNombre())
             );
         }
         if(!this.peliService.sonPelisCorrectas(genero.getListaPelis())){
-            throw new ListaIncorrectaException("Alguna pelicula ingresada no existe o no es correcta");
+            throw new ListaIncorrectaException(
+                    "Alguna pelicula ingresada no existe o no es correcta");
         }
         this.addPeli(genero);
         return this.genRepo.save(genero);
