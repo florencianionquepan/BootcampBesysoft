@@ -132,6 +132,7 @@ class ControladoraPeliculaTest {
     void altaPelicula() throws Exception{
         PeliculaReqDTO peliReq=new PeliculaReqDTO();
         peliReq.setTitulo("Igorio");
+        peliReq.setCalificacion(5);
         when(mapper.mapToEntity(peliReq))
                 .thenReturn(new Pelicula());
         when(service.altaPeli(any()))
@@ -147,6 +148,7 @@ class ControladoraPeliculaTest {
     void modiPelicula() throws Exception{
         PeliculaReqDTO peliReq=new PeliculaReqDTO();
         peliReq.setTitulo("Igorio");
+        peliReq.setCalificacion(5);
         when(mapper.mapToEntity(peliReq))
                 .thenReturn(new Pelicula());
         when(service.modiPeli(any(),anyInt()))
