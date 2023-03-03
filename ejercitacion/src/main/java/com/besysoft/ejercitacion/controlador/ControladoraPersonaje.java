@@ -6,6 +6,8 @@ import com.besysoft.ejercitacion.dto.mapper.IPersonajeMapper;
 import com.besysoft.ejercitacion.servicios.interfaces.IPeliculaService;
 import com.besysoft.ejercitacion.servicios.interfaces.IPersonajeService;
 import com.besysoft.ejercitacion.dominio.Personaje;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/personajes")
+@Api(value="Personaje Controlador", tags="Acciones para la entidad Personaje")
 public class ControladoraPersonaje {
 
     private Logger logger= LoggerFactory.getLogger(ControladoraPersonaje.class);
@@ -44,21 +47,25 @@ public class ControladoraPersonaje {
     }
 
     @GetMapping
+    @ApiOperation(value="Consulta todos los personajes existentes")
     public ResponseEntity<?> verPerso(){
         return this.successResponse(this.persoMap.mapListToDto(this.persoService.verPerso()));
     }
 
     @GetMapping("/{nombre}")
+    @ApiOperation(value="Consulta los personajes existentes según su nombre")
     public ResponseEntity<?> buscarPersoByNombre(@PathVariable String nombre){
         return this.successResponse(this.persoMap.mapListToDto(this.persoService.buscarPersoByNombre(nombre)));
     }
 
     @GetMapping("/edad/{edad}")
+    @ApiOperation(value="Consulta todos los personajes existentes según su edad")
     public ResponseEntity<?> buscarPersoByEdad(@PathVariable int edad){
         return this.successResponse(this.persoMap.mapListToDto(this.persoService.buscarPersoByEdad(edad)));
     }
 
     @GetMapping("/edad")
+    @ApiOperation(value="Consulta todos los personajes existentes entre determinadas edades")
     public ResponseEntity<?> buscarPersoRangoEdad(@RequestParam int desde,
                                                  @RequestParam int hasta){
         if(desde>hasta){
@@ -68,6 +75,7 @@ public class ControladoraPersonaje {
     }
 
     @PostMapping
+    @ApiOperation(value="Permite la creación de un personaje")
     public ResponseEntity<?> altaPersonaje(@Valid @RequestBody PersonajeReqDTO persoDto){
         Personaje perso=this.persoMap.mapToEntity(persoDto);
         logger.info("Personaje entidad a crear: " + perso);
@@ -77,6 +85,7 @@ public class ControladoraPersonaje {
     }
 
     @PutMapping("/{id}")
+    @ApiOperation(value="Permite la edición de un personaje")
     public ResponseEntity<?> modiPerso(@Valid @RequestBody PersonajeReqDTO persoDto,
                                        @PathVariable int id){
         Personaje perso=this.persoMap.mapToEntity(persoDto);

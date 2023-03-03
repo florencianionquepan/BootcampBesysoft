@@ -7,6 +7,8 @@ import com.besysoft.ejercitacion.excepciones.ExistException;
 import com.besysoft.ejercitacion.excepciones.ListaIncorrectaException;
 import com.besysoft.ejercitacion.servicios.interfaces.IGeneroService;
 import com.besysoft.ejercitacion.dominio.Genero;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/generos")
+@Api(value="Genero Controlador", tags="Acciones para la entidad Genero")
 public class ControladoraGenero {
 
     private Logger logger=LoggerFactory.getLogger(ControladoraGenero.class);
@@ -37,12 +40,14 @@ public class ControladoraGenero {
     }
 
     @GetMapping
+    @ApiOperation(value="Consulta todos los generos existentes")
     public ResponseEntity<?>  verGeneros(){
         List<GeneroRespDTO> genRespDto=this.genMap.mapListToDto(this.genService.verGeneros());
         return this.successResponse(genRespDto);
     }
 
     @PostMapping
+    @ApiOperation(value="Permite la cración de un genero")
     public ResponseEntity<?> altaGenero(@Valid @RequestBody GeneroReqDTO generoReq){
         Genero genero=genMap.mapToEntity(generoReq);
         logger.info("genero a crear: "+genero);
@@ -52,6 +57,7 @@ public class ControladoraGenero {
     }
 
     @PutMapping("/{id}")
+    @ApiOperation(value="Permite la edición de un genero")
     public ResponseEntity<?> modiGenero(@Valid @RequestBody GeneroReqDTO generoReq,
                                          @PathVariable int id){
         Genero genero=genMap.mapToEntity(generoReq);
