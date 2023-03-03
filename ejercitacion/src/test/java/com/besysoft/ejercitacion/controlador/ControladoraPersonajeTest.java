@@ -103,6 +103,7 @@ class ControladoraPersonajeTest {
     @Test
     void altaPersonaje() throws Exception {
         PersonajeReqDTO perReq=new PersonajeReqDTO();
+        perReq.setNombre("Emma");
         PersonajeRespDTO resp=new PersonajeRespDTO();
         resp.setNombre("Emma");
         when(mapper.mapToEntity(perReq))
@@ -124,6 +125,7 @@ class ControladoraPersonajeTest {
     @Test
     void modiPerso() throws Exception {
         PersonajeReqDTO perReq=new PersonajeReqDTO();
+        perReq.setNombre("Emma");
         PersonajeRespDTO resp=new PersonajeRespDTO();
         resp.setNombre("Emma");
         when(mapper.mapToEntity(perReq))
