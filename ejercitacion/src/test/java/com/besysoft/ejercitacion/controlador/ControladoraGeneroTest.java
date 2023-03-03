@@ -1,6 +1,7 @@
 package com.besysoft.ejercitacion.controlador;
 
 import com.besysoft.ejercitacion.dominio.Genero;
+import com.besysoft.ejercitacion.dominio.Pelicula;
 import com.besysoft.ejercitacion.dto.GeneroReqDTO;
 import com.besysoft.ejercitacion.dto.GeneroRespDTO;
 import com.besysoft.ejercitacion.dto.mapper.IGeneroMapper;
@@ -19,6 +20,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -63,6 +66,7 @@ class ControladoraGeneroTest {
     void altaGenero() throws Exception {
         GeneroReqDTO genReq=new GeneroReqDTO();
         GeneroRespDTO resp=new GeneroRespDTO();
+        genReq.setNombre("Comedia");
         resp.setNombre("Comedia");
         when(mapper.mapToEntity(genReq))
                 .thenReturn(new Genero());
@@ -85,6 +89,7 @@ class ControladoraGeneroTest {
     void modiGenero() throws Exception {
         GeneroReqDTO genReq=new GeneroReqDTO();
         GeneroRespDTO resp=new GeneroRespDTO();
+        genReq.setNombre("Comedia");
         resp.setNombre("Comedia");
         when(mapper.mapToEntity(genReq)).thenReturn(new Genero());
         when(service.modiGenero(any(),anyInt())).thenReturn(new Genero());
