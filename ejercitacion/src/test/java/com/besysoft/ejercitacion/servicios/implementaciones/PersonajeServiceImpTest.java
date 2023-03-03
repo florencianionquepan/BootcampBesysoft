@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.BDDMockito.given;
@@ -131,7 +132,9 @@ class PersonajeServiceImpTest {
                 .thenReturn(false);
         //WHEN
         //THEN
-        assertThat(persoService.altaPersonaje(per)).isEqualTo(null);
+        assertThatThrownBy(()->persoService.altaPersonaje(per))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessageContaining("Alguna pelicula ingresada no existe o no es correcta");
     }
 
     @Test
@@ -153,11 +156,17 @@ class PersonajeServiceImpTest {
     void modiPersonajeErrorUno() {
         Personaje perso=TestDatos.getPersonajeCarl();
         //GIVEN
+        when(persoRepo.save(any()))
+                .thenReturn(perso);
+        when(persoRepo.findById(any()))
+                .thenReturn(Optional.of(perso));
         when(peliService.sonPelisCorrectas(perso.getListaPeliculas()))
                 .thenReturn(false);
         //WHEN
         //THEN
-        assertThat(persoService.modiPersonaje(perso,perso.getId())).isEqualTo(null);
+        assertThatThrownBy(()->persoService.modiPersonaje(perso,3))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessageContaining("Alguna pelicula ingresada no existe o no es correcta");
     }
 
     @Test
