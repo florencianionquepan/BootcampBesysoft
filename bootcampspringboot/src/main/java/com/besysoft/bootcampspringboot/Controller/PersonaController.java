@@ -6,6 +6,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.*;
 
@@ -133,6 +134,7 @@ public class PersonaController {
 
 
     @DeleteMapping("/{id}")
+    @ApiIgnore
     public void deletePersona(@PathVariable Long id) {
         int indice = (int) (id - 1L);
         //this.listaPersonas.remove(indice);

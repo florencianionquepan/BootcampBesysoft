@@ -5,6 +5,7 @@ import com.besysoft.bootcampspringboot.excepciones.SocioExistException;
 import com.besysoft.bootcampspringboot.negocio.dto.SocioDto;
 import com.besysoft.bootcampspringboot.negocio.mapper.SocioMapper;
 import com.besysoft.bootcampspringboot.servicios.interfaz.SocioService;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,7 @@ public class SocioController {
     }
 
     @PostMapping
+    @ApiOperation(value="Permite el alta de un socio")
     public ResponseEntity<?> altaSocio(@Valid @RequestBody SocioDto socio){
        Socio entity= SocioMapper.mapToEntity(socio);
         entity= this.service.altaSocio(entity);
@@ -37,6 +39,7 @@ public class SocioController {
     }
 
     @GetMapping
+    @ApiOperation(value="Consulta todos los socios disponibles en la BD")
     public ResponseEntity<?> verTodos(){
         List<Socio> socios= (List<Socio>) this.service.buscarTodos();
         List<SocioDto> listaDto=socios.stream()
