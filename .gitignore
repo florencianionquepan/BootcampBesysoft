@@ -35,3 +35,12 @@ build/
 
 ejercitacion/logs/
 *.log
+bootcampspringboot/src/test/resources/application.properties
+bootcampspringboot/src/test/resources/application.properties
+ejercitacion/src/main/resources/application.properties
+*.properties
+*.properties
+*.properties
+*.log
+*.log
+*.properties
