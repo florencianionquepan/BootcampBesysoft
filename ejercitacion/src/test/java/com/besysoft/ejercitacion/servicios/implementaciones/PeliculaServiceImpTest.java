@@ -134,9 +134,9 @@ class PeliculaServiceImpTest {
         when(persoRepo.findById(peli.getListaPersonajes().get(0).getId()))
                 .thenReturn(Optional.empty());
 
-        peliService.altaPeli(peli);
-
-        assertThat(peliService.altaPeli(peli)).isEqualTo(null);
+        assertThatThrownBy(()->peliService.altaPeli(peli))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessageContaining("Algun personaje ingresado no existe o no es correcto");
     }
 
     @Test
@@ -147,9 +147,9 @@ class PeliculaServiceImpTest {
         when(peliRepo.findByTitle(any()))
                 .thenReturn(Optional.of(peliMismoTitulo));
 
-        peliService.altaPeli(peli);
-
-        assertThat(peliService.altaPeli(peli)).isEqualTo(null);
+        assertThatThrownBy(()->peliService.altaPeli(peli))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessageContaining(String.format("La pelicula %s ya existe",peli.getTitulo()));
     }
 
     @Test
@@ -178,7 +178,9 @@ class PeliculaServiceImpTest {
         given(peliRepo.existsById(any())).willReturn(false);
         //WHEN
         //THEN
-        assertThat(peliService.modiPeli(peli,peli.getId())).isEqualTo(null);
+        assertThatThrownBy(() -> peliService.modiPeli(peli, 3))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessageContaining((String.format("La pelicula con id %d no existe",3)));
     }
 
     @Test
