@@ -1,6 +1,7 @@
 package com.besysoft.ejercitacion.servicios.implementaciones;
 
 import com.besysoft.ejercitacion.dominio.Genero;
+import com.besysoft.ejercitacion.excepciones.ExistException;
 import com.besysoft.ejercitacion.repositorios.database.GeneroRepository;
 import com.besysoft.ejercitacion.repositorios.database.PeliculaRepository;
 import com.besysoft.ejercitacion.servicios.interfaces.IPeliculaService;
@@ -82,7 +83,9 @@ class GeneroServiceImpTest {
                 .willReturn(Optional.of(genTerror));
         //WHEN
         //THEN
-        assertThat(genService.altaGenero(genTerror)).isEqualTo(null);
+        assertThatThrownBy(()->genService.altaGenero(genTerror))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessageContaining("El Genero %s ya existe",genTerror.getNombre());
     }
 
     @Test
@@ -93,7 +96,9 @@ class GeneroServiceImpTest {
                 .willReturn(false);
         //WHEN
         //THEN
-        assertThat(genService.altaGenero(genTerror)).isEqualTo(null);
+        assertThatThrownBy(()->genService.altaGenero(genTerror))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessageContaining("Alguna pelicula ingresada no existe o no es correcta");
     }
 
     @Test
@@ -147,21 +152,29 @@ class GeneroServiceImpTest {
         Genero genTerror= TestDatos.getGeneroTerror();
         genTerror.setNombre("Drama");
         //GIVEN
+        given(genRepo.existsById(any()))
+                .willReturn(true);
         doReturn(true).when(genService)
                 .existeNombreConOtroId(genTerror,1);
         //WHEN
         //THEN
-        assertThat(genService.modiGenero(genTerror,1)).isEqualTo(null);
+        assertThatThrownBy(() -> genService.modiGenero(genTerror, genTerror.getId()))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessageContaining("El Genero %s ya existe",genTerror.getNombre());
     }
 
     @Test
     void modiGeneroErrorDos() {
         Genero genTerror= TestDatos.getGeneroTerror();
         //GIVEN
+        given(genRepo.existsById(any()))
+                .willReturn(true);
         given(peliService.sonPelisCorrectas(genTerror.getListaPelis()))
                 .willReturn(false);
         //WHEN
         //THEN
-        assertThat(genService.modiGenero(genTerror,2)).isEqualTo(null);
+        assertThatThrownBy(() -> genService.modiGenero(genTerror,genTerror.getId()))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessageContaining("Alguna pelicula ingresada no existe o no es correcta");
     }
 }
