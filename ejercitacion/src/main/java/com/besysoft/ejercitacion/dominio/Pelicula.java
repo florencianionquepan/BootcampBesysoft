@@ -20,7 +20,7 @@ public class Pelicula implements Serializable {
     @Column(length = 1)
     private int calificacion;
     @ManyToMany(mappedBy = "listaPeliculas", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
-    //@JsonIgnoreProperties(value="listaPeliculas")
+    @JsonIgnoreProperties(value="listaPeliculas")
     private List<Personaje> listaPersonajes;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
