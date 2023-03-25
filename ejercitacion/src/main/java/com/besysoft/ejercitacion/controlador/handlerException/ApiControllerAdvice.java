@@ -38,5 +38,4 @@ public class ApiControllerAdvice {
     public ExceptionDTO listaIncorrecta(ListaIncorrectaException ex){
         return new ExceptionDTO(HttpStatus.BAD_REQUEST.value(), ex.getMessage(),null);
     }
-    //VER COMO QUEDARIA SI TENGO UN SOLO EXISTEXCEPTION Y USO ESE PARA PELICULA Y GENERO
 }
