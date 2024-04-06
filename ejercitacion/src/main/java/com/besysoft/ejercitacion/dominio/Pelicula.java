@@ -1,7 +1,8 @@
 package com.besysoft.ejercitacion.dominio;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -9,6 +10,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 @Entity
+@Getter
+@Setter
 @Table(name="peliculas")
 public class Pelicula implements Serializable {
     @Id
@@ -19,6 +22,7 @@ public class Pelicula implements Serializable {
     private LocalDate fechaCreacion;
     @Column(length = 1)
     private int calificacion;
+    private String imagenURL;
     @ManyToMany(mappedBy = "listaPeliculas", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     @JsonIgnoreProperties(value="listaPeliculas")
     private List<Personaje> listaPersonajes;
@@ -28,62 +32,16 @@ public class Pelicula implements Serializable {
     //@JsonIgnore
     private Genero genero;
 
-    public Genero getGenero() {
-        return genero;
-    }
-
-    public void setGenero(Genero genero) {
-        this.genero = genero;
-    }
-
     public Pelicula() {
     }
 
-    public Pelicula(int id, String titulo, LocalDate fechaCreacion, int calificacion, List<Personaje> listaPersonajes) {
+    public Pelicula(int id, String titulo, LocalDate fechaCreacion, int calificacion,
+                    String imagenURL, List<Personaje> listaPersonajes) {
         this.id = id;
         this.titulo = titulo;
         this.fechaCreacion = fechaCreacion;
         this.calificacion = calificacion;
-        this.listaPersonajes = listaPersonajes;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
-    public LocalDate getFechaCreacion() {
-        return fechaCreacion;
-    }
-
-    public void setFechaCreacion(LocalDate fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
-    }
-
-    public int getCalificacion() {
-        return calificacion;
-    }
-
-    public void setCalificacion(int calificacion) {
-        this.calificacion = calificacion;
-    }
-
-    public List<Personaje> getListaPersonajes() {
-        return listaPersonajes;
-    }
-
-    public void setListaPersonajes(List<Personaje> listaPersonajes) {
+        this.imagenURL = imagenURL;
         this.listaPersonajes = listaPersonajes;
     }
 
