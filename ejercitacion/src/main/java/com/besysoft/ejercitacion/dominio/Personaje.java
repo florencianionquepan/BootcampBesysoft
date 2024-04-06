@@ -1,5 +1,6 @@
 package com.besysoft.ejercitacion.dominio;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -7,6 +8,8 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Getter
+@Setter
 @Table(name="personajes")
 public class Personaje implements Serializable {
     @Id
@@ -29,59 +32,13 @@ public class Personaje implements Serializable {
     public Personaje() {
     }
 
-    public Personaje(int id, String nombre, int edad, double peso, String historia, List<Pelicula> listaPeliculas) {
+    public Personaje(int id, String nombre, int edad, double peso, String historia,
+                     List<Pelicula> listaPeliculas) {
         this.id = id;
         this.nombre = nombre;
         this.edad = edad;
         this.peso = peso;
         this.historia = historia;
-        this.listaPeliculas = listaPeliculas;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public int getEdad() {
-        return edad;
-    }
-
-    public void setEdad(int edad) {
-        this.edad = edad;
-    }
-
-    public double getPeso() {
-        return peso;
-    }
-
-    public void setPeso(double peso) {
-        this.peso = peso;
-    }
-
-    public String getHistoria() {
-        return historia;
-    }
-
-    public void setHistoria(String historia) {
-        this.historia = historia;
-    }
-
-    public List<Pelicula> getListaPeliculas() {
-        return listaPeliculas;
-    }
-
-    public void setListaPeliculas(List<Pelicula> listaPeliculas) {
         this.listaPeliculas = listaPeliculas;
     }
 

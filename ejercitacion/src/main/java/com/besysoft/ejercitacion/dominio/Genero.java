@@ -1,6 +1,8 @@
 package com.besysoft.ejercitacion.dominio;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -8,6 +10,8 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Getter
+@Setter
 @Table(name="generos")
 public class Genero implements Serializable {
     @Id
@@ -25,24 +29,7 @@ public class Genero implements Serializable {
         this.nombre = nombre;
         this.listaPelis = listaPelis;
     }
-    public int getId() {
-        return id;
-    }
-    public void setId(int id) {
-        this.id = id;
-    }
-    public String getNombre() {
-        return nombre;
-    }
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-    public List<Pelicula> getListaPelis() {
-        return listaPelis;
-    }
-    public void setListaPelis(List<Pelicula> listaPelis) {
-        this.listaPelis = listaPelis;
-    }
+
     @Override
     public String toString() {
         return "Genero{" +
