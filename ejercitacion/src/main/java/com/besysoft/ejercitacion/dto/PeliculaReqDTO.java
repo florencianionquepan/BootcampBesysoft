@@ -19,7 +19,7 @@ public class PeliculaReqDTO {
     @NotNull
     @NotEmpty
     @Pattern(regexp = "^[A-Za-z\\s]+$", message = "solamente permite caracteres de la A - Z")
-    @Size(min = 3, max = 20)
+    @Size(min = 3, max = 30)
     private String titulo;
     private LocalDate fechaCreacion;
     @Min(1)
