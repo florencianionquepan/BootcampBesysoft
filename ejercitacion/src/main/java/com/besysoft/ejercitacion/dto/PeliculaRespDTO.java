@@ -17,6 +17,7 @@ public class PeliculaRespDTO {
     private String titulo;
     private LocalDate fechaCreacion;
     private int calificacion;
+    private String imagenURL;
     @JsonIgnoreProperties(value="peliculas")
     private List<PersonajeRespDTO> personajes;
 

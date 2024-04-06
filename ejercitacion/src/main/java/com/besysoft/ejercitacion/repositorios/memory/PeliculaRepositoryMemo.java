@@ -23,8 +23,8 @@ public class PeliculaRepositoryMemo implements IPeliculaRepository{
         this.genRepo = genRepo;
         this.listaPelis=new ArrayList<Pelicula>(
                 Arrays.asList(
-                        new Pelicula(1,"Coco",LocalDate.of(2017,12,01),4,new ArrayList<Personaje>()),
-                        new Pelicula(2,"Primer", LocalDate.of(2014,02,22),5,new ArrayList<Personaje>())
+                        new Pelicula(1,"Coco",LocalDate.of(2017,12,01),4,"https://imagen",new ArrayList<Personaje>()),
+                        new Pelicula(2,"Primer", LocalDate.of(2014,02,22),5,"https://imagen",new ArrayList<Personaje>())
                 )
         );
     }

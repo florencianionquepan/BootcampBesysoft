@@ -25,6 +25,7 @@ public class PeliculaReqDTO {
     @Min(1)
     @Max(5)
     private int calificacion;
+    private String imagenURL;
     @JsonIgnoreProperties(value="peliculas")
     private List<PersonajeRespDTO> personajes;
 

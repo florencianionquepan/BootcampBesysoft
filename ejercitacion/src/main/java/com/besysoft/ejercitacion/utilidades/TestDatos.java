@@ -49,9 +49,9 @@ public class TestDatos {
         List<Personaje> listaPersoPrimer=new ArrayList<Personaje>();
 
         //------Creo Listas de Peliculas--------
-        Pelicula peliCoco=new Pelicula(1,"Coco", LocalDate.of(2017,12,1),4,listaPersoCoco1);
-        Pelicula peliCoco2=new Pelicula(2,"Coco2",LocalDate.of(2009,10,15),3,listaPersoCoco2);
-        Pelicula peliPrimer=new Pelicula(3,"Primer",LocalDate.of(2004,02,22),5,listaPersoPrimer);
+        Pelicula peliCoco=new Pelicula(1,"Coco", LocalDate.of(2017,12,1),4,"https://imagen1",listaPersoCoco1);
+        Pelicula peliCoco2=new Pelicula(2,"Coco2",LocalDate.of(2009,10,15),3,"https://imagen1",listaPersoCoco2);
+        Pelicula peliPrimer=new Pelicula(3,"Primer",LocalDate.of(2004,02,22),5,"https://imagen1",listaPersoPrimer);
         List<Pelicula> pelisCocoMiguel=new ArrayList<Pelicula>(
                 Arrays.asList(peliCoco,peliCoco2)
         );
@@ -126,12 +126,12 @@ public class TestDatos {
 
     public static Pelicula getPeliculaCoco(){
         return new Pelicula(1,"Coco", LocalDate.of(2017,12,1),
-                4, new ArrayList<Personaje>());
+                4, "https://imagen",new ArrayList<Personaje>());
     }
 
     public static Pelicula getPeliculaUp(){
         return new Pelicula(2,"Up",LocalDate.of(2009,10,15),
-                2,new ArrayList<Personaje>());
+                2,"https://imagen",new ArrayList<Personaje>());
     }
 
     public static Personaje getPersonajeMiguel(){
